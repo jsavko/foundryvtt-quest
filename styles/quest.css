@@ -1,0 +1,246 @@
+.quest {
+    /* Sheet Tabs */
+    /* Items List */
+    /* Attributes */
+}
+.quest .window-content {
+    height: 100%;
+    padding: 5px;
+    overflow-y: hidden;
+}
+.quest form {
+    height: 100%;
+    overflow: scroll;
+}
+.quest .sheet-header {
+    flex: 0 0 100px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+.quest .sheet-header .profile-img {
+    flex: 0 0 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+.quest .sheet-header .header-fields {
+    flex: 1;
+    height: 100px;
+}
+.quest .sheet-header h1.charname {
+    height: 50px;
+    padding: 0px;
+    margin: 5px 0;
+    border-bottom: 0;
+}
+.quest .sheet-header h1.charname input {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+.quest .resource {
+    width: 50%;
+    height: 40px;
+    margin-top: 10px;
+    float: left;
+    text-align: center;
+}
+.quest .resource input {
+    width: 100px;
+    height: 28px;
+}
+.quest .tabs {
+    flex: 0 0 40px;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+}
+.quest .tabs .item {
+    line-height: 40px;
+    font-weight: bold;
+}
+.quest .tabs .item.active {
+    text-decoration: underline;
+    text-shadow: none;
+}
+.quest .sheet-body {
+    overflow: hidden;
+}
+.quest .sheet-body .tab {
+    height: 100%;
+    overflow-y: auto;
+}
+.quest .editor,
+.quest .editor-content {
+    height: 100%;
+}
+.quest .item-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+}
+.quest .item-list .item {
+    min-height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #bbb;
+    align-items: stretch;
+}
+.quest .item-list .item img {
+    flex: 0 0 24px;
+    margin-right: 5px;
+}
+.quest .item-list .item-name {
+    margin: 0;
+}
+.quest .item-list .item-controls {
+    flex: 0 0 36px;
+}
+.quest .item-list .item-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    flex: 2;
+    justify-content: flex-start;
+}
+.quest .item-list .item-button {
+    line-height: 1;
+    font-size: 11px;
+    flex: none;
+    width: auto;
+}
+.quest .attributes {
+    position: relative;
+}
+.quest .attributes .attribute-control,
+.quest .attributes .group-control {
+    flex: 0 0 20px;
+    text-align: center;
+    line-height: 28px;
+    border: none;
+}
+.quest .attributes .attribute-roll {
+    flex: 0 0 20px;
+    text-align: center;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.quest .attributes .group-prefix {
+    height: 31px;
+    margin-right: 10px;
+}
+.quest .attributes .button {
+    width: 100%;
+    flex: 1;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.1);
+    border: 2px groove #f0f0e0;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 28px;
+    display: block;
+}
+.quest .attributes .attribute-key {
+    background: transparent;
+    border: none;
+}
+.quest .attributes-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    align-items: center;
+    padding: 0 5px;
+    margin: 5px 0;
+    background: #cfcdc2;
+    border: 1px solid #aaa;
+    border-radius: 2px;
+    text-align: left;
+    font-weight: bold;
+}
+.quest .attributes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.quest .attributes-list li > * {
+    margin: 0 3px;
+    height: 28px;
+    line-height: 24px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #aaa;
+}
+.quest .attributes-list .attribute-col label {
+    font-size: 10px;
+    text-align: center;
+    line-height: 1;
+}
+.quest .attributes-list .attribute-col input {
+    font-size: 11px;
+    text-align: center;
+    line-height: 1;
+    height: 50%;
+}
+.quest .attribute input[type="text"]::placeholder,
+.quest .group-header input[type="text"]::placeholder {
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+.quest .attribute input[type="text"]:focus::placeholder,
+.quest .group-header input[type="text"]:focus::placeholder {
+    opacity: 1;
+}
+.quest .group-controls {
+    margin: 5px;
+}
+.quest .groups-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.quest .group {
+    margin: 5px 0 0;
+    padding: 0;
+}
+.quest .group-header {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #aaa;
+    border-radius: 2px;
+    padding: 2px 5px;
+}
+.quest .group-key,
+.quest .group-label {
+    font-weight: bold;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    background: transparent;
+    border-radius: 0;
+    margin-right: 6px;
+}
+.quest .group-key {
+    opacity: 0.75;
+}
+.quest .group-label {
+    flex: 2;
+}
+.quest .group-dtype {
+    height: 24px;
+    flex: 0 0 116px;
+    margin: 0 5px;
+}
+.quest.sheet.actor {
+    min-width: 560px;
+    min-height: 420px;
+}
+.quest.sheet.item {
+    min-width: 460px;
+    min-height: 400px;
+}

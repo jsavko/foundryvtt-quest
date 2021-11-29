@@ -1,0 +1,22 @@
+{
+    "Actor": {
+        "types": ["character"],
+        "character": {
+            "biography": ""
+        }
+    },
+    "Item": {
+        "types": ["item", "ability"],
+        "item": {
+            "description": "",
+            "quantity": 1,
+            "weight": 0,
+            "attributes": {},
+            "groups": {}
+        },
+        "ability": {
+            "description": "",
+            "cost": 1
+        }
+    }
+}
