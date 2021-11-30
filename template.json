@@ -2,7 +2,24 @@
     "Actor": {
         "types": ["character"],
         "character": {
-            "biography": ""
+            "biography": "",
+            "hp": 0,
+            "ap": 0,
+            "pronouns": "",
+            "age": "",
+            "height": "",
+            "role": "",
+            "featurebody": "",
+            "featureface": "",
+            "featurevibe": "",
+            "style1": "",
+            "style2": "",
+            "style3": "",
+            "home": "",
+            "community": "",
+            "ideal": "",
+            "flaw": "",
+            "dream": ""
         }
     },
     "Item": {

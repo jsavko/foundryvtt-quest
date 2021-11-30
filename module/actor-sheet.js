@@ -1,4 +1,4 @@
-import QuestActorSheetBase from "./svelte/QuestGuardActorSheetBase.svelte"; // import Svelte App
+import QuestActorSheetBase from "./svelte/QuestActorSheetBase.svelte"; // import Svelte App
 import { writable } from "svelte/store";
 
 /**
@@ -15,7 +15,7 @@ export class QuestActorSheet extends ActorSheet {
             classes: ["quest", "sheet", "actor"],
             template: "systems/quest/templates/actor-sheetv2.html",
             width: 850,
-            height: 600,
+            height: 690,
             tabs: []
         });
     }
@@ -101,11 +101,6 @@ export class QuestActorSheet extends ActorSheet {
     _getSubmitData(updateData) {
         let formData = super._getSubmitData(updateData);
         return formData;
-    }
-
-    _setMouseDice(count) {
-        game.quest.RollCount = count;
-        game.quest.updateDisplay(count);
     }
 
     async _updateActorAbility(id, type, value) {

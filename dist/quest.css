@@ -1,3 +1,111 @@
+/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/Tabs.esbuild-svelte-fake-css */
+.box.svelte-8kv0mp.svelte-8kv0mp {
+  margin-bottom: 10px;
+  padding-top: 20px;
+  border-radius: 0 0 0.5rem 0.5rem;
+  border-top: 0;
+}
+ul.svelte-8kv0mp.svelte-8kv0mp {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  border-bottom: 1px solid #000;
+}
+li.svelte-8kv0mp.svelte-8kv0mp {
+  margin-bottom: -1px;
+  color: #495057;
+  font-family: "Ovo", sans-serif;
+}
+span.svelte-8kv0mp.svelte-8kv0mp {
+  border: 1px solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  display: block;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+li.active.svelte-8kv0mp > span.svelte-8kv0mp {
+  color: #000;
+  border-color: #000 #000 #000;
+  border-bottom: none;
+  background-color: #eeeeee;
+}
+
+/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
+content.svelte-1p0tjqw.svelte-1p0tjqw {
+  font-size: 16px;
+}
+content.svelte-1p0tjqw p.svelte-1p0tjqw {
+  padding: 5px 11px;
+}
+content.svelte-1p0tjqw input.svelte-1p0tjqw {
+  width: 60px;
+}
+.biography.svelte-1p0tjqw.svelte-1p0tjqw {
+  flex: 1.75 1 0;
+  order: 1;
+  padding-right: 0.2rem;
+  max-width: 580px;
+}
+.inventory-abilities.svelte-1p0tjqw.svelte-1p0tjqw {
+  flex: 1 1 0;
+  order: 2;
+  margin-left: 0.3rem;
+}
+input.long.svelte-1p0tjqw.svelte-1p0tjqw {
+  width: 300px;
+}
+input.medium.svelte-1p0tjqw.svelte-1p0tjqw {
+  width: 100px;
+  text-align: center;
+}
+input.short.svelte-1p0tjqw.svelte-1p0tjqw {
+  width: 50px;
+  text-align: center;
+}
+.inventory-abilities.svelte-1p0tjqw.svelte-1p0tjqw {
+  flex: 1 1 0;
+  order: 2;
+  border-left: 2px groove #eeeeee;
+  margin-left: 0.3rem;
+}
+.hitpoints.svelte-1p0tjqw.svelte-1p0tjqw {
+  font-family: "Alegreya Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 0.2rem;
+  color: #000;
+  text-align: left;
+}
+.roll-generic.svelte-1p0tjqw.svelte-1p0tjqw {
+  color: #000;
+  text-align: center;
+}
+.roll-generic.svelte-1p0tjqw .svelte-1p0tjqw:hover {
+  color: #f04828;
+}
+.actionpoints.svelte-1p0tjqw.svelte-1p0tjqw {
+  font-family: "Alegreya Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #000;
+  text-align: right;
+}
+.hp.svelte-1p0tjqw.svelte-1p0tjqw {
+  min-width: 20px;
+  max-width: 60px;
+  border: 1px solid #7a7971;
+  border-radius: 0.3rem;
+  font-size: 1.1rem;
+  padding-left: 0.3rem;
+}
+.header.svelte-1p0tjqw.svelte-1p0tjqw {
+  padding-bottom: 5px;
+  border-bottom: 2px groove #eeeeee;
+}
+
 /* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css */
 .editor.svelte-1xgaaf4 {
   display: grid;
