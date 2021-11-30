@@ -21,6 +21,7 @@ export class QuestActor extends Actor {
 
     _prepareCharacterData(actorData) {
         actorData.data.itemTypes = this.itemTypes;
+        console.log(actorData);
         //mergeObject(actorData.data, this.itemTypes)
     }
 

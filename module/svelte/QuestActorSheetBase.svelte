@@ -333,6 +333,22 @@
             component: QuestActorSheetAbilities
         }
     ];
+
+    // File picker
+    const filePicker = (event) => {
+        const attr = event.currentTarget.dataset.edit;
+        const current = getProperty(data, attr);
+        const fp = new FilePicker({
+            type: "image",
+            current: current,
+            callback: (path) => {
+                actor.update({ [attr]: path });
+            },
+            top: sheet.position.top + 40,
+            left: sheet.position.left + 10
+        });
+        return fp.browse();
+    };
 </script>
 
 <div class="header flexrow">
@@ -362,14 +378,23 @@
     <div class="biography flexcol flex1">
         <content>
             <p>
-                Hi, my name is <input
+                <img
+                    on:click={filePicker}
+                    class="profile"
+                    src={data.img}
+                    data-edit="img"
+                    title={data.name}
+                    align="left"
+                />
+                Hi, my name is
+                <input
                     class="long"
                     name="name"
                     type="text"
                     value={data.name}
                     placeholder="Name"
                 />
-                (<input
+                <br />(<input
                     class="medium"
                     name="data.pronouns"
                     type="text"

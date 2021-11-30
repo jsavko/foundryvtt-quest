@@ -9,15 +9,22 @@ var require_ = __commonJS({
   }
 });
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css
 var require_2 = __commonJS({
+  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css"(exports, module) {
+    module.exports = {};
+  }
+});
+
+// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
+var require_3 = __commonJS({
   "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
 
 // fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css
-var require_3 = __commonJS({
+var require_4 = __commonJS({
   "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
@@ -160,9 +167,9 @@ var EntitySheetHelper = class {
       });
     }
   }
-  static getAttributeHtml(items, index, group = false) {
+  static getAttributeHtml(items2, index, group = false) {
     let result = '<div style="display: none;">';
-    for (let [key, item2] of Object.entries(items)) {
+    for (let [key, item2] of Object.entries(items2)) {
       result = result + `<input type="${item2.type}" name="data.attributes${group ? "." + group : ""}.attr${index}.${key}" value="${item2.value}"/>`;
     }
     return result + "</div>";
@@ -414,6 +421,7 @@ var QuestActor = class extends Actor {
   }
   _prepareCharacterData(actorData) {
     actorData.data.itemTypes = this.itemTypes;
+    console.log(actorData);
   }
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
@@ -641,6 +649,9 @@ function subscribe(store, ...callbacks) {
   const unsub = store.subscribe(...callbacks);
   return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
 }
+function component_subscribe(component, store, callback) {
+  component.$$.on_destroy.push(subscribe(store, callback));
+}
 function null_to_empty(value) {
   return value == null ? "" : value;
 }
@@ -778,6 +789,9 @@ function get_current_component() {
 }
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
+}
+function getContext(key) {
+  return get_current_component().$$.context.get(key);
 }
 var dirty_components = [];
 var binding_callbacks = [];
@@ -946,7 +960,7 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance5, create_fragment7, not_equal, props, dirty = [-1]) {
+function init(component, options, instance6, create_fragment7, not_equal, props, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
@@ -967,7 +981,7 @@ function init(component, options, instance5, create_fragment7, not_equal, props,
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance5 ? instance5(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance6 ? instance6(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -1390,7 +1404,7 @@ function make_dirty2(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init2(component, options, instance5, create_fragment7, not_equal, props, dirty = [-1]) {
+function init2(component, options, instance6, create_fragment7, not_equal, props, dirty = [-1]) {
   const parent_component = current_component2;
   set_current_component2(component);
   const $$ = component.$$ = {
@@ -1411,7 +1425,7 @@ function init2(component, options, instance5, create_fragment7, not_equal, props
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance5 ? instance5(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance6 ? instance6(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -2740,7 +2754,7 @@ function instance($$self, $$props, $$invalidate) {
   let showList;
   let clearable;
   let { $$slots: slots = {}, $$scope } = $$props;
-  let { items = [] } = $$props;
+  let { items: items2 = [] } = $$props;
   let { searchFunction = false } = $$props;
   let { labelFieldName = void 0 } = $$props;
   let { keywordsFieldName = labelFieldName } = $$props;
@@ -2856,16 +2870,16 @@ function instance($$self, $$props, $$invalidate) {
       timerId = `Autocomplete prepare list ${inputId ? `(id: ${inputId})` : ""}`;
       console.time(timerId);
       console.log("Prepare items to search");
-      console.log("items: " + JSON.stringify(items));
+      console.log("items: " + JSON.stringify(items2));
     }
-    if (!Array.isArray(items)) {
-      console.warn("Autocomplete items / search function did not return array but", items);
-      $$invalidate(0, items = []);
+    if (!Array.isArray(items2)) {
+      console.warn("Autocomplete items / search function did not return array but", items2);
+      $$invalidate(0, items2 = []);
     }
-    const length = items ? items.length : 0;
+    const length = items2 ? items2.length : 0;
     listItems = new Array(length);
     if (length > 0) {
-      items.forEach((item2, i) => {
+      items2.forEach((item2, i) => {
         const listItem = getListItem(item2);
         if (listItem == void 0) {
           console.log("Undefined item for: ", item2);
@@ -2919,7 +2933,7 @@ function instance($$self, $$props, $$invalidate) {
     const textFiltered = prepareUserEnteredText(text3);
     if (textFiltered === "") {
       if (searchFunction) {
-        $$invalidate(0, items = []);
+        $$invalidate(0, items2 = []);
         if (debug) {
           console.log("User entered text is empty clear list of items");
         }
@@ -2947,15 +2961,15 @@ function instance($$self, $$props, $$invalidate) {
             return false;
           }
           if (currentRequestId > lastResponseId) {
-            $$invalidate(0, items = []);
+            $$invalidate(0, items2 = []);
           }
           lastResponseId = currentRequestId;
-          $$invalidate(0, items = [...items, ...chunk]);
+          $$invalidate(0, items2 = [...items2, ...chunk]);
           processListItems(textFiltered);
         }
         if (lastResponseId < currentRequestId) {
           lastResponseId = currentRequestId;
-          $$invalidate(0, items = []);
+          $$invalidate(0, items2 = []);
           processListItems(textFiltered);
         }
       } else {
@@ -2964,7 +2978,7 @@ function instance($$self, $$props, $$invalidate) {
           return false;
         }
         lastResponseId = currentRequestId;
-        $$invalidate(0, items = result);
+        $$invalidate(0, items2 = result);
         processListItems(textFiltered);
       }
       $$invalidate(30, loading = false);
@@ -3246,13 +3260,13 @@ function instance($$self, $$props, $$invalidate) {
       }
     }
   }
-  function findItemIndex(item2, items2) {
+  function findItemIndex(item2, items3) {
     if (debug) {
       console.log("Finding index for item", item2);
     }
     let index = -1;
-    for (let i = 0; i < items2.length; i++) {
-      const listItem = items2[i];
+    for (let i = 0; i < items3.length; i++) {
+      const listItem = items3[i];
       if (typeof listItem === "undefined") {
         if (debug) {
           console.log(`listItem ${i} is undefined. Skipping.`);
@@ -3394,7 +3408,7 @@ function instance($$self, $$props, $$invalidate) {
   }
   $$self.$$set = ($$props2) => {
     if ("items" in $$props2)
-      $$invalidate(0, items = $$props2.items);
+      $$invalidate(0, items2 = $$props2.items);
     if ("searchFunction" in $$props2)
       $$invalidate(48, searchFunction = $$props2.searchFunction);
     if ("labelFieldName" in $$props2)
@@ -3509,14 +3523,14 @@ function instance($$self, $$props, $$invalidate) {
       $$invalidate(47, highlightedItem = filteredListItems && highlightIndex && highlightIndex >= 0 && highlightIndex < filteredListItems.length ? filteredListItems[highlightIndex].item : null);
     }
     if ($$self.$$.dirty[0] & 1 | $$self.$$.dirty[2] & 6144) {
-      $$invalidate(31, showList = opened && (items && items.length > 0 || filteredTextLength > 0));
+      $$invalidate(31, showList = opened && (items2 && items2.length > 0 || filteredTextLength > 0));
     }
     if ($$self.$$.dirty[0] & 322 | $$self.$$.dirty[2] & 256) {
       $$invalidate(32, clearable = showClear || (lock || multiple) && selectedItem);
     }
   };
   return [
-    items,
+    items2,
     selectedItem,
     value,
     text3,
@@ -3960,16 +3974,16 @@ function create_fragment2(ctx) {
   };
 }
 function instance2($$self, $$props, $$invalidate) {
-  let { items = [] } = $$props;
+  let { items: items2 = [] } = $$props;
   let { activeTabValue = 1 } = $$props;
   const handleClick = (tabValue) => () => $$invalidate(0, activeTabValue = tabValue);
   $$self.$$set = ($$props2) => {
     if ("items" in $$props2)
-      $$invalidate(1, items = $$props2.items);
+      $$invalidate(1, items2 = $$props2.items);
     if ("activeTabValue" in $$props2)
       $$invalidate(0, activeTabValue = $$props2.activeTabValue);
   };
-  return [activeTabValue, items, handleClick];
+  return [activeTabValue, items2, handleClick];
 }
 var Tabs = class extends SvelteComponent {
   constructor(options) {
@@ -3981,31 +3995,182 @@ var Tabs_default = Tabs;
 require_();
 
 // module/svelte/QuestActorSheetInventory.svelte
-function create_fragment3(ctx) {
-  let t;
+function get_each_context3(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[7] = list[i];
+  child_ctx[9] = i;
+  return child_ctx;
+}
+function create_else_block2(ctx) {
+  let li;
   return {
     c() {
-      t = text("Inventory");
+      li = element("li");
+      attr(li, "class", "svelte-1cg6c8y");
     },
     m(target, anchor) {
-      insert(target, t, anchor);
+      insert(target, li, anchor);
     },
     p: noop,
+    d(detaching) {
+      if (detaching)
+        detach(li);
+    }
+  };
+}
+function create_if_block3(ctx) {
+  let li;
+  let t0_value = items[ctx[9]].data.name + "";
+  let t0;
+  let t1;
+  let a;
+  let mounted;
+  let dispose;
+  function click_handler(...args) {
+    return ctx[3](ctx[9], ...args);
+  }
+  return {
+    c() {
+      li = element("li");
+      t0 = text(t0_value);
+      t1 = space();
+      a = element("a");
+      a.textContent = "[delete]";
+      attr(li, "class", "svelte-1cg6c8y");
+    },
+    m(target, anchor) {
+      insert(target, li, anchor);
+      append(li, t0);
+      append(li, t1);
+      append(li, a);
+      if (!mounted) {
+        dispose = listen(a, "click", click_handler);
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(li);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_each_block3(ctx) {
+  let if_block_anchor;
+  function select_block_type(ctx2, dirty) {
+    if (!!items[ctx2[9]])
+      return create_if_block3;
+    return create_else_block2;
+  }
+  let current_block_type = select_block_type(ctx, -1);
+  let if_block = current_block_type(ctx);
+  return {
+    c() {
+      if_block.c();
+      if_block_anchor = empty();
+    },
+    m(target, anchor) {
+      if_block.m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+    },
+    p(ctx2, dirty) {
+      if_block.p(ctx2, dirty);
+    },
+    d(detaching) {
+      if_block.d(detaching);
+      if (detaching)
+        detach(if_block_anchor);
+    }
+  };
+}
+function create_fragment3(ctx) {
+  let ol;
+  let t0;
+  let li;
+  let each_value = { length: 12 };
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block3(get_each_context3(ctx, each_value, i));
+  }
+  return {
+    c() {
+      ol = element("ol");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      t0 = space();
+      li = element("li");
+      li.textContent = "Add Item";
+      attr(li, "class", "svelte-1cg6c8y");
+      attr(ol, "class", "svelte-1cg6c8y");
+    },
+    m(target, anchor) {
+      insert(target, ol, anchor);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(ol, null);
+      }
+      append(ol, t0);
+      append(ol, li);
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 2) {
+        each_value = { length: 12 };
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context3(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block3(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(ol, t0);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+    },
     i: noop,
     o: noop,
     d(detaching) {
       if (detaching)
-        detach(t);
+        detach(ol);
+      destroy_each(each_blocks, detaching);
     }
   };
+}
+function instance3($$self, $$props, $$invalidate) {
+  let $sheetData;
+  let sheetData = getContext("sheetStore");
+  component_subscribe($$self, sheetData, (value) => $$invalidate(2, $sheetData = value));
+  let { actor, sheet } = $sheetData;
+  let data;
+  let abilities;
+  const click_handler = (i, e) => {
+    sheet?._onItemDelete(items[i].data._id);
+  };
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 4) {
+      $:
+        data = $sheetData.data;
+    }
+  };
+  return [sheetData, sheet, $sheetData, click_handler];
 }
 var QuestActorSheetInventory = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, null, create_fragment3, safe_not_equal, {});
+    init(this, options, instance3, create_fragment3, safe_not_equal, {});
   }
 };
 var QuestActorSheetInventory_default = QuestActorSheetInventory;
+require_2();
 
 // module/svelte/QuestActorSheetAbilities.svelte
 function create_fragment4(ctx) {
@@ -4056,125 +4221,132 @@ function create_fragment5(ctx) {
   let div4;
   let content0;
   let p0;
+  let img;
+  let img_src_value;
+  let img_title_value;
   let t8;
   let input2;
   let input2_value_value;
   let t9;
+  let br;
+  let t10;
   let input3;
   let input3_value_value;
-  let t10;
   let t11;
-  let p1;
   let t12;
+  let p1;
+  let t13;
   let input4;
   let input4_value_value;
-  let t13;
+  let t14;
   let input5;
   let input5_value_value;
-  let t14;
   let t15;
-  let p2;
   let t16;
+  let p2;
+  let t17;
   let input6;
   let input6_value_value;
-  let t17;
+  let t18;
   let autocomplete0;
   let updating_selectedItem;
-  let t18;
   let t19;
-  let p3;
   let t20;
+  let p3;
+  let t21;
   let input7;
   let input7_value_value;
-  let t21;
+  let t22;
   let autocomplete1;
   let updating_selectedItem_1;
-  let t22;
+  let t23;
   let input8;
   let input8_value_value;
-  let t23;
+  let t24;
   let autocomplete2;
   let updating_selectedItem_2;
-  let t24;
+  let t25;
   let input9;
   let input9_value_value;
-  let t25;
+  let t26;
   let autocomplete3;
   let updating_selectedItem_3;
-  let t26;
   let t27;
-  let p4;
   let t28;
+  let p4;
+  let t29;
   let input10;
   let input10_value_value;
-  let t29;
+  let t30;
   let autocomplete4;
   let updating_selectedItem_4;
-  let t30;
+  let t31;
   let input11;
   let input11_value_value;
-  let t31;
+  let t32;
   let autocomplete5;
   let updating_selectedItem_5;
-  let t32;
+  let t33;
   let input12;
   let input12_value_value;
-  let t33;
+  let t34;
   let autocomplete6;
   let updating_selectedItem_6;
-  let t34;
   let t35;
-  let p5;
   let t36;
+  let p5;
+  let t37;
   let input13;
   let input13_value_value;
-  let t37;
+  let t38;
   let autocomplete7;
   let updating_selectedItem_7;
-  let t38;
+  let t39;
   let input14;
   let input14_value_value;
-  let t39;
+  let t40;
   let autocomplete8;
   let updating_selectedItem_8;
-  let t40;
   let t41;
-  let p6;
   let t42;
+  let p6;
+  let t43;
   let input15;
   let input15_value_value;
-  let t43;
+  let t44;
   let autocomplete9;
   let updating_selectedItem_9;
-  let t44;
+  let t45;
   let input16;
   let input16_value_value;
-  let t45;
+  let t46;
   let autocomplete10;
   let updating_selectedItem_10;
-  let t46;
   let t47;
-  let p7;
   let t48;
+  let p7;
+  let t49;
   let input17;
   let input17_value_value;
-  let t49;
+  let t50;
   let autocomplete11;
   let updating_selectedItem_11;
-  let t50;
   let t51;
+  let t52;
   let div5;
   let content1;
   let tabs;
   let current;
+  let mounted;
+  let dispose;
   function autocomplete0_selectedItem_binding(value) {
-    ctx[25](value);
+    ctx[26](value);
   }
   let autocomplete0_props = {
     placeholder: "Role",
     items: ctx[12],
     inputClassName: "medium",
-    onChange: ctx[24]
+    onChange: ctx[25]
   };
   if (ctx[1].data.role !== void 0) {
     autocomplete0_props.selectedItem = ctx[1].data.role;
@@ -4182,7 +4354,7 @@ function create_fragment5(ctx) {
   autocomplete0 = new simple_svelte_autocomplete_default({ props: autocomplete0_props });
   binding_callbacks.push(() => bind(autocomplete0, "selectedItem", autocomplete0_selectedItem_binding));
   function autocomplete1_selectedItem_binding(value) {
-    ctx[27](value);
+    ctx[28](value);
   }
   let autocomplete1_props = {
     items: ctx[2],
@@ -4191,7 +4363,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[13],
-    onChange: ctx[26]
+    onChange: ctx[27]
   };
   if (ctx[1].data.featurebody !== void 0) {
     autocomplete1_props.selectedItem = ctx[1].data.featurebody;
@@ -4199,7 +4371,7 @@ function create_fragment5(ctx) {
   autocomplete1 = new simple_svelte_autocomplete_default({ props: autocomplete1_props });
   binding_callbacks.push(() => bind(autocomplete1, "selectedItem", autocomplete1_selectedItem_binding));
   function autocomplete2_selectedItem_binding(value) {
-    ctx[29](value);
+    ctx[30](value);
   }
   let autocomplete2_props = {
     items: ctx[3],
@@ -4208,7 +4380,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[14],
-    onChange: ctx[28]
+    onChange: ctx[29]
   };
   if (ctx[1].data.featureface !== void 0) {
     autocomplete2_props.selectedItem = ctx[1].data.featureface;
@@ -4216,7 +4388,7 @@ function create_fragment5(ctx) {
   autocomplete2 = new simple_svelte_autocomplete_default({ props: autocomplete2_props });
   binding_callbacks.push(() => bind(autocomplete2, "selectedItem", autocomplete2_selectedItem_binding));
   function autocomplete3_selectedItem_binding(value) {
-    ctx[31](value);
+    ctx[32](value);
   }
   let autocomplete3_props = {
     items: ctx[4],
@@ -4225,7 +4397,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[15],
-    onChange: ctx[30]
+    onChange: ctx[31]
   };
   if (ctx[1].data.featurevibe !== void 0) {
     autocomplete3_props.selectedItem = ctx[1].data.featurevibe;
@@ -4233,7 +4405,7 @@ function create_fragment5(ctx) {
   autocomplete3 = new simple_svelte_autocomplete_default({ props: autocomplete3_props });
   binding_callbacks.push(() => bind(autocomplete3, "selectedItem", autocomplete3_selectedItem_binding));
   function autocomplete4_selectedItem_binding(value) {
-    ctx[33](value);
+    ctx[34](value);
   }
   let autocomplete4_props = {
     items: ctx[5],
@@ -4242,7 +4414,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[16],
-    onChange: ctx[32]
+    onChange: ctx[33]
   };
   if (ctx[1].data.style1 !== void 0) {
     autocomplete4_props.selectedItem = ctx[1].data.style1;
@@ -4250,7 +4422,7 @@ function create_fragment5(ctx) {
   autocomplete4 = new simple_svelte_autocomplete_default({ props: autocomplete4_props });
   binding_callbacks.push(() => bind(autocomplete4, "selectedItem", autocomplete4_selectedItem_binding));
   function autocomplete5_selectedItem_binding(value) {
-    ctx[35](value);
+    ctx[36](value);
   }
   let autocomplete5_props = {
     items: ctx[5],
@@ -4259,7 +4431,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[16],
-    onChange: ctx[34]
+    onChange: ctx[35]
   };
   if (ctx[1].data.style2 !== void 0) {
     autocomplete5_props.selectedItem = ctx[1].data.style2;
@@ -4267,7 +4439,7 @@ function create_fragment5(ctx) {
   autocomplete5 = new simple_svelte_autocomplete_default({ props: autocomplete5_props });
   binding_callbacks.push(() => bind(autocomplete5, "selectedItem", autocomplete5_selectedItem_binding));
   function autocomplete6_selectedItem_binding(value) {
-    ctx[37](value);
+    ctx[38](value);
   }
   let autocomplete6_props = {
     items: ctx[6],
@@ -4276,7 +4448,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[17],
-    onChange: ctx[36]
+    onChange: ctx[37]
   };
   if (ctx[1].data.style3 !== void 0) {
     autocomplete6_props.selectedItem = ctx[1].data.style3;
@@ -4284,7 +4456,7 @@ function create_fragment5(ctx) {
   autocomplete6 = new simple_svelte_autocomplete_default({ props: autocomplete6_props });
   binding_callbacks.push(() => bind(autocomplete6, "selectedItem", autocomplete6_selectedItem_binding));
   function autocomplete7_selectedItem_binding(value) {
-    ctx[39](value);
+    ctx[40](value);
   }
   let autocomplete7_props = {
     items: ctx[7],
@@ -4293,7 +4465,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[18],
-    onChange: ctx[38]
+    onChange: ctx[39]
   };
   if (ctx[1].data.home !== void 0) {
     autocomplete7_props.selectedItem = ctx[1].data.home;
@@ -4301,7 +4473,7 @@ function create_fragment5(ctx) {
   autocomplete7 = new simple_svelte_autocomplete_default({ props: autocomplete7_props });
   binding_callbacks.push(() => bind(autocomplete7, "selectedItem", autocomplete7_selectedItem_binding));
   function autocomplete8_selectedItem_binding(value) {
-    ctx[41](value);
+    ctx[42](value);
   }
   let autocomplete8_props = {
     items: ctx[10],
@@ -4310,7 +4482,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[21],
-    onChange: ctx[40]
+    onChange: ctx[41]
   };
   if (ctx[1].data.community !== void 0) {
     autocomplete8_props.selectedItem = ctx[1].data.community;
@@ -4318,7 +4490,7 @@ function create_fragment5(ctx) {
   autocomplete8 = new simple_svelte_autocomplete_default({ props: autocomplete8_props });
   binding_callbacks.push(() => bind(autocomplete8, "selectedItem", autocomplete8_selectedItem_binding));
   function autocomplete9_selectedItem_binding(value) {
-    ctx[43](value);
+    ctx[44](value);
   }
   let autocomplete9_props = {
     items: ctx[8],
@@ -4327,7 +4499,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[19],
-    onChange: ctx[42]
+    onChange: ctx[43]
   };
   if (ctx[1].data.ideal !== void 0) {
     autocomplete9_props.selectedItem = ctx[1].data.ideal;
@@ -4335,7 +4507,7 @@ function create_fragment5(ctx) {
   autocomplete9 = new simple_svelte_autocomplete_default({ props: autocomplete9_props });
   binding_callbacks.push(() => bind(autocomplete9, "selectedItem", autocomplete9_selectedItem_binding));
   function autocomplete10_selectedItem_binding(value) {
-    ctx[45](value);
+    ctx[46](value);
   }
   let autocomplete10_props = {
     items: ctx[9],
@@ -4344,7 +4516,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[20],
-    onChange: ctx[44]
+    onChange: ctx[45]
   };
   if (ctx[1].data.flaw !== void 0) {
     autocomplete10_props.selectedItem = ctx[1].data.flaw;
@@ -4352,7 +4524,7 @@ function create_fragment5(ctx) {
   autocomplete10 = new simple_svelte_autocomplete_default({ props: autocomplete10_props });
   binding_callbacks.push(() => bind(autocomplete10, "selectedItem", autocomplete10_selectedItem_binding));
   function autocomplete11_selectedItem_binding(value) {
-    ctx[47](value);
+    ctx[48](value);
   }
   let autocomplete11_props = {
     items: ctx[10],
@@ -4361,7 +4533,7 @@ function create_fragment5(ctx) {
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[21],
-    onChange: ctx[46]
+    onChange: ctx[47]
   };
   if (ctx[1].data.dream !== void 0) {
     autocomplete11_props.selectedItem = ctx[1].data.dream;
@@ -4392,85 +4564,88 @@ function create_fragment5(ctx) {
       div4 = element("div");
       content0 = element("content");
       p0 = element("p");
-      t8 = text("Hi, my name is ");
+      img = element("img");
+      t8 = text("\r\n                Hi, my name is\r\n                ");
       input2 = element("input");
-      t9 = text("\r\n                (");
+      t9 = space();
+      br = element("br");
+      t10 = text("(");
       input3 = element("input");
-      t10 = text(").");
-      t11 = space();
+      t11 = text(").");
+      t12 = space();
       p1 = element("p");
-      t12 = text("I'm ");
+      t13 = text("I'm ");
       input4 = element("input");
-      t13 = text("\r\n                years old and stand\r\n                ");
+      t14 = text("\r\n                years old and stand\r\n                ");
       input5 = element("input");
-      t14 = text(" tall.");
-      t15 = space();
+      t15 = text(" tall.");
+      t16 = space();
       p2 = element("p");
-      t16 = text("I'm the party's ");
+      t17 = text("I'm the party's ");
       input6 = element("input");
-      t17 = space();
+      t18 = space();
       create_component(autocomplete0.$$.fragment);
-      t18 = text(".");
-      t19 = space();
+      t19 = text(".");
+      t20 = space();
       p3 = element("p");
-      t20 = text("When people see me, they first notice my ");
+      t21 = text("When people see me, they first notice my ");
       input7 = element("input");
-      t21 = space();
+      t22 = space();
       create_component(autocomplete1.$$.fragment);
-      t22 = text("\r\n                ,\r\n                ");
+      t23 = text("\r\n                ,\r\n                ");
       input8 = element("input");
-      t23 = space();
+      t24 = space();
       create_component(autocomplete2.$$.fragment);
-      t24 = text(", and\r\n                ");
+      t25 = text(", and\r\n                ");
       input9 = element("input");
-      t25 = space();
+      t26 = space();
       create_component(autocomplete3.$$.fragment);
-      t26 = text("\r\n                .");
-      t27 = space();
+      t27 = text("\r\n                .");
+      t28 = space();
       p4 = element("p");
-      t28 = text("I wear ");
+      t29 = text("I wear ");
       input10 = element("input");
-      t29 = space();
+      t30 = space();
       create_component(autocomplete4.$$.fragment);
-      t30 = text("\r\n                ,\r\n                ");
+      t31 = text("\r\n                ,\r\n                ");
       input11 = element("input");
-      t31 = space();
+      t32 = space();
       create_component(autocomplete5.$$.fragment);
-      t32 = text("\r\n                , and move with\r\n                ");
+      t33 = text("\r\n                , and move with\r\n                ");
       input12 = element("input");
-      t33 = space();
+      t34 = space();
       create_component(autocomplete6.$$.fragment);
-      t34 = text("\r\n                .");
-      t35 = space();
+      t35 = text("\r\n                .");
+      t36 = space();
       p5 = element("p");
-      t36 = text("I'm from ");
+      t37 = text("I'm from ");
       input13 = element("input");
-      t37 = space();
+      t38 = space();
       create_component(autocomplete7.$$.fragment);
-      t38 = text("\r\n                where my people are known for\r\n                ");
+      t39 = text("\r\n                where my people are known for\r\n                ");
       input14 = element("input");
-      t39 = space();
+      t40 = space();
       create_component(autocomplete8.$$.fragment);
-      t40 = text("\r\n\r\n                .");
-      t41 = space();
+      t41 = text("\r\n\r\n                .");
+      t42 = space();
       p6 = element("p");
-      t42 = text("I believe in ");
+      t43 = text("I believe in ");
       input15 = element("input");
-      t43 = space();
+      t44 = space();
       create_component(autocomplete9.$$.fragment);
-      t44 = text("\r\n                , but my\r\n                ");
+      t45 = text("\r\n                , but my\r\n                ");
       input16 = element("input");
-      t45 = space();
+      t46 = space();
       create_component(autocomplete10.$$.fragment);
-      t46 = text("\r\n                side can get in the way.");
-      t47 = space();
+      t47 = text("\r\n                side can get in the way.");
+      t48 = space();
       p7 = element("p");
-      t48 = text("I dream of ");
+      t49 = text("I dream of ");
       input17 = element("input");
-      t49 = space();
+      t50 = space();
       create_component(autocomplete11.$$.fragment);
-      t50 = text("\r\n                .");
-      t51 = space();
+      t51 = text("\r\n                .");
+      t52 = space();
       div5 = element("div");
       content1 = element("content");
       create_component(tabs.$$.fragment);
@@ -4492,6 +4667,12 @@ function create_fragment5(ctx) {
       input1.value = input1_value_value = ctx[1].data.ap;
       attr(div2, "class", "actionpoints svelte-1p0tjqw");
       attr(div3, "class", "header flexrow svelte-1p0tjqw");
+      attr(img, "class", "profile svelte-1p0tjqw");
+      if (img.src !== (img_src_value = ctx[1].img))
+        attr(img, "src", img_src_value);
+      attr(img, "data-edit", "img");
+      attr(img, "title", img_title_value = ctx[1].name);
+      attr(img, "align", "left");
       attr(input2, "class", "long svelte-1p0tjqw");
       attr(input2, "name", "name");
       attr(input2, "type", "text");
@@ -4605,89 +4786,96 @@ function create_fragment5(ctx) {
       append(div6, div4);
       append(div4, content0);
       append(content0, p0);
+      append(p0, img);
       append(p0, t8);
       append(p0, input2);
       append(p0, t9);
-      append(p0, input3);
+      append(p0, br);
       append(p0, t10);
-      append(content0, t11);
+      append(p0, input3);
+      append(p0, t11);
+      append(content0, t12);
       append(content0, p1);
-      append(p1, t12);
-      append(p1, input4);
       append(p1, t13);
-      append(p1, input5);
+      append(p1, input4);
       append(p1, t14);
-      append(content0, t15);
+      append(p1, input5);
+      append(p1, t15);
+      append(content0, t16);
       append(content0, p2);
-      append(p2, t16);
-      append(p2, input6);
       append(p2, t17);
-      mount_component(autocomplete0, p2, null);
+      append(p2, input6);
       append(p2, t18);
-      append(content0, t19);
+      mount_component(autocomplete0, p2, null);
+      append(p2, t19);
+      append(content0, t20);
       append(content0, p3);
-      append(p3, t20);
-      append(p3, input7);
       append(p3, t21);
-      mount_component(autocomplete1, p3, null);
+      append(p3, input7);
       append(p3, t22);
-      append(p3, input8);
+      mount_component(autocomplete1, p3, null);
       append(p3, t23);
-      mount_component(autocomplete2, p3, null);
+      append(p3, input8);
       append(p3, t24);
-      append(p3, input9);
+      mount_component(autocomplete2, p3, null);
       append(p3, t25);
-      mount_component(autocomplete3, p3, null);
+      append(p3, input9);
       append(p3, t26);
-      append(content0, t27);
+      mount_component(autocomplete3, p3, null);
+      append(p3, t27);
+      append(content0, t28);
       append(content0, p4);
-      append(p4, t28);
-      append(p4, input10);
       append(p4, t29);
-      mount_component(autocomplete4, p4, null);
+      append(p4, input10);
       append(p4, t30);
-      append(p4, input11);
+      mount_component(autocomplete4, p4, null);
       append(p4, t31);
-      mount_component(autocomplete5, p4, null);
+      append(p4, input11);
       append(p4, t32);
-      append(p4, input12);
+      mount_component(autocomplete5, p4, null);
       append(p4, t33);
-      mount_component(autocomplete6, p4, null);
+      append(p4, input12);
       append(p4, t34);
-      append(content0, t35);
+      mount_component(autocomplete6, p4, null);
+      append(p4, t35);
+      append(content0, t36);
       append(content0, p5);
-      append(p5, t36);
-      append(p5, input13);
       append(p5, t37);
-      mount_component(autocomplete7, p5, null);
+      append(p5, input13);
       append(p5, t38);
-      append(p5, input14);
+      mount_component(autocomplete7, p5, null);
       append(p5, t39);
-      mount_component(autocomplete8, p5, null);
+      append(p5, input14);
       append(p5, t40);
-      append(content0, t41);
+      mount_component(autocomplete8, p5, null);
+      append(p5, t41);
+      append(content0, t42);
       append(content0, p6);
-      append(p6, t42);
-      append(p6, input15);
       append(p6, t43);
-      mount_component(autocomplete9, p6, null);
+      append(p6, input15);
       append(p6, t44);
-      append(p6, input16);
+      mount_component(autocomplete9, p6, null);
       append(p6, t45);
-      mount_component(autocomplete10, p6, null);
+      append(p6, input16);
       append(p6, t46);
-      append(content0, t47);
+      mount_component(autocomplete10, p6, null);
+      append(p6, t47);
+      append(content0, t48);
       append(content0, p7);
-      append(p7, t48);
-      append(p7, input17);
       append(p7, t49);
-      mount_component(autocomplete11, p7, null);
+      append(p7, input17);
       append(p7, t50);
-      append(div6, t51);
+      mount_component(autocomplete11, p7, null);
+      append(p7, t51);
+      append(div6, t52);
       append(div6, div5);
       append(div5, content1);
       mount_component(tabs, content1, null);
       current = true;
+      if (!mounted) {
+        dispose = listen(img, "click", ctx[23]);
+        mounted = true;
+      }
     },
     p(ctx2, dirty) {
       if (!current || dirty[0] & 2 && input0_value_value !== (input0_value_value = ctx2[1].data.hp)) {
@@ -4695,6 +4883,12 @@ function create_fragment5(ctx) {
       }
       if (!current || dirty[0] & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.ap)) {
         input1.value = input1_value_value;
+      }
+      if (!current || dirty[0] & 2 && img.src !== (img_src_value = ctx2[1].img)) {
+        attr(img, "src", img_src_value);
+      }
+      if (!current || dirty[0] & 2 && img_title_value !== (img_title_value = ctx2[1].name)) {
+        attr(img, "title", img_title_value);
       }
       if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].name) && input2.value !== input2_value_value) {
         input2.value = input2_value_value;
@@ -4905,11 +5099,13 @@ function create_fragment5(ctx) {
       destroy_component(autocomplete10);
       destroy_component(autocomplete11);
       destroy_component(tabs);
+      mounted = false;
+      dispose();
     }
   };
 }
-function instance3($$self, $$props, $$invalidate) {
-  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(23, $dataStore = $$value)), dataStore);
+function instance4($$self, $$props, $$invalidate) {
+  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(24, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
   $$subscribe_dataStore();
@@ -5202,7 +5398,7 @@ function instance3($$self, $$props, $$invalidate) {
     $$invalidate(10, dream);
     return newItem;
   }
-  let items = [
+  let items2 = [
     {
       label: "Inventory",
       value: 1,
@@ -5214,13 +5410,27 @@ function instance3($$self, $$props, $$invalidate) {
       component: QuestActorSheetAbilities_default
     }
   ];
+  const filePicker = (event) => {
+    const attr3 = event.currentTarget.dataset.edit;
+    const current = getProperty(data, attr3);
+    const fp = new FilePicker({
+      type: "image",
+      current,
+      callback: (path) => {
+        actor.update({ [attr3]: path });
+      },
+      top: sheet.position.top + 40,
+      left: sheet.position.left + 10
+    });
+    return fp.browse();
+  };
   const func = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete0_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.role, value)) {
       data.data.role = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_1 = (e) => {
@@ -5229,7 +5439,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete1_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.featurebody, value)) {
       data.data.featurebody = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_2 = (e) => {
@@ -5238,7 +5448,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete2_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.featureface, value)) {
       data.data.featureface = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_3 = (e) => {
@@ -5247,7 +5457,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete3_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.featurevibe, value)) {
       data.data.featurevibe = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_4 = (e) => {
@@ -5256,7 +5466,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete4_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.style1, value)) {
       data.data.style1 = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_5 = (e) => {
@@ -5265,7 +5475,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete5_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.style2, value)) {
       data.data.style2 = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_6 = (e) => {
@@ -5274,7 +5484,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete6_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.style3, value)) {
       data.data.style3 = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_7 = (e) => {
@@ -5283,7 +5493,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete7_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.home, value)) {
       data.data.home = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_8 = (e) => {
@@ -5292,7 +5502,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete8_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.community, value)) {
       data.data.community = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_9 = (e) => {
@@ -5301,7 +5511,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete9_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.ideal, value)) {
       data.data.ideal = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_10 = (e) => {
@@ -5310,7 +5520,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete10_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.flaw, value)) {
       data.data.flaw = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   const func_11 = (e) => {
@@ -5319,7 +5529,7 @@ function instance3($$self, $$props, $$invalidate) {
   function autocomplete11_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.dream, value)) {
       data.data.dream = value;
-      $$invalidate(1, data), $$invalidate(23, $dataStore);
+      $$invalidate(1, data), $$invalidate(24, $dataStore);
     }
   }
   $$self.$$set = ($$props2) => {
@@ -5327,7 +5537,7 @@ function instance3($$self, $$props, $$invalidate) {
       $$subscribe_dataStore($$invalidate(0, dataStore = $$props2.dataStore));
   };
   $$self.$$.update = () => {
-    if ($$self.$$.dirty[0] & 8388608) {
+    if ($$self.$$.dirty[0] & 16777216) {
       $:
         $$invalidate(1, data = $dataStore.data);
     }
@@ -5355,7 +5565,8 @@ function instance3($$self, $$props, $$invalidate) {
     handleCreateI,
     handleCreateF,
     handleCreateD,
-    items,
+    items2,
+    filePicker,
     $dataStore,
     func,
     autocomplete0_selectedItem_binding,
@@ -5386,11 +5597,11 @@ function instance3($$self, $$props, $$invalidate) {
 var QuestActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance3, create_fragment5, safe_not_equal, { dataStore: 0 }, [-1, -1]);
+    init(this, options, instance4, create_fragment5, safe_not_equal, { dataStore: 0 }, [-1, -1]);
   }
 };
 var QuestActorSheetBase_default = QuestActorSheetBase;
-require_2();
+require_3();
 
 // module/actor-sheet.js
 var QuestActorSheet = class extends ActorSheet {
@@ -5520,7 +5731,7 @@ var QuestActorSheet = class extends ActorSheet {
 };
 
 // module/svelte/QuestEditor.svelte
-require_3();
+require_4();
 
 // module/svelte/QuestNPCActorSheetBase.svelte
 function create_fragment6(ctx) {
@@ -5541,7 +5752,7 @@ function create_fragment6(ctx) {
     }
   };
 }
-function instance4($$self, $$props, $$invalidate) {
+function instance5($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(1, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
@@ -5557,7 +5768,7 @@ function instance4($$self, $$props, $$invalidate) {
 var QuestNPCActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance4, create_fragment6, safe_not_equal, { dataStore: 0 });
+    init(this, options, instance5, create_fragment6, safe_not_equal, { dataStore: 0 });
   }
 };
 var QuestNPCActorSheetBase_default = QuestNPCActorSheetBase;

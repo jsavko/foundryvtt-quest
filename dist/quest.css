@@ -33,6 +33,17 @@ li.active.svelte-8kv0mp > span.svelte-8kv0mp {
   background-color: #eeeeee;
 }
 
+/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css */
+ol.svelte-1cg6c8y {
+  padding-left: 30px;
+}
+li.svelte-1cg6c8y {
+  padding-left: 10px;
+  font-family: "Alegreya Sans", sans-serif;
+  font-weight: 700;
+  line-height: 2.5;
+}
+
 /* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
 content.svelte-1p0tjqw.svelte-1p0tjqw {
   font-size: 16px;
@@ -64,6 +75,14 @@ input.medium.svelte-1p0tjqw.svelte-1p0tjqw {
 input.short.svelte-1p0tjqw.svelte-1p0tjqw {
   width: 50px;
   text-align: center;
+}
+.profile.svelte-1p0tjqw.svelte-1p0tjqw {
+  flex: 0 1 150px;
+  max-width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  border: 1px solid #adb5bd;
+  margin-right: 0.5rem;
 }
 .inventory-abilities.svelte-1p0tjqw.svelte-1p0tjqw {
   flex: 1 1 0;
