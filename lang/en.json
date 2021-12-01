@@ -4,34 +4,34 @@
     "SETTINGS.QuestInitFormulaN": "Initiative Formula",
     "SETTINGS.QuestInitFormulaL": "Enter an initiative formula, such as d20+@dex",
 
-    "Quest.ItemCreate": "Create Item",
-    "Quest.ItemEdit": "Edit Item",
-    "Quest.ItemDelete": "Delete Item",
-    "Quest.ItemNew": "New Item",
+    "QUEST.ItemCreate": "Create Item",
+    "QUEST.ItemEdit": "Edit Item",
+    "QUEST.ItemDelete": "Delete Item",
+    "QUEST.ItemNew": "New Item",
 
-    "Quest.NotifyInitFormulaUpdated": "Initiative formula was updated to",
-    "Quest.NotifyInitFormulaInvalid": "Initiative formula was invalid",
-    "Quest.NotifyGroupDuplicate": "Attribute group already exists.",
-    "Quest.NotifyGroupAttrDuplicate": "Attribute group already exists as an attribute.",
-    "Quest.NotifyGroupAlphanumeric": "Attribute group names may not contain spaces or periods.",
-    "Quest.NotifyAttrDuplicate": "Attribute key already exists as a group.",
+    "QUEST.NotifyInitFormulaUpdated": "Initiative formula was updated to",
+    "QUEST.NotifyInitFormulaInvalid": "Initiative formula was invalid",
+    "QUEST.NotifyGroupDuplicate": "Attribute group already exists.",
+    "QUEST.NotifyGroupAttrDuplicate": "Attribute group already exists as an attribute.",
+    "QUEST.NotifyGroupAlphanumeric": "Attribute group names may not contain spaces or periods.",
+    "QUEST.NotifyAttrDuplicate": "Attribute key already exists as a group.",
 
-    "Quest.ResourceMin": "Min",
-    "Quest.ResourceValue": "Value",
-    "Quest.ResourceMax": "Max",
+    "QUEST.ResourceMin": "Min",
+    "QUEST.ResourceValue": "Value",
+    "QUEST.ResourceMax": "Max",
 
-    "Quest.DefineTemplate": "Define as Template",
-    "Quest.UnsetTemplate": "Unset Template",
-    "Quest.NoTemplate": "No Template",
+    "QUEST.DefineTemplate": "Define as Template",
+    "QUEST.UnsetTemplate": "Unset Template",
+    "QUEST.NoTemplate": "No Template",
 
-    "Quest.AttributeKey": "Attribute Key",
-    "Quest.AttributeValue": "Value",
-    "Quest.AttributeLabel": "Label",
-    "Quest.AttributeDtype": "Data Type",
+    "QUEST.AttributeKey": "Attribute Key",
+    "QUEST.AttributeValue": "Value",
+    "QUEST.AttributeLabel": "Label",
+    "QUEST.AttributeDtype": "Data Type",
 
-    "Quest.DeleteGroup": "Delete group?",
-    "Quest.DeleteGroupContent": "Do you wish to delete this group? This will delete the following group and all attributes included in it: ",
+    "QUEST.DeleteGroup": "Delete group?",
+    "QUEST.DeleteGroupContent": "Do you wish to delete this group? This will delete the following group and all attributes included in it: ",
 
-    "Quest.Create": "Create",
-    "Quest.New": "New"
+    "QUEST.Create": "Create",
+    "QUEST.New": "New"
 }

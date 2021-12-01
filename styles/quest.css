@@ -268,3 +268,37 @@
     font-family: "Alegreya Sans SC", sans-serif;
     font-family: "Ovo", serif;
 }
+
+.chat-card.generic-roll {
+    text-align: center;
+}
+.chat-card.generic-roll .card-header {
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 700;
+}
+.status {
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+.triumph {
+    color: #e99d36;
+    font-weight: 700;
+}
+.success {
+    color: #3d8f57;
+    font-weight: 700;
+}
+.tough-choice {
+    color: #454f4e;
+    font-weight: 700;
+}
+.catastrophe {
+    color: #f04828;
+    font-weight: 700;
+}
+.dice-total {
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.9rem;
+}

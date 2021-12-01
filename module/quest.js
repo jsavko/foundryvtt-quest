@@ -11,6 +11,7 @@ import { QuestActorSheet } from "./actor-sheet.js";
 import { QuestNPCActorSheet } from "./npcactor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { createQuestMacro } from "./macro.js";
+import { QuestRoll } from "./quest-roll.js";
 
 //import MouseCombatModal from "./mouse-combat-modal.js";
 
@@ -33,12 +34,15 @@ Hooks.once("init", async function () {
 
     game.quest = {
         QuestActor,
-        createQuestMacro
+        createQuestMacro,
+        QuestRoll
     };
 
     // Define custom Entity classes
     CONFIG.Actor.documentClass = QuestActor;
     CONFIG.Item.documentClass = QuestItem;
+
+    CONFIG.Dice.rolls.push(QuestRoll);
 
     CONFIG.Combat.initiative = {
         formula: "1d20",

@@ -1,7 +1,7 @@
 {
     "name": "quest",
     "version": "1.0.0",
-    "description": "CSS compiler for the MouseGuard system",
+    "description": "CSS compiler for the Quest system",
     "scripts": {
         "build": "gulp build",
         "css": "gulp css",

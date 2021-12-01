@@ -7,7 +7,7 @@ const esbuildSvelte = require("esbuild-svelte");
 /*  Compile LESS
 /* ----------------------------------------- */
 
-const MOUSEGUARD_LESS = ["styles/*.less"];
+const QUEST_LESS = ["styles/*.less"];
 function compileLESS() {
     return gulp
         .src("styles/simple.less")

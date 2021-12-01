@@ -154,7 +154,7 @@
         "a remote village",
         "afrontier town",
         "a lonely island",
-        "a capitalcity",
+        "a capital city",
         "a seastead",
         "a remote stronghold",
         "a traveling caravan",
@@ -163,7 +163,7 @@
         "a roadside inn",
         "a ship atsea",
         "a place I can't name",
-        "a subterraneancity",
+        "a subterranean city",
         "a forgotten nation",
         "a mountain town",
         "a city in the mist",
@@ -227,7 +227,7 @@
         "returning to my hometown as a renowned hero",
         "freeing myself from agang that wants me dead",
         "getting revengeon someone who wronged me",
-        "findinga corner of the world to make my own",
+        "finding a corner of the world to make my own",
         "publishing a book that's found in everyhome",
         "sparking an idea that transforms the world",
         "becoming the greatest scholarin my field",
@@ -244,7 +244,7 @@
         "becoming a notorious gambler",
         "making every stranger smile",
         "becoming a master artisan",
-        "dying anhonorable death",
+        "dying an honorable death",
         "mapping the entir eworld",
         "meeting the grim reaper",
         "pullingoff the big score",
@@ -257,6 +257,11 @@
     let selectedBody;
     let text = "New";
     let toCreateBody = "";
+    let edit = true;
+
+    if (data.data.dream == "") {
+        edit = true;
+    }
 
     function handleCreate(newItem) {
         toCreateBody = "Creating " + newItem;
@@ -382,13 +387,14 @@
                     on:click={filePicker}
                     class="profile"
                     src={data.img}
+                    alt={data.name}
                     data-edit="img"
                     title={data.name}
                     align="left"
                 />
                 Hi, my name is
                 <input
-                    class="long"
+                    class="name"
                     name="name"
                     type="text"
                     value={data.name}
@@ -403,21 +409,26 @@
                 />).
             </p>
             <p>
-                I'm <input
-                    class="short"
-                    name="data.age"
-                    type="number"
-                    value={data.data.age}
-                    placeholder="Age"
-                />
-                years old and stand
-                <input
-                    class="medium"
-                    name="data.height"
-                    type="text"
-                    value={data.data.height}
-                    placeholder="Height"
-                /> tall.
+                I'm {#if !!edit}
+                    <input
+                        class="short"
+                        name="data.age"
+                        type="number"
+                        value={data.data.age}
+                        placeholder="Age"
+                    />
+                {:else}<strong>{data.data.age}</strong>{/if}. years old and
+                stand
+                {#if !!edit}
+                    <input
+                        class="medium"
+                        name="data.height"
+                        type="text"
+                        value={data.data.height}
+                        placeholder="Height"
+                    />
+                {:else}<strong>{data.data.height}</strong>{/if}
+                tall.
             </p>
             <p>
                 I'm the party's <input
@@ -427,37 +438,45 @@
                     value={data.data.role}
                     placeholder="Role"
                 />
-                <AutoComplete
-                    placeholder="Role"
-                    items={roles}
-                    inputClassName="medium"
-                    bind:selectedItem={data.data.role}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />.
+                {#if !!edit}
+                    <AutoComplete
+                        placeholder="Role"
+                        items={roles}
+                        inputClassName="dotted medium"
+                        bind:selectedItem={data.data.role}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />
+                {:else}
+                    <strong>{data.data.role}</strong>
+                {/if}.
             </p>
             <p>
                 When people see me, they first notice my <input
                     class="long"
                     name="data.featurebody"
                     type="hidden"
+                    x
                     value={data.data.featurebody}
                     placeholder="Body"
                 />
-                <AutoComplete
-                    items={featurebody}
-                    placeholder="Body"
-                    inputClassName="long"
-                    bind:selectedItem={data.data.featurebody}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreate}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                ,
+                {#if !!edit}
+                    <AutoComplete
+                        items={featurebody}
+                        placeholder="Body"
+                        inputClassName="dotted long"
+                        bind:selectedItem={data.data.featurebody}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreate}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />
+                {:else}
+                    <strong>{data.data.featurebody}</strong>
+                {/if},
                 <input
                     class="long"
                     name="data.featureface"
@@ -465,18 +484,20 @@
                     value={data.data.featureface}
                     placeholder="Face"
                 />
-                <AutoComplete
-                    items={featureface}
-                    placeholder="Face"
-                    inputClassName="long"
-                    bind:selectedItem={data.data.featureface}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreatef2}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />, and
+                {#if !!edit}
+                    <AutoComplete
+                        items={featureface}
+                        placeholder="Face"
+                        inputClassName="dotted long"
+                        bind:selectedItem={data.data.featureface}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreatef2}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}
+                    <strong>{data.data.featureface}</strong>{/if}, and
                 <input
                     class="long"
                     name="data.featurevibe"
@@ -484,19 +505,19 @@
                     value={data.data.featurevibe}
                     placeholder="Vibe"
                 />
-                <AutoComplete
-                    items={featurevibe}
-                    inputClassName="long"
-                    placeholder="Vibe"
-                    bind:selectedItem={data.data.featurevibe}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreatef3}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                .
+                {#if !!edit}<AutoComplete
+                        items={featurevibe}
+                        inputClassName="dotted long"
+                        placeholder="Vibe"
+                        bind:selectedItem={data.data.featurevibe}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreatef3}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}
+                    <strong>{data.data.featurevibe}</strong>{/if}.
             </p>
             <p>
                 I wear <input
@@ -506,18 +527,18 @@
                     value={data.data.style1}
                     placeholder="Outfit"
                 />
-                <AutoComplete
-                    items={styleoutfit}
-                    placeholder="Outfit"
-                    inputClassName="long"
-                    bind:selectedItem={data.data.style1}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreates1}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={styleoutfit}
+                        placeholder="Outfit"
+                        inputClassName="dotted long"
+                        bind:selectedItem={data.data.style1}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreates1}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.style1}</strong>{/if}
                 ,
                 <input
                     class="long"
@@ -526,18 +547,18 @@
                     value={data.data.style2}
                     placeholder="Outfit"
                 />
-                <AutoComplete
-                    items={styleoutfit}
-                    placeholder="Outfit"
-                    inputClassName="long"
-                    bind:selectedItem={data.data.style2}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreates1}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={styleoutfit}
+                        placeholder="Outfit"
+                        inputClassName="dotted long"
+                        bind:selectedItem={data.data.style2}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreates1}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.style2}</strong>{/if}
                 , and move with
                 <input
                     class="long"
@@ -546,18 +567,18 @@
                     value={data.data.style3}
                     placeholder="Movement"
                 />
-                <AutoComplete
-                    items={stylemovement}
-                    inputClassName="long"
-                    placeholder="Movement"
-                    bind:selectedItem={data.data.style3}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreates2}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={stylemovement}
+                        inputClassName="dotted long"
+                        placeholder="Movement"
+                        bind:selectedItem={data.data.style3}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreates2}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.style3}</strong>{/if}
                 .
             </p>
             <p>
@@ -568,18 +589,19 @@
                     value={data.data.home}
                     placeholder="My Home"
                 />
-                <AutoComplete
-                    items={homeland}
-                    inputClassName="long"
-                    placeholder="My Home"
-                    bind:selectedItem={data.data.home}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateh1}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={homeland}
+                        inputClassName="dotted long"
+                        placeholder="My Home"
+                        bind:selectedItem={data.data.home}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreateh1}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}
+                    <strong>{data.data.home}</strong>{/if}
                 where my people are known for
                 <input
                     class="long"
@@ -588,20 +610,19 @@
                     value={data.data.community}
                     placeholder=""
                 />
-                <AutoComplete
-                    items={dream}
-                    className="verylong"
-                    placeholder="Legacy"
-                    bind:selectedItem={data.data.community}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateD}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-
-                .
+                {#if !!edit}<AutoComplete
+                        items={legacy}
+                        className="verylong"
+                        inputClassName="dotted"
+                        placeholder="Legacy"
+                        bind:selectedItem={data.data.community}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreateD}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.community}</strong>{/if}.
             </p>
             <p>
                 I believe in <input
@@ -611,18 +632,18 @@
                     value={data.data.ideal}
                     placeholder="my ideal"
                 />
-                <AutoComplete
-                    items={ideal}
-                    placeholder="Ideal"
-                    inputClassName="long"
-                    bind:selectedItem={data.data.ideal}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateI}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={ideal}
+                        placeholder="Ideal"
+                        inputClassName="dotted long"
+                        bind:selectedItem={data.data.ideal}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreateI}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.ideal}</strong>{/if}
                 , but my
                 <input
                     class="long"
@@ -631,18 +652,18 @@
                     value={data.data.flaw}
                     placeholder="flaw"
                 />
-                <AutoComplete
-                    items={flaw}
-                    inputClassName="long"
-                    placeholder="Flaw"
-                    bind:selectedItem={data.data.flaw}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateF}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={flaw}
+                        inputClassName="dotted long"
+                        placeholder="Flaw"
+                        bind:selectedItem={data.data.flaw}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreateF}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.flaw}</strong>{/if}
                 side can get in the way.
             </p>
             <p>
@@ -653,18 +674,19 @@
                     value={data.data.dream}
                     placeholder="my dream"
                 />
-                <AutoComplete
-                    items={dream}
-                    className="verylong"
-                    placeholder="My Dream"
-                    bind:selectedItem={data.data.dream}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateD}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
+                {#if !!edit}<AutoComplete
+                        items={dream}
+                        className="verylong"
+                        inputClassName="dotted"
+                        placeholder="My Dream"
+                        bind:selectedItem={data.data.dream}
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreateD}
+                        onChange={(e) => {
+                            sheet?._onSubmit(new Event("submit"));
+                        }}
+                    />{:else}<strong>{data.data.dream}</strong>{/if}
                 .
             </p>
         </content>
@@ -675,11 +697,28 @@
 </div>
 
 <style>
+    input {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px dashed black;
+        border-radius: 0em;
+        background: rgba(0, 0, 0, 0.03);
+    }
+    :global(.dotted) {
+        border-top: none !important ;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: 1px dashed black !important;
+        border-radius: 0em !important;
+        background: rgba(0, 0, 0, 0.03) !important;
+    }
     content {
         font-size: 16px;
     }
     content p {
         padding: 5px 11px;
+        line-height: 2;
     }
 
     content input {
@@ -706,6 +745,11 @@
     input.long {
         width: 300px;
     }
+
+    input.name {
+        width: 200px;
+    }
+
     input.medium {
         width: 100px;
         text-align: center;

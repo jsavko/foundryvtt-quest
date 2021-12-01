@@ -66,7 +66,7 @@ export class QuestNPCActorSheet extends ActorSheet {
                 const cls = getDocumentClass("Item");
                 return cls.create(
                     {
-                        name: game.i18n.localize("MOUSEGUARD.ItemNew"),
+                        name: game.i18n.localize("QUEST.ItemNew"),
                         type: "item"
                     },
                     { parent: this.actor }

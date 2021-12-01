@@ -8,26 +8,46 @@
     let data;
     let abilities;
     $: data = $sheetData.data;
+    $: items = $sheetData.data.data.itemTypes.item;
 </script>
 
 <ol>
     {#each { length: 12 } as _, i}
         {#if !!items[i]}
             <li>
-                {items[i].data.name}
-                <a
-                    on:click={(e) =>
-                        // sheet.delete.id
-                        {
-                            sheet?._onItemDelete(items[i].data._id);
-                        }}>[delete]</a
-                >
+                <div class="flex">
+                    {items[i].data.name}
+                    <div class="flex medium">
+                        <a
+                            on:click={(e) =>
+                                // sheet.delete.id
+                                {
+                                    sheet?._onItemEdit(items[i].data._id);
+                                }}><i class="fas fa-pen" /></a
+                        >
+
+                        <a
+                            on:click={(e) =>
+                                // sheet.delete.id
+                                {
+                                    sheet?._onItemDelete(items[i].data._id);
+                                }}><i class="fas fa-trash" /></a
+                        >
+                    </div>
+                </div>
             </li>
         {:else}
             <li />
         {/if}
     {/each}
-    <li>Add Item</li>
+    <li style="list-style-type: none; text-align:right;">
+        <a
+            on:click={sheet?._onItemCreate.bind(sheet)}
+            class="item-control item-create"
+            title="Create item"
+            data-type="item"><i class="fas fa-plus" /></a
+        >
+    </li>
 </ol>
 
 <style>
@@ -36,8 +56,26 @@
     }
     li {
         padding-left: 10px;
+        padding-right: 10px;
         font-family: "Alegreya Sans", sans-serif;
         font-weight: 700;
         line-height: 2.5;
+    }
+    .flex {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .medium {
+        width: 40px;
+    }
+
+    li i {
+        opacity: 66%;
+    }
+    li i:hover {
+        opacity: 100%;
     }
 </style>

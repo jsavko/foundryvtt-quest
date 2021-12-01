@@ -15,7 +15,7 @@ export class QuestActorSheet extends ActorSheet {
             classes: ["quest", "sheet", "actor"],
             template: "systems/quest/templates/actor-sheetv2.html",
             width: 850,
-            height: 690,
+            height: 740,
             tabs: []
         });
     }
@@ -65,7 +65,7 @@ export class QuestActorSheet extends ActorSheet {
                 const cls = getDocumentClass("Item");
                 return cls.create(
                     {
-                        name: game.i18n.localize("MOUSEGUARD.ItemNew"),
+                        name: "New Item",
                         type: "item"
                     },
                     { parent: this.actor }
@@ -116,6 +116,11 @@ export class QuestActorSheet extends ActorSheet {
         //console.log(this.actor)
     }
 
+    async _onItemEdit(itemId) {
+        const item = this.actor.items.get(itemId);
+        return item.sheet.render(true);
+    }
+
     async _onItemDelete(itemId) {
         const item = this.actor.items.get(itemId);
         item.delete();
@@ -142,11 +147,38 @@ export class QuestActorSheet extends ActorSheet {
         delete itemData.data["type"];
         // Finally, create the item!
         //console.log(itemData);
+
+        if (type == "item" && Object(this.actor.itemTypes.item).length >= 12) {
+            ui.notifications.error(
+                this.actor.name + " can not carry another item."
+            );
+            return false;
+        }
         return await Item.create(itemData, { parent: this.actor }).then(
             (item) => {
                 item.sheet.render(true);
             }
         );
+    }
+
+    async _onDropItem(event, data) {
+        if (!this.actor.isOwner) return false;
+        const item = await Item.implementation.fromDropData(data);
+        const itemData = item.toObject();
+
+        // Handle item sorting within the same Actor
+        const actor = this.actor;
+        let sameActor =
+            data.actorId === actor.id ||
+            (actor.isToken && data.tokenId === actor.token.id);
+        if (sameActor) return this._onSortItem(event, itemData);
+
+        if (Object(actor.itemTypes.item).length >= 12) {
+            ui.notifications.error(actor.name + " can not carry another item.");
+        } else {
+            // Create the owned item
+            return this._onDropItemCreate(itemData);
+        }
     }
 
     render(force = false, options = {}) {

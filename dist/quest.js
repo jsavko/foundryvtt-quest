@@ -1,5 +1,11 @@
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
 };
 
 // fakecss:D:/FoundryData/Data/systems/quest/module/svelte/Tabs.esbuild-svelte-fake-css
@@ -108,7 +114,7 @@ var EntitySheetHelper = class {
         let groups = document.querySelectorAll(".group-key");
         for (let i = 0; i < groups.length; i++) {
           if (groups[i].value === val) {
-            ui.notifications.error(game.i18n.localize("MOUSEGUARD.NotifyAttrDuplicate") + ` (${val})`);
+            ui.notifications.error(game.i18n.localize("QUEST.NotifyAttrDuplicate") + ` (${val})`);
             el.value = oldVal;
             attrError = true;
             break;
@@ -149,7 +155,7 @@ var EntitySheetHelper = class {
     const button = event.currentTarget;
     const label = button.closest(".attribute").querySelector(".attribute-label")?.value;
     const chatLabel = label ?? button.parentElement.querySelector(".attribute-key").value;
-    const shorthand = game.settings.get("mouseguard", "macroShorthand");
+    const shorthand = game.settings.get("quest", "macroShorthand");
     const rollData = this.actor.getRollData();
     let formula = button.closest(".attribute").querySelector(".attribute-value")?.value;
     if (formula) {
@@ -167,9 +173,9 @@ var EntitySheetHelper = class {
       });
     }
   }
-  static getAttributeHtml(items2, index, group = false) {
+  static getAttributeHtml(items, index, group = false) {
     let result = '<div style="display: none;">';
-    for (let [key, item2] of Object.entries(items2)) {
+    for (let [key, item2] of Object.entries(items)) {
       result = result + `<input type="${item2.type}" name="data.attributes${group ? "." + group : ""}.attr${index}.${key}" value="${item2.value}"/>`;
     }
     return result + "</div>";
@@ -178,15 +184,15 @@ var EntitySheetHelper = class {
     let groups = Object.keys(document2.data.data.groups || {});
     let attributes = Object.keys(document2.data.data.attributes).filter((a) => !groups.includes(a));
     if (groups.includes(groupName)) {
-      ui.notifications.error(game.i18n.localize("MOUSEGUARD.NotifyGroupDuplicate") + ` (${groupName})`);
+      ui.notifications.error(game.i18n.localize("QUEST.NotifyGroupDuplicate") + ` (${groupName})`);
       return false;
     }
     if (attributes.includes(groupName)) {
-      ui.notifications.error(game.i18n.localize("MOUSEGUARD.NotifyGroupAttrDuplicate") + ` (${groupName})`);
+      ui.notifications.error(game.i18n.localize("QUEST.NotifyGroupAttrDuplicate") + ` (${groupName})`);
       return false;
     }
     if (groupName.match(/[\s|\.]/i)) {
-      ui.notifications.error(game.i18n.localize("MOUSEGUARD.NotifyGroupAlphanumeric"));
+      ui.notifications.error(game.i18n.localize("QUEST.NotifyGroupAlphanumeric"));
       return false;
     }
     return true;
@@ -270,8 +276,8 @@ var EntitySheetHelper = class {
     let groupContainer = groupHeader.closest(".group");
     let group = $(groupHeader).find(".group-key");
     new Dialog({
-      title: game.i18n.localize("MOUSEGUARD.DeleteGroup"),
-      content: `${game.i18n.localize("MOUSEGUARD.DeleteGroupContent")} <strong>${group.val()}</strong>`,
+      title: game.i18n.localize("QUEST.DeleteGroup"),
+      content: `${game.i18n.localize("QUEST.DeleteGroupContent")} <strong>${group.val()}</strong>`,
       buttons: {
         confirm: {
           icon: '<i class="fas fa-trash"></i>',
@@ -367,10 +373,10 @@ var EntitySheetHelper = class {
     const label = game.i18n.localize(this.metadata.label);
     const title = game.i18n.format("ENTITY.Create", { entity: label });
     const collection = game.collections.get(this.documentName);
-    const templates = collection.filter((a) => a.getFlag("mouseguard", "isTemplate"));
+    const templates = collection.filter((a) => a.getFlag("quest", "isTemplate"));
     const defaultType = this.metadata.types[0];
     const types = {
-      [defaultType]: game.i18n.localize("MOUSEGUARD.NoTemplate")
+      [defaultType]: game.i18n.localize("QUEST.NoTemplate")
     };
     for (let a of templates) {
       types[a.id] = a.name;
@@ -396,7 +402,7 @@ var EntitySheetHelper = class {
         if (template) {
           createData = foundry.utils.mergeObject(template.toObject(), createData);
           createData.type = template.data.type;
-          delete createData.flags.mouseguard.isTemplate;
+          delete createData.flags.quest.isTemplate;
         }
         createData = foundry.utils.mergeObject(createData, data);
         return this.create(createData, { renderSheet: true });
@@ -776,6 +782,9 @@ function set_data(text3, data) {
   data = "" + data;
   if (text3.wholeText !== data)
     text3.data = data;
+}
+function set_style(node, key, value, important) {
+  node.style.setProperty(key, value, important ? "important" : "");
 }
 var active_docs = new Set();
 var current_component;
@@ -2754,7 +2763,7 @@ function instance($$self, $$props, $$invalidate) {
   let showList;
   let clearable;
   let { $$slots: slots = {}, $$scope } = $$props;
-  let { items: items2 = [] } = $$props;
+  let { items = [] } = $$props;
   let { searchFunction = false } = $$props;
   let { labelFieldName = void 0 } = $$props;
   let { keywordsFieldName = labelFieldName } = $$props;
@@ -2870,16 +2879,16 @@ function instance($$self, $$props, $$invalidate) {
       timerId = `Autocomplete prepare list ${inputId ? `(id: ${inputId})` : ""}`;
       console.time(timerId);
       console.log("Prepare items to search");
-      console.log("items: " + JSON.stringify(items2));
+      console.log("items: " + JSON.stringify(items));
     }
-    if (!Array.isArray(items2)) {
-      console.warn("Autocomplete items / search function did not return array but", items2);
-      $$invalidate(0, items2 = []);
+    if (!Array.isArray(items)) {
+      console.warn("Autocomplete items / search function did not return array but", items);
+      $$invalidate(0, items = []);
     }
-    const length = items2 ? items2.length : 0;
+    const length = items ? items.length : 0;
     listItems = new Array(length);
     if (length > 0) {
-      items2.forEach((item2, i) => {
+      items.forEach((item2, i) => {
         const listItem = getListItem(item2);
         if (listItem == void 0) {
           console.log("Undefined item for: ", item2);
@@ -2933,7 +2942,7 @@ function instance($$self, $$props, $$invalidate) {
     const textFiltered = prepareUserEnteredText(text3);
     if (textFiltered === "") {
       if (searchFunction) {
-        $$invalidate(0, items2 = []);
+        $$invalidate(0, items = []);
         if (debug) {
           console.log("User entered text is empty clear list of items");
         }
@@ -2961,15 +2970,15 @@ function instance($$self, $$props, $$invalidate) {
             return false;
           }
           if (currentRequestId > lastResponseId) {
-            $$invalidate(0, items2 = []);
+            $$invalidate(0, items = []);
           }
           lastResponseId = currentRequestId;
-          $$invalidate(0, items2 = [...items2, ...chunk]);
+          $$invalidate(0, items = [...items, ...chunk]);
           processListItems(textFiltered);
         }
         if (lastResponseId < currentRequestId) {
           lastResponseId = currentRequestId;
-          $$invalidate(0, items2 = []);
+          $$invalidate(0, items = []);
           processListItems(textFiltered);
         }
       } else {
@@ -2978,7 +2987,7 @@ function instance($$self, $$props, $$invalidate) {
           return false;
         }
         lastResponseId = currentRequestId;
-        $$invalidate(0, items2 = result);
+        $$invalidate(0, items = result);
         processListItems(textFiltered);
       }
       $$invalidate(30, loading = false);
@@ -3260,13 +3269,13 @@ function instance($$self, $$props, $$invalidate) {
       }
     }
   }
-  function findItemIndex(item2, items3) {
+  function findItemIndex(item2, items2) {
     if (debug) {
       console.log("Finding index for item", item2);
     }
     let index = -1;
-    for (let i = 0; i < items3.length; i++) {
-      const listItem = items3[i];
+    for (let i = 0; i < items2.length; i++) {
+      const listItem = items2[i];
       if (typeof listItem === "undefined") {
         if (debug) {
           console.log(`listItem ${i} is undefined. Skipping.`);
@@ -3408,7 +3417,7 @@ function instance($$self, $$props, $$invalidate) {
   }
   $$self.$$set = ($$props2) => {
     if ("items" in $$props2)
-      $$invalidate(0, items2 = $$props2.items);
+      $$invalidate(0, items = $$props2.items);
     if ("searchFunction" in $$props2)
       $$invalidate(48, searchFunction = $$props2.searchFunction);
     if ("labelFieldName" in $$props2)
@@ -3523,14 +3532,14 @@ function instance($$self, $$props, $$invalidate) {
       $$invalidate(47, highlightedItem = filteredListItems && highlightIndex && highlightIndex >= 0 && highlightIndex < filteredListItems.length ? filteredListItems[highlightIndex].item : null);
     }
     if ($$self.$$.dirty[0] & 1 | $$self.$$.dirty[2] & 6144) {
-      $$invalidate(31, showList = opened && (items2 && items2.length > 0 || filteredTextLength > 0));
+      $$invalidate(31, showList = opened && (items && items.length > 0 || filteredTextLength > 0));
     }
     if ($$self.$$.dirty[0] & 322 | $$self.$$.dirty[2] & 256) {
       $$invalidate(32, clearable = showClear || (lock || multiple) && selectedItem);
     }
   };
   return [
-    items2,
+    items,
     selectedItem,
     value,
     text3,
@@ -3974,16 +3983,16 @@ function create_fragment2(ctx) {
   };
 }
 function instance2($$self, $$props, $$invalidate) {
-  let { items: items2 = [] } = $$props;
+  let { items = [] } = $$props;
   let { activeTabValue = 1 } = $$props;
   const handleClick = (tabValue) => () => $$invalidate(0, activeTabValue = tabValue);
   $$self.$$set = ($$props2) => {
     if ("items" in $$props2)
-      $$invalidate(1, items2 = $$props2.items);
+      $$invalidate(1, items = $$props2.items);
     if ("activeTabValue" in $$props2)
       $$invalidate(0, activeTabValue = $$props2.activeTabValue);
   };
-  return [activeTabValue, items2, handleClick];
+  return [activeTabValue, items, handleClick];
 }
 var Tabs = class extends SvelteComponent {
   constructor(options) {
@@ -3997,8 +4006,8 @@ require_();
 // module/svelte/QuestActorSheetInventory.svelte
 function get_each_context3(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[7] = list[i];
-  child_ctx[9] = i;
+  child_ctx[9] = list[i];
+  child_ctx[11] = i;
   return child_ctx;
 }
 function create_else_block2(ctx) {
@@ -4006,7 +4015,7 @@ function create_else_block2(ctx) {
   return {
     c() {
       li = element("li");
-      attr(li, "class", "svelte-1cg6c8y");
+      attr(li, "class", "svelte-gddmne");
     },
     m(target, anchor) {
       insert(target, li, anchor);
@@ -4020,49 +4029,69 @@ function create_else_block2(ctx) {
 }
 function create_if_block3(ctx) {
   let li;
-  let t0_value = items[ctx[9]].data.name + "";
+  let div1;
+  let t0_value = ctx[0][ctx[11]].data.name + "";
   let t0;
   let t1;
-  let a;
+  let div0;
+  let a0;
+  let t2;
+  let a1;
   let mounted;
   let dispose;
   function click_handler(...args) {
-    return ctx[3](ctx[9], ...args);
+    return ctx[4](ctx[11], ...args);
+  }
+  function click_handler_1(...args) {
+    return ctx[5](ctx[11], ...args);
   }
   return {
     c() {
       li = element("li");
+      div1 = element("div");
       t0 = text(t0_value);
       t1 = space();
-      a = element("a");
-      a.textContent = "[delete]";
-      attr(li, "class", "svelte-1cg6c8y");
+      div0 = element("div");
+      a0 = element("a");
+      a0.innerHTML = `<i class="fas fa-pen svelte-gddmne"></i>`;
+      t2 = space();
+      a1 = element("a");
+      a1.innerHTML = `<i class="fas fa-trash svelte-gddmne"></i>`;
+      attr(div0, "class", "flex medium svelte-gddmne");
+      attr(div1, "class", "flex svelte-gddmne");
+      attr(li, "class", "svelte-gddmne");
     },
     m(target, anchor) {
       insert(target, li, anchor);
-      append(li, t0);
-      append(li, t1);
-      append(li, a);
+      append(li, div1);
+      append(div1, t0);
+      append(div1, t1);
+      append(div1, div0);
+      append(div0, a0);
+      append(div0, t2);
+      append(div0, a1);
       if (!mounted) {
-        dispose = listen(a, "click", click_handler);
+        dispose = [listen(a0, "click", click_handler), listen(a1, "click", click_handler_1)];
         mounted = true;
       }
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
+      if (dirty & 1 && t0_value !== (t0_value = ctx[0][ctx[11]].data.name + ""))
+        set_data(t0, t0_value);
     },
     d(detaching) {
       if (detaching)
         detach(li);
       mounted = false;
-      dispose();
+      run_all(dispose);
     }
   };
 }
 function create_each_block3(ctx) {
   let if_block_anchor;
   function select_block_type(ctx2, dirty) {
-    if (!!items[ctx2[9]])
+    if (!!ctx2[0][ctx2[11]])
       return create_if_block3;
     return create_else_block2;
   }
@@ -4078,7 +4107,16 @@ function create_each_block3(ctx) {
       insert(target, if_block_anchor, anchor);
     },
     p(ctx2, dirty) {
-      if_block.p(ctx2, dirty);
+      if (current_block_type === (current_block_type = select_block_type(ctx2, dirty)) && if_block) {
+        if_block.p(ctx2, dirty);
+      } else {
+        if_block.d(1);
+        if_block = current_block_type(ctx2);
+        if (if_block) {
+          if_block.c();
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+        }
+      }
     },
     d(detaching) {
       if_block.d(detaching);
@@ -4089,8 +4127,11 @@ function create_each_block3(ctx) {
 }
 function create_fragment3(ctx) {
   let ol;
-  let t0;
+  let t;
   let li;
+  let a;
+  let mounted;
+  let dispose;
   let each_value = { length: 12 };
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
@@ -4102,22 +4143,33 @@ function create_fragment3(ctx) {
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
-      t0 = space();
+      t = space();
       li = element("li");
-      li.textContent = "Add Item";
-      attr(li, "class", "svelte-1cg6c8y");
-      attr(ol, "class", "svelte-1cg6c8y");
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-plus svelte-gddmne"></i>`;
+      attr(a, "class", "item-control item-create");
+      attr(a, "title", "Create item");
+      attr(a, "data-type", "item");
+      set_style(li, "list-style-type", "none");
+      set_style(li, "text-align", "right");
+      attr(li, "class", "svelte-gddmne");
+      attr(ol, "class", "svelte-gddmne");
     },
     m(target, anchor) {
       insert(target, ol, anchor);
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].m(ol, null);
       }
-      append(ol, t0);
+      append(ol, t);
       append(ol, li);
+      append(li, a);
+      if (!mounted) {
+        dispose = listen(a, "click", ctx[2]?._onItemCreate.bind(ctx[2]));
+        mounted = true;
+      }
     },
     p(ctx2, [dirty]) {
-      if (dirty & 2) {
+      if (dirty & 5) {
         each_value = { length: 12 };
         let i;
         for (i = 0; i < each_value.length; i += 1) {
@@ -4127,7 +4179,7 @@ function create_fragment3(ctx) {
           } else {
             each_blocks[i] = create_each_block3(child_ctx);
             each_blocks[i].c();
-            each_blocks[i].m(ol, t0);
+            each_blocks[i].m(ol, t);
           }
         }
         for (; i < each_blocks.length; i += 1) {
@@ -4142,26 +4194,36 @@ function create_fragment3(ctx) {
       if (detaching)
         detach(ol);
       destroy_each(each_blocks, detaching);
+      mounted = false;
+      dispose();
     }
   };
 }
 function instance3($$self, $$props, $$invalidate) {
+  let items;
   let $sheetData;
   let sheetData = getContext("sheetStore");
-  component_subscribe($$self, sheetData, (value) => $$invalidate(2, $sheetData = value));
+  component_subscribe($$self, sheetData, (value) => $$invalidate(3, $sheetData = value));
   let { actor, sheet } = $sheetData;
   let data;
   let abilities;
   const click_handler = (i, e) => {
+    sheet?._onItemEdit(items[i].data._id);
+  };
+  const click_handler_1 = (i, e) => {
     sheet?._onItemDelete(items[i].data._id);
   };
   $$self.$$.update = () => {
-    if ($$self.$$.dirty & 4) {
+    if ($$self.$$.dirty & 8) {
       $:
         data = $sheetData.data;
     }
+    if ($$self.$$.dirty & 8) {
+      $:
+        $$invalidate(0, items = $sheetData.data.data.itemTypes.item);
+    }
   };
-  return [sheetData, sheet, $sheetData, click_handler];
+  return [items, sheetData, sheet, $sheetData, click_handler, click_handler_1];
 }
 var QuestActorSheetInventory = class extends SvelteComponent {
   constructor(options) {
@@ -4200,6 +4262,1086 @@ var QuestActorSheetAbilities = class extends SvelteComponent {
 var QuestActorSheetAbilities_default = QuestActorSheetAbilities;
 
 // module/svelte/QuestActorSheetBase.svelte
+function create_else_block_13(ctx) {
+  let strong;
+  let t_value = ctx[1].data.age + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.age + ""))
+        set_data(t, t_value);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_13(ctx) {
+  let input;
+  let input_value_value;
+  let t;
+  return {
+    c() {
+      input = element("input");
+      t = space();
+      attr(input, "class", "short svelte-bzv5hr");
+      attr(input, "name", "data.age");
+      attr(input, "type", "number");
+      input.value = input_value_value = ctx[1].data.age;
+      attr(input, "placeholder", "Age");
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      insert(target, t, anchor);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.age)) {
+        input.value = input_value_value;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(input);
+      if (detaching)
+        detach(t);
+    }
+  };
+}
+function create_else_block_12(ctx) {
+  let strong;
+  let t_value = ctx[1].data.height + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.height + ""))
+        set_data(t, t_value);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_12(ctx) {
+  let input;
+  let input_value_value;
+  return {
+    c() {
+      input = element("input");
+      attr(input, "class", "medium svelte-bzv5hr");
+      attr(input, "name", "data.height");
+      attr(input, "type", "text");
+      input.value = input_value_value = ctx[1].data.height;
+      attr(input, "placeholder", "Height");
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.height) && input.value !== input_value_value) {
+        input.value = input_value_value;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(input);
+    }
+  };
+}
+function create_else_block_11(ctx) {
+  let strong;
+  let t0_value = ctx[1].data.role + "";
+  let t0;
+  let t1;
+  return {
+    c() {
+      strong = element("strong");
+      t0 = text(t0_value);
+      t1 = space();
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t0);
+      insert(target, t1, anchor);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t0_value !== (t0_value = ctx2[1].data.role + ""))
+        set_data(t0, t0_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+      if (detaching)
+        detach(t1);
+    }
+  };
+}
+function create_if_block_112(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let t;
+  let current;
+  function autocomplete_selectedItem_binding(value) {
+    ctx[28](value);
+  }
+  let autocomplete_props = {
+    placeholder: "Role",
+    items: ctx[14],
+    inputClassName: "dotted medium",
+    onChange: ctx[27]
+  };
+  if (ctx[1].data.role !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.role;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+      t = space();
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      insert(target, t, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.role;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+      if (detaching)
+        detach(t);
+    }
+  };
+}
+function create_else_block_10(ctx) {
+  let strong;
+  let t0_value = ctx[1].data.featurebody + "";
+  let t0;
+  let t1;
+  return {
+    c() {
+      strong = element("strong");
+      t0 = text(t0_value);
+      t1 = space();
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t0);
+      insert(target, t1, anchor);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t0_value !== (t0_value = ctx2[1].data.featurebody + ""))
+        set_data(t0, t0_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+      if (detaching)
+        detach(t1);
+    }
+  };
+}
+function create_if_block_102(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let t;
+  let current;
+  function autocomplete_selectedItem_binding_1(value) {
+    ctx[30](value);
+  }
+  let autocomplete_props = {
+    items: ctx[2],
+    placeholder: "Body",
+    inputClassName: "dotted long",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[15],
+    onChange: ctx[29]
+  };
+  if (ctx[1].data.featurebody !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.featurebody;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_1));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+      t = space();
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      insert(target, t, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 4)
+        autocomplete_changes.items = ctx2[2];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.featurebody;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+      if (detaching)
+        detach(t);
+    }
+  };
+}
+function create_else_block_9(ctx) {
+  let strong;
+  let t_value = ctx[1].data.featureface + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.featureface + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_92(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_2(value) {
+    ctx[32](value);
+  }
+  let autocomplete_props = {
+    items: ctx[3],
+    placeholder: "Face",
+    inputClassName: "dotted long",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[16],
+    onChange: ctx[31]
+  };
+  if (ctx[1].data.featureface !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.featureface;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_2));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 8)
+        autocomplete_changes.items = ctx2[3];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.featureface;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_8(ctx) {
+  let strong;
+  let t_value = ctx[1].data.featurevibe + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.featurevibe + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_82(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_3(value) {
+    ctx[34](value);
+  }
+  let autocomplete_props = {
+    items: ctx[4],
+    inputClassName: "dotted long",
+    placeholder: "Vibe",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[17],
+    onChange: ctx[33]
+  };
+  if (ctx[1].data.featurevibe !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.featurevibe;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_3));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 16)
+        autocomplete_changes.items = ctx2[4];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.featurevibe;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_7(ctx) {
+  let strong;
+  let t_value = ctx[1].data.style1 + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.style1 + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_72(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_4(value) {
+    ctx[36](value);
+  }
+  let autocomplete_props = {
+    items: ctx[5],
+    placeholder: "Outfit",
+    inputClassName: "dotted long",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[18],
+    onChange: ctx[35]
+  };
+  if (ctx[1].data.style1 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.style1;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_4));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 32)
+        autocomplete_changes.items = ctx2[5];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.style1;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_6(ctx) {
+  let strong;
+  let t_value = ctx[1].data.style2 + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.style2 + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_62(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_5(value) {
+    ctx[38](value);
+  }
+  let autocomplete_props = {
+    items: ctx[5],
+    placeholder: "Outfit",
+    inputClassName: "dotted long",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[18],
+    onChange: ctx[37]
+  };
+  if (ctx[1].data.style2 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.style2;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_5));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 32)
+        autocomplete_changes.items = ctx2[5];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.style2;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_5(ctx) {
+  let strong;
+  let t_value = ctx[1].data.style3 + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.style3 + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_52(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_6(value) {
+    ctx[40](value);
+  }
+  let autocomplete_props = {
+    items: ctx[6],
+    inputClassName: "dotted long",
+    placeholder: "Movement",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[19],
+    onChange: ctx[39]
+  };
+  if (ctx[1].data.style3 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.style3;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_6));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 64)
+        autocomplete_changes.items = ctx2[6];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.style3;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_4(ctx) {
+  let strong;
+  let t_value = ctx[1].data.home + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.home + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_42(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_7(value) {
+    ctx[42](value);
+  }
+  let autocomplete_props = {
+    items: ctx[7],
+    inputClassName: "dotted long",
+    placeholder: "My Home",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[20],
+    onChange: ctx[41]
+  };
+  if (ctx[1].data.home !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.home;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_7));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 128)
+        autocomplete_changes.items = ctx2[7];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.home;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_3(ctx) {
+  let strong;
+  let t_value = ctx[1].data.community + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.community + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_32(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_8(value) {
+    ctx[44](value);
+  }
+  let autocomplete_props = {
+    items: ctx[8],
+    className: "verylong",
+    inputClassName: "dotted",
+    placeholder: "Legacy",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[23],
+    onChange: ctx[43]
+  };
+  if (ctx[1].data.community !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.community;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_8));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 256)
+        autocomplete_changes.items = ctx2[8];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.community;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_2(ctx) {
+  let strong;
+  let t_value = ctx[1].data.ideal + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.ideal + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_22(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_9(value) {
+    ctx[46](value);
+  }
+  let autocomplete_props = {
+    items: ctx[9],
+    placeholder: "Ideal",
+    inputClassName: "dotted long",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[21],
+    onChange: ctx[45]
+  };
+  if (ctx[1].data.ideal !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.ideal;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_9));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 512)
+        autocomplete_changes.items = ctx2[9];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.ideal;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block_1(ctx) {
+  let strong;
+  let t_value = ctx[1].data.flaw + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.flaw + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block_14(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_10(value) {
+    ctx[48](value);
+  }
+  let autocomplete_props = {
+    items: ctx[10],
+    inputClassName: "dotted long",
+    placeholder: "Flaw",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[22],
+    onChange: ctx[47]
+  };
+  if (ctx[1].data.flaw !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.flaw;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_10));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 1024)
+        autocomplete_changes.items = ctx2[10];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.flaw;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
+function create_else_block3(ctx) {
+  let strong;
+  let t_value = ctx[1].data.dream + "";
+  let t;
+  return {
+    c() {
+      strong = element("strong");
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, strong, anchor);
+      append(strong, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 2 && t_value !== (t_value = ctx2[1].data.dream + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(strong);
+    }
+  };
+}
+function create_if_block4(ctx) {
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_11(value) {
+    ctx[50](value);
+  }
+  let autocomplete_props = {
+    items: ctx[11],
+    className: "verylong",
+    inputClassName: "dotted",
+    placeholder: "My Dream",
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[23],
+    onChange: ctx[49]
+  };
+  if (ctx[1].data.dream !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.dream;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_11));
+  return {
+    c() {
+      create_component(autocomplete.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(autocomplete, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 2048)
+        autocomplete_changes.items = ctx2[11];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.dream;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(autocomplete, detaching);
+    }
+  };
+}
 function create_fragment5(ctx) {
   let div3;
   let div0;
@@ -4223,6 +5365,7 @@ function create_fragment5(ctx) {
   let p0;
   let img;
   let img_src_value;
+  let img_alt_value;
   let img_title_value;
   let t8;
   let input2;
@@ -4236,101 +5379,97 @@ function create_fragment5(ctx) {
   let t12;
   let p1;
   let t13;
-  let input4;
-  let input4_value_value;
   let t14;
-  let input5;
-  let input5_value_value;
   let t15;
   let t16;
   let p2;
   let t17;
-  let input6;
-  let input6_value_value;
+  let input4;
+  let input4_value_value;
   let t18;
-  let autocomplete0;
-  let updating_selectedItem;
+  let current_block_type_index;
+  let if_block2;
   let t19;
   let t20;
   let p3;
   let t21;
+  let input5;
+  let input5_value_value;
+  let t22;
+  let current_block_type_index_1;
+  let if_block3;
+  let t23;
+  let input6;
+  let input6_value_value;
+  let t24;
+  let current_block_type_index_2;
+  let if_block4;
+  let t25;
   let input7;
   let input7_value_value;
-  let t22;
-  let autocomplete1;
-  let updating_selectedItem_1;
-  let t23;
-  let input8;
-  let input8_value_value;
-  let t24;
-  let autocomplete2;
-  let updating_selectedItem_2;
-  let t25;
-  let input9;
-  let input9_value_value;
   let t26;
-  let autocomplete3;
-  let updating_selectedItem_3;
+  let current_block_type_index_3;
+  let if_block5;
   let t27;
   let t28;
   let p4;
   let t29;
+  let input8;
+  let input8_value_value;
+  let t30;
+  let current_block_type_index_4;
+  let if_block6;
+  let t31;
+  let input9;
+  let input9_value_value;
+  let t32;
+  let current_block_type_index_5;
+  let if_block7;
+  let t33;
   let input10;
   let input10_value_value;
-  let t30;
-  let autocomplete4;
-  let updating_selectedItem_4;
-  let t31;
-  let input11;
-  let input11_value_value;
-  let t32;
-  let autocomplete5;
-  let updating_selectedItem_5;
-  let t33;
-  let input12;
-  let input12_value_value;
   let t34;
-  let autocomplete6;
-  let updating_selectedItem_6;
+  let current_block_type_index_6;
+  let if_block8;
   let t35;
   let t36;
   let p5;
   let t37;
-  let input13;
-  let input13_value_value;
+  let input11;
+  let input11_value_value;
   let t38;
-  let autocomplete7;
-  let updating_selectedItem_7;
+  let current_block_type_index_7;
+  let if_block9;
   let t39;
-  let input14;
-  let input14_value_value;
+  let input12;
+  let input12_value_value;
   let t40;
-  let autocomplete8;
-  let updating_selectedItem_8;
+  let current_block_type_index_8;
+  let if_block10;
   let t41;
   let t42;
   let p6;
   let t43;
-  let input15;
-  let input15_value_value;
+  let input13;
+  let input13_value_value;
   let t44;
-  let autocomplete9;
-  let updating_selectedItem_9;
+  let current_block_type_index_9;
+  let if_block11;
   let t45;
-  let input16;
-  let input16_value_value;
+  let input14;
+  let input14_value_value;
   let t46;
-  let autocomplete10;
-  let updating_selectedItem_10;
+  let current_block_type_index_10;
+  let if_block12;
   let t47;
   let t48;
   let p7;
   let t49;
-  let input17;
-  let input17_value_value;
+  let input15;
+  let input15_value_value;
   let t50;
-  let autocomplete11;
-  let updating_selectedItem_11;
+  let current_block_type_index_11;
+  let if_block13;
   let t51;
   let t52;
   let div5;
@@ -4339,208 +5478,129 @@ function create_fragment5(ctx) {
   let current;
   let mounted;
   let dispose;
-  function autocomplete0_selectedItem_binding(value) {
-    ctx[26](value);
+  function select_block_type(ctx2, dirty) {
+    if (!!ctx2[12])
+      return create_if_block_13;
+    return create_else_block_13;
   }
-  let autocomplete0_props = {
-    placeholder: "Role",
-    items: ctx[12],
-    inputClassName: "medium",
-    onChange: ctx[25]
-  };
-  if (ctx[1].data.role !== void 0) {
-    autocomplete0_props.selectedItem = ctx[1].data.role;
+  let current_block_type = select_block_type(ctx, [-1, -1]);
+  let if_block0 = current_block_type(ctx);
+  function select_block_type_1(ctx2, dirty) {
+    if (!!ctx2[12])
+      return create_if_block_12;
+    return create_else_block_12;
   }
-  autocomplete0 = new simple_svelte_autocomplete_default({ props: autocomplete0_props });
-  binding_callbacks.push(() => bind(autocomplete0, "selectedItem", autocomplete0_selectedItem_binding));
-  function autocomplete1_selectedItem_binding(value) {
-    ctx[28](value);
+  let current_block_type_1 = select_block_type_1(ctx, [-1, -1]);
+  let if_block1 = current_block_type_1(ctx);
+  const if_block_creators = [create_if_block_112, create_else_block_11];
+  const if_blocks = [];
+  function select_block_type_2(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  let autocomplete1_props = {
-    items: ctx[2],
-    placeholder: "Body",
-    inputClassName: "long",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[13],
-    onChange: ctx[27]
-  };
-  if (ctx[1].data.featurebody !== void 0) {
-    autocomplete1_props.selectedItem = ctx[1].data.featurebody;
+  current_block_type_index = select_block_type_2(ctx, [-1, -1]);
+  if_block2 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  const if_block_creators_1 = [create_if_block_102, create_else_block_10];
+  const if_blocks_1 = [];
+  function select_block_type_3(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  autocomplete1 = new simple_svelte_autocomplete_default({ props: autocomplete1_props });
-  binding_callbacks.push(() => bind(autocomplete1, "selectedItem", autocomplete1_selectedItem_binding));
-  function autocomplete2_selectedItem_binding(value) {
-    ctx[30](value);
+  current_block_type_index_1 = select_block_type_3(ctx, [-1, -1]);
+  if_block3 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx);
+  const if_block_creators_2 = [create_if_block_92, create_else_block_9];
+  const if_blocks_2 = [];
+  function select_block_type_4(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  let autocomplete2_props = {
-    items: ctx[3],
-    placeholder: "Face",
-    inputClassName: "long",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[14],
-    onChange: ctx[29]
-  };
-  if (ctx[1].data.featureface !== void 0) {
-    autocomplete2_props.selectedItem = ctx[1].data.featureface;
+  current_block_type_index_2 = select_block_type_4(ctx, [-1, -1]);
+  if_block4 = if_blocks_2[current_block_type_index_2] = if_block_creators_2[current_block_type_index_2](ctx);
+  const if_block_creators_3 = [create_if_block_82, create_else_block_8];
+  const if_blocks_3 = [];
+  function select_block_type_5(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  autocomplete2 = new simple_svelte_autocomplete_default({ props: autocomplete2_props });
-  binding_callbacks.push(() => bind(autocomplete2, "selectedItem", autocomplete2_selectedItem_binding));
-  function autocomplete3_selectedItem_binding(value) {
-    ctx[32](value);
+  current_block_type_index_3 = select_block_type_5(ctx, [-1, -1]);
+  if_block5 = if_blocks_3[current_block_type_index_3] = if_block_creators_3[current_block_type_index_3](ctx);
+  const if_block_creators_4 = [create_if_block_72, create_else_block_7];
+  const if_blocks_4 = [];
+  function select_block_type_6(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  let autocomplete3_props = {
-    items: ctx[4],
-    inputClassName: "long",
-    placeholder: "Vibe",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[15],
-    onChange: ctx[31]
-  };
-  if (ctx[1].data.featurevibe !== void 0) {
-    autocomplete3_props.selectedItem = ctx[1].data.featurevibe;
+  current_block_type_index_4 = select_block_type_6(ctx, [-1, -1]);
+  if_block6 = if_blocks_4[current_block_type_index_4] = if_block_creators_4[current_block_type_index_4](ctx);
+  const if_block_creators_5 = [create_if_block_62, create_else_block_6];
+  const if_blocks_5 = [];
+  function select_block_type_7(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  autocomplete3 = new simple_svelte_autocomplete_default({ props: autocomplete3_props });
-  binding_callbacks.push(() => bind(autocomplete3, "selectedItem", autocomplete3_selectedItem_binding));
-  function autocomplete4_selectedItem_binding(value) {
-    ctx[34](value);
+  current_block_type_index_5 = select_block_type_7(ctx, [-1, -1]);
+  if_block7 = if_blocks_5[current_block_type_index_5] = if_block_creators_5[current_block_type_index_5](ctx);
+  const if_block_creators_6 = [create_if_block_52, create_else_block_5];
+  const if_blocks_6 = [];
+  function select_block_type_8(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  let autocomplete4_props = {
-    items: ctx[5],
-    placeholder: "Outfit",
-    inputClassName: "long",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[16],
-    onChange: ctx[33]
-  };
-  if (ctx[1].data.style1 !== void 0) {
-    autocomplete4_props.selectedItem = ctx[1].data.style1;
+  current_block_type_index_6 = select_block_type_8(ctx, [-1, -1]);
+  if_block8 = if_blocks_6[current_block_type_index_6] = if_block_creators_6[current_block_type_index_6](ctx);
+  const if_block_creators_7 = [create_if_block_42, create_else_block_4];
+  const if_blocks_7 = [];
+  function select_block_type_9(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  autocomplete4 = new simple_svelte_autocomplete_default({ props: autocomplete4_props });
-  binding_callbacks.push(() => bind(autocomplete4, "selectedItem", autocomplete4_selectedItem_binding));
-  function autocomplete5_selectedItem_binding(value) {
-    ctx[36](value);
+  current_block_type_index_7 = select_block_type_9(ctx, [-1, -1]);
+  if_block9 = if_blocks_7[current_block_type_index_7] = if_block_creators_7[current_block_type_index_7](ctx);
+  const if_block_creators_8 = [create_if_block_32, create_else_block_3];
+  const if_blocks_8 = [];
+  function select_block_type_10(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  let autocomplete5_props = {
-    items: ctx[5],
-    placeholder: "Outfit",
-    inputClassName: "long",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[16],
-    onChange: ctx[35]
-  };
-  if (ctx[1].data.style2 !== void 0) {
-    autocomplete5_props.selectedItem = ctx[1].data.style2;
+  current_block_type_index_8 = select_block_type_10(ctx, [-1, -1]);
+  if_block10 = if_blocks_8[current_block_type_index_8] = if_block_creators_8[current_block_type_index_8](ctx);
+  const if_block_creators_9 = [create_if_block_22, create_else_block_2];
+  const if_blocks_9 = [];
+  function select_block_type_11(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  autocomplete5 = new simple_svelte_autocomplete_default({ props: autocomplete5_props });
-  binding_callbacks.push(() => bind(autocomplete5, "selectedItem", autocomplete5_selectedItem_binding));
-  function autocomplete6_selectedItem_binding(value) {
-    ctx[38](value);
+  current_block_type_index_9 = select_block_type_11(ctx, [-1, -1]);
+  if_block11 = if_blocks_9[current_block_type_index_9] = if_block_creators_9[current_block_type_index_9](ctx);
+  const if_block_creators_10 = [create_if_block_14, create_else_block_1];
+  const if_blocks_10 = [];
+  function select_block_type_12(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  let autocomplete6_props = {
-    items: ctx[6],
-    inputClassName: "long",
-    placeholder: "Movement",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[17],
-    onChange: ctx[37]
-  };
-  if (ctx[1].data.style3 !== void 0) {
-    autocomplete6_props.selectedItem = ctx[1].data.style3;
+  current_block_type_index_10 = select_block_type_12(ctx, [-1, -1]);
+  if_block12 = if_blocks_10[current_block_type_index_10] = if_block_creators_10[current_block_type_index_10](ctx);
+  const if_block_creators_11 = [create_if_block4, create_else_block3];
+  const if_blocks_11 = [];
+  function select_block_type_13(ctx2, dirty) {
+    if (!!ctx2[12])
+      return 0;
+    return 1;
   }
-  autocomplete6 = new simple_svelte_autocomplete_default({ props: autocomplete6_props });
-  binding_callbacks.push(() => bind(autocomplete6, "selectedItem", autocomplete6_selectedItem_binding));
-  function autocomplete7_selectedItem_binding(value) {
-    ctx[40](value);
-  }
-  let autocomplete7_props = {
-    items: ctx[7],
-    inputClassName: "long",
-    placeholder: "My Home",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[18],
-    onChange: ctx[39]
-  };
-  if (ctx[1].data.home !== void 0) {
-    autocomplete7_props.selectedItem = ctx[1].data.home;
-  }
-  autocomplete7 = new simple_svelte_autocomplete_default({ props: autocomplete7_props });
-  binding_callbacks.push(() => bind(autocomplete7, "selectedItem", autocomplete7_selectedItem_binding));
-  function autocomplete8_selectedItem_binding(value) {
-    ctx[42](value);
-  }
-  let autocomplete8_props = {
-    items: ctx[10],
-    className: "verylong",
-    placeholder: "Legacy",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[21],
-    onChange: ctx[41]
-  };
-  if (ctx[1].data.community !== void 0) {
-    autocomplete8_props.selectedItem = ctx[1].data.community;
-  }
-  autocomplete8 = new simple_svelte_autocomplete_default({ props: autocomplete8_props });
-  binding_callbacks.push(() => bind(autocomplete8, "selectedItem", autocomplete8_selectedItem_binding));
-  function autocomplete9_selectedItem_binding(value) {
-    ctx[44](value);
-  }
-  let autocomplete9_props = {
-    items: ctx[8],
-    placeholder: "Ideal",
-    inputClassName: "long",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[19],
-    onChange: ctx[43]
-  };
-  if (ctx[1].data.ideal !== void 0) {
-    autocomplete9_props.selectedItem = ctx[1].data.ideal;
-  }
-  autocomplete9 = new simple_svelte_autocomplete_default({ props: autocomplete9_props });
-  binding_callbacks.push(() => bind(autocomplete9, "selectedItem", autocomplete9_selectedItem_binding));
-  function autocomplete10_selectedItem_binding(value) {
-    ctx[46](value);
-  }
-  let autocomplete10_props = {
-    items: ctx[9],
-    inputClassName: "long",
-    placeholder: "Flaw",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[20],
-    onChange: ctx[45]
-  };
-  if (ctx[1].data.flaw !== void 0) {
-    autocomplete10_props.selectedItem = ctx[1].data.flaw;
-  }
-  autocomplete10 = new simple_svelte_autocomplete_default({ props: autocomplete10_props });
-  binding_callbacks.push(() => bind(autocomplete10, "selectedItem", autocomplete10_selectedItem_binding));
-  function autocomplete11_selectedItem_binding(value) {
-    ctx[48](value);
-  }
-  let autocomplete11_props = {
-    items: ctx[10],
-    className: "verylong",
-    placeholder: "My Dream",
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[21],
-    onChange: ctx[47]
-  };
-  if (ctx[1].data.dream !== void 0) {
-    autocomplete11_props.selectedItem = ctx[1].data.dream;
-  }
-  autocomplete11 = new simple_svelte_autocomplete_default({ props: autocomplete11_props });
-  binding_callbacks.push(() => bind(autocomplete11, "selectedItem", autocomplete11_selectedItem_binding));
-  tabs = new Tabs_default({ props: { items: ctx[22] } });
+  current_block_type_index_11 = select_block_type_13(ctx, [-1, -1]);
+  if_block13 = if_blocks_11[current_block_type_index_11] = if_block_creators_11[current_block_type_index_11](ctx);
+  tabs = new Tabs_default({ props: { items: ctx[24] } });
   return {
     c() {
       div3 = element("div");
@@ -4552,7 +5612,7 @@ function create_fragment5(ctx) {
       t2 = text(" / 10");
       t3 = space();
       div1 = element("div");
-      div1.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-1p0tjqw"></i>`;
+      div1.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-bzv5hr"></i>`;
       t4 = space();
       div2 = element("div");
       label1 = element("label");
@@ -4575,75 +5635,75 @@ function create_fragment5(ctx) {
       t12 = space();
       p1 = element("p");
       t13 = text("I'm ");
-      input4 = element("input");
-      t14 = text("\r\n                years old and stand\r\n                ");
-      input5 = element("input");
-      t15 = text(" tall.");
+      if_block0.c();
+      t14 = text(". years old and\r\n                stand\r\n                ");
+      if_block1.c();
+      t15 = text("\r\n                tall.");
       t16 = space();
       p2 = element("p");
       t17 = text("I'm the party's ");
-      input6 = element("input");
+      input4 = element("input");
       t18 = space();
-      create_component(autocomplete0.$$.fragment);
+      if_block2.c();
       t19 = text(".");
       t20 = space();
       p3 = element("p");
       t21 = text("When people see me, they first notice my ");
-      input7 = element("input");
+      input5 = element("input");
       t22 = space();
-      create_component(autocomplete1.$$.fragment);
-      t23 = text("\r\n                ,\r\n                ");
-      input8 = element("input");
+      if_block3.c();
+      t23 = text(",\r\n                ");
+      input6 = element("input");
       t24 = space();
-      create_component(autocomplete2.$$.fragment);
+      if_block4.c();
       t25 = text(", and\r\n                ");
-      input9 = element("input");
+      input7 = element("input");
       t26 = space();
-      create_component(autocomplete3.$$.fragment);
-      t27 = text("\r\n                .");
+      if_block5.c();
+      t27 = text(".");
       t28 = space();
       p4 = element("p");
       t29 = text("I wear ");
-      input10 = element("input");
+      input8 = element("input");
       t30 = space();
-      create_component(autocomplete4.$$.fragment);
+      if_block6.c();
       t31 = text("\r\n                ,\r\n                ");
-      input11 = element("input");
+      input9 = element("input");
       t32 = space();
-      create_component(autocomplete5.$$.fragment);
+      if_block7.c();
       t33 = text("\r\n                , and move with\r\n                ");
-      input12 = element("input");
+      input10 = element("input");
       t34 = space();
-      create_component(autocomplete6.$$.fragment);
+      if_block8.c();
       t35 = text("\r\n                .");
       t36 = space();
       p5 = element("p");
       t37 = text("I'm from ");
-      input13 = element("input");
+      input11 = element("input");
       t38 = space();
-      create_component(autocomplete7.$$.fragment);
+      if_block9.c();
       t39 = text("\r\n                where my people are known for\r\n                ");
-      input14 = element("input");
+      input12 = element("input");
       t40 = space();
-      create_component(autocomplete8.$$.fragment);
-      t41 = text("\r\n\r\n                .");
+      if_block10.c();
+      t41 = text(".");
       t42 = space();
       p6 = element("p");
       t43 = text("I believe in ");
-      input15 = element("input");
+      input13 = element("input");
       t44 = space();
-      create_component(autocomplete9.$$.fragment);
+      if_block11.c();
       t45 = text("\r\n                , but my\r\n                ");
-      input16 = element("input");
+      input14 = element("input");
       t46 = space();
-      create_component(autocomplete10.$$.fragment);
+      if_block12.c();
       t47 = text("\r\n                side can get in the way.");
       t48 = space();
       p7 = element("p");
       t49 = text("I dream of ");
-      input17 = element("input");
+      input15 = element("input");
       t50 = space();
-      create_component(autocomplete11.$$.fragment);
+      if_block13.c();
       t51 = text("\r\n                .");
       t52 = space();
       div5 = element("div");
@@ -4652,119 +5712,111 @@ function create_fragment5(ctx) {
       attr(label0, "class", "character-label");
       attr(label0, "for", "data.hp");
       attr(input0, "type", "number");
-      attr(input0, "class", "hp svelte-1p0tjqw");
+      attr(input0, "class", "hp svelte-bzv5hr");
       attr(input0, "name", "data.hp");
       attr(input0, "data-dtype", "Number");
       input0.value = input0_value_value = ctx[1].data.hp;
-      attr(div0, "class", "hitpoints svelte-1p0tjqw");
-      attr(div1, "class", "roll-generic svelte-1p0tjqw");
+      attr(div0, "class", "hitpoints svelte-bzv5hr");
+      attr(div1, "class", "roll-generic svelte-bzv5hr");
       attr(label1, "class", "character-label");
       attr(label1, "for", "data.actionpoints");
       attr(input1, "type", "number");
-      attr(input1, "class", "hp svelte-1p0tjqw");
+      attr(input1, "class", "hp svelte-bzv5hr");
       attr(input1, "name", "data.ap");
       attr(input1, "data-dtype", "Number");
       input1.value = input1_value_value = ctx[1].data.ap;
-      attr(div2, "class", "actionpoints svelte-1p0tjqw");
-      attr(div3, "class", "header flexrow svelte-1p0tjqw");
-      attr(img, "class", "profile svelte-1p0tjqw");
+      attr(div2, "class", "actionpoints svelte-bzv5hr");
+      attr(div3, "class", "header flexrow svelte-bzv5hr");
+      attr(img, "class", "profile svelte-bzv5hr");
       if (img.src !== (img_src_value = ctx[1].img))
         attr(img, "src", img_src_value);
+      attr(img, "alt", img_alt_value = ctx[1].name);
       attr(img, "data-edit", "img");
       attr(img, "title", img_title_value = ctx[1].name);
       attr(img, "align", "left");
-      attr(input2, "class", "long svelte-1p0tjqw");
+      attr(input2, "class", "name svelte-bzv5hr");
       attr(input2, "name", "name");
       attr(input2, "type", "text");
       input2.value = input2_value_value = ctx[1].name;
       attr(input2, "placeholder", "Name");
-      attr(input3, "class", "medium svelte-1p0tjqw");
+      attr(input3, "class", "medium svelte-bzv5hr");
       attr(input3, "name", "data.pronouns");
       attr(input3, "type", "text");
       input3.value = input3_value_value = ctx[1].data.pronouns;
       attr(input3, "placeholder", "Pronouns");
-      attr(p0, "class", "svelte-1p0tjqw");
-      attr(input4, "class", "short svelte-1p0tjqw");
-      attr(input4, "name", "data.age");
-      attr(input4, "type", "number");
-      input4.value = input4_value_value = ctx[1].data.age;
-      attr(input4, "placeholder", "Age");
-      attr(input5, "class", "medium svelte-1p0tjqw");
-      attr(input5, "name", "data.height");
-      attr(input5, "type", "text");
-      input5.value = input5_value_value = ctx[1].data.height;
-      attr(input5, "placeholder", "Height");
-      attr(p1, "class", "svelte-1p0tjqw");
-      attr(input6, "class", "long svelte-1p0tjqw");
-      attr(input6, "name", "data.role");
+      attr(p0, "class", "svelte-bzv5hr");
+      attr(p1, "class", "svelte-bzv5hr");
+      attr(input4, "class", "long svelte-bzv5hr");
+      attr(input4, "name", "data.role");
+      attr(input4, "type", "hidden");
+      input4.value = input4_value_value = ctx[1].data.role;
+      attr(input4, "placeholder", "Role");
+      attr(p2, "class", "svelte-bzv5hr");
+      attr(input5, "class", "long svelte-bzv5hr");
+      attr(input5, "name", "data.featurebody");
+      attr(input5, "type", "hidden");
+      attr(input5, "x", "");
+      input5.value = input5_value_value = ctx[1].data.featurebody;
+      attr(input5, "placeholder", "Body");
+      attr(input6, "class", "long svelte-bzv5hr");
+      attr(input6, "name", "data.featureface");
       attr(input6, "type", "hidden");
-      input6.value = input6_value_value = ctx[1].data.role;
-      attr(input6, "placeholder", "Role");
-      attr(p2, "class", "svelte-1p0tjqw");
-      attr(input7, "class", "long svelte-1p0tjqw");
-      attr(input7, "name", "data.featurebody");
+      input6.value = input6_value_value = ctx[1].data.featureface;
+      attr(input6, "placeholder", "Face");
+      attr(input7, "class", "long svelte-bzv5hr");
+      attr(input7, "name", "data.featurevibe");
       attr(input7, "type", "hidden");
-      input7.value = input7_value_value = ctx[1].data.featurebody;
-      attr(input7, "placeholder", "Body");
-      attr(input8, "class", "long svelte-1p0tjqw");
-      attr(input8, "name", "data.featureface");
+      input7.value = input7_value_value = ctx[1].data.featurevibe;
+      attr(input7, "placeholder", "Vibe");
+      attr(p3, "class", "svelte-bzv5hr");
+      attr(input8, "class", "long svelte-bzv5hr");
+      attr(input8, "name", "data.style1");
       attr(input8, "type", "hidden");
-      input8.value = input8_value_value = ctx[1].data.featureface;
-      attr(input8, "placeholder", "Face");
-      attr(input9, "class", "long svelte-1p0tjqw");
-      attr(input9, "name", "data.featurevibe");
+      input8.value = input8_value_value = ctx[1].data.style1;
+      attr(input8, "placeholder", "Outfit");
+      attr(input9, "class", "long svelte-bzv5hr");
+      attr(input9, "name", "data.style2");
       attr(input9, "type", "hidden");
-      input9.value = input9_value_value = ctx[1].data.featurevibe;
-      attr(input9, "placeholder", "Vibe");
-      attr(p3, "class", "svelte-1p0tjqw");
-      attr(input10, "class", "long svelte-1p0tjqw");
-      attr(input10, "name", "data.style1");
+      input9.value = input9_value_value = ctx[1].data.style2;
+      attr(input9, "placeholder", "Outfit");
+      attr(input10, "class", "long svelte-bzv5hr");
+      attr(input10, "name", "data.style3");
       attr(input10, "type", "hidden");
-      input10.value = input10_value_value = ctx[1].data.style1;
-      attr(input10, "placeholder", "Outfit");
-      attr(input11, "class", "long svelte-1p0tjqw");
-      attr(input11, "name", "data.style2");
+      input10.value = input10_value_value = ctx[1].data.style3;
+      attr(input10, "placeholder", "Movement");
+      attr(p4, "class", "svelte-bzv5hr");
+      attr(input11, "class", "long svelte-bzv5hr");
+      attr(input11, "name", "data.home");
       attr(input11, "type", "hidden");
-      input11.value = input11_value_value = ctx[1].data.style2;
-      attr(input11, "placeholder", "Outfit");
-      attr(input12, "class", "long svelte-1p0tjqw");
-      attr(input12, "name", "data.style3");
+      input11.value = input11_value_value = ctx[1].data.home;
+      attr(input11, "placeholder", "My Home");
+      attr(input12, "class", "long svelte-bzv5hr");
+      attr(input12, "name", "data.community");
       attr(input12, "type", "hidden");
-      input12.value = input12_value_value = ctx[1].data.style3;
-      attr(input12, "placeholder", "Movement");
-      attr(p4, "class", "svelte-1p0tjqw");
-      attr(input13, "class", "long svelte-1p0tjqw");
-      attr(input13, "name", "data.home");
+      input12.value = input12_value_value = ctx[1].data.community;
+      attr(input12, "placeholder", "");
+      attr(p5, "class", "svelte-bzv5hr");
+      attr(input13, "class", "long svelte-bzv5hr");
+      attr(input13, "name", "data.ideal");
       attr(input13, "type", "hidden");
-      input13.value = input13_value_value = ctx[1].data.home;
-      attr(input13, "placeholder", "My Home");
-      attr(input14, "class", "long svelte-1p0tjqw");
-      attr(input14, "name", "data.community");
+      input13.value = input13_value_value = ctx[1].data.ideal;
+      attr(input13, "placeholder", "my ideal");
+      attr(input14, "class", "long svelte-bzv5hr");
+      attr(input14, "name", "data.flaw");
       attr(input14, "type", "hidden");
-      input14.value = input14_value_value = ctx[1].data.community;
-      attr(input14, "placeholder", "");
-      attr(p5, "class", "svelte-1p0tjqw");
-      attr(input15, "class", "long svelte-1p0tjqw");
-      attr(input15, "name", "data.ideal");
+      input14.value = input14_value_value = ctx[1].data.flaw;
+      attr(input14, "placeholder", "flaw");
+      attr(p6, "class", "svelte-bzv5hr");
+      attr(input15, "class", "long svelte-bzv5hr");
+      attr(input15, "name", "data.dream");
       attr(input15, "type", "hidden");
-      input15.value = input15_value_value = ctx[1].data.ideal;
-      attr(input15, "placeholder", "my ideal");
-      attr(input16, "class", "long svelte-1p0tjqw");
-      attr(input16, "name", "data.flaw");
-      attr(input16, "type", "hidden");
-      input16.value = input16_value_value = ctx[1].data.flaw;
-      attr(input16, "placeholder", "flaw");
-      attr(p6, "class", "svelte-1p0tjqw");
-      attr(input17, "class", "long svelte-1p0tjqw");
-      attr(input17, "name", "data.dream");
-      attr(input17, "type", "hidden");
-      input17.value = input17_value_value = ctx[1].data.dream;
-      attr(input17, "placeholder", "my dream");
-      attr(p7, "class", "svelte-1p0tjqw");
-      attr(content0, "class", "svelte-1p0tjqw");
-      attr(div4, "class", "biography flexcol flex1 svelte-1p0tjqw");
-      attr(content1, "class", "svelte-1p0tjqw");
-      attr(div5, "class", "inventory-abilities flexcol flex1 svelte-1p0tjqw");
+      input15.value = input15_value_value = ctx[1].data.dream;
+      attr(input15, "placeholder", "my dream");
+      attr(p7, "class", "svelte-bzv5hr");
+      attr(content0, "class", "svelte-bzv5hr");
+      attr(div4, "class", "biography flexcol flex1 svelte-bzv5hr");
+      attr(content1, "class", "svelte-bzv5hr");
+      attr(div5, "class", "inventory-abilities flexcol flex1 svelte-bzv5hr");
       attr(div6, "class", "details flexrow flex2");
     },
     m(target, anchor) {
@@ -4797,75 +5849,75 @@ function create_fragment5(ctx) {
       append(content0, t12);
       append(content0, p1);
       append(p1, t13);
-      append(p1, input4);
+      if_block0.m(p1, null);
       append(p1, t14);
-      append(p1, input5);
+      if_block1.m(p1, null);
       append(p1, t15);
       append(content0, t16);
       append(content0, p2);
       append(p2, t17);
-      append(p2, input6);
+      append(p2, input4);
       append(p2, t18);
-      mount_component(autocomplete0, p2, null);
+      if_blocks[current_block_type_index].m(p2, null);
       append(p2, t19);
       append(content0, t20);
       append(content0, p3);
       append(p3, t21);
-      append(p3, input7);
+      append(p3, input5);
       append(p3, t22);
-      mount_component(autocomplete1, p3, null);
+      if_blocks_1[current_block_type_index_1].m(p3, null);
       append(p3, t23);
-      append(p3, input8);
+      append(p3, input6);
       append(p3, t24);
-      mount_component(autocomplete2, p3, null);
+      if_blocks_2[current_block_type_index_2].m(p3, null);
       append(p3, t25);
-      append(p3, input9);
+      append(p3, input7);
       append(p3, t26);
-      mount_component(autocomplete3, p3, null);
+      if_blocks_3[current_block_type_index_3].m(p3, null);
       append(p3, t27);
       append(content0, t28);
       append(content0, p4);
       append(p4, t29);
-      append(p4, input10);
+      append(p4, input8);
       append(p4, t30);
-      mount_component(autocomplete4, p4, null);
+      if_blocks_4[current_block_type_index_4].m(p4, null);
       append(p4, t31);
-      append(p4, input11);
+      append(p4, input9);
       append(p4, t32);
-      mount_component(autocomplete5, p4, null);
+      if_blocks_5[current_block_type_index_5].m(p4, null);
       append(p4, t33);
-      append(p4, input12);
+      append(p4, input10);
       append(p4, t34);
-      mount_component(autocomplete6, p4, null);
+      if_blocks_6[current_block_type_index_6].m(p4, null);
       append(p4, t35);
       append(content0, t36);
       append(content0, p5);
       append(p5, t37);
-      append(p5, input13);
+      append(p5, input11);
       append(p5, t38);
-      mount_component(autocomplete7, p5, null);
+      if_blocks_7[current_block_type_index_7].m(p5, null);
       append(p5, t39);
-      append(p5, input14);
+      append(p5, input12);
       append(p5, t40);
-      mount_component(autocomplete8, p5, null);
+      if_blocks_8[current_block_type_index_8].m(p5, null);
       append(p5, t41);
       append(content0, t42);
       append(content0, p6);
       append(p6, t43);
-      append(p6, input15);
+      append(p6, input13);
       append(p6, t44);
-      mount_component(autocomplete9, p6, null);
+      if_blocks_9[current_block_type_index_9].m(p6, null);
       append(p6, t45);
-      append(p6, input16);
+      append(p6, input14);
       append(p6, t46);
-      mount_component(autocomplete10, p6, null);
+      if_blocks_10[current_block_type_index_10].m(p6, null);
       append(p6, t47);
       append(content0, t48);
       append(content0, p7);
       append(p7, t49);
-      append(p7, input17);
+      append(p7, input15);
       append(p7, t50);
-      mount_component(autocomplete11, p7, null);
+      if_blocks_11[current_block_type_index_11].m(p7, null);
       append(p7, t51);
       append(div6, t52);
       append(div6, div5);
@@ -4873,7 +5925,7 @@ function create_fragment5(ctx) {
       mount_component(tabs, content1, null);
       current = true;
       if (!mounted) {
-        dispose = listen(img, "click", ctx[23]);
+        dispose = listen(img, "click", ctx[25]);
         mounted = true;
       }
     },
@@ -4887,6 +5939,9 @@ function create_fragment5(ctx) {
       if (!current || dirty[0] & 2 && img.src !== (img_src_value = ctx2[1].img)) {
         attr(img, "src", img_src_value);
       }
+      if (!current || dirty[0] & 2 && img_alt_value !== (img_alt_value = ctx2[1].name)) {
+        attr(img, "alt", img_alt_value);
+      }
       if (!current || dirty[0] & 2 && img_title_value !== (img_title_value = ctx2[1].name)) {
         attr(img, "title", img_title_value);
       }
@@ -4896,186 +5951,334 @@ function create_fragment5(ctx) {
       if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].data.pronouns) && input3.value !== input3_value_value) {
         input3.value = input3_value_value;
       }
-      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.age)) {
+      if (current_block_type === (current_block_type = select_block_type(ctx2, dirty)) && if_block0) {
+        if_block0.p(ctx2, dirty);
+      } else {
+        if_block0.d(1);
+        if_block0 = current_block_type(ctx2);
+        if (if_block0) {
+          if_block0.c();
+          if_block0.m(p1, t14);
+        }
+      }
+      if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx2, dirty)) && if_block1) {
+        if_block1.p(ctx2, dirty);
+      } else {
+        if_block1.d(1);
+        if_block1 = current_block_type_1(ctx2);
+        if (if_block1) {
+          if_block1.c();
+          if_block1.m(p1, t15);
+        }
+      }
+      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.role)) {
         input4.value = input4_value_value;
       }
-      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.height) && input5.value !== input5_value_value) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type_2(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block2 = if_blocks[current_block_type_index];
+        if (!if_block2) {
+          if_block2 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block2.c();
+        } else {
+          if_block2.p(ctx2, dirty);
+        }
+        transition_in(if_block2, 1);
+        if_block2.m(p2, t19);
+      }
+      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.featurebody)) {
         input5.value = input5_value_value;
       }
-      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.role)) {
+      let previous_block_index_1 = current_block_type_index_1;
+      current_block_type_index_1 = select_block_type_3(ctx2, dirty);
+      if (current_block_type_index_1 === previous_block_index_1) {
+        if_blocks_1[current_block_type_index_1].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_1[previous_block_index_1], 1, 1, () => {
+          if_blocks_1[previous_block_index_1] = null;
+        });
+        check_outros();
+        if_block3 = if_blocks_1[current_block_type_index_1];
+        if (!if_block3) {
+          if_block3 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx2);
+          if_block3.c();
+        } else {
+          if_block3.p(ctx2, dirty);
+        }
+        transition_in(if_block3, 1);
+        if_block3.m(p3, t23);
+      }
+      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.featureface)) {
         input6.value = input6_value_value;
       }
-      const autocomplete0_changes = {};
-      if (!updating_selectedItem && dirty[0] & 2) {
-        updating_selectedItem = true;
-        autocomplete0_changes.selectedItem = ctx2[1].data.role;
-        add_flush_callback(() => updating_selectedItem = false);
+      let previous_block_index_2 = current_block_type_index_2;
+      current_block_type_index_2 = select_block_type_4(ctx2, dirty);
+      if (current_block_type_index_2 === previous_block_index_2) {
+        if_blocks_2[current_block_type_index_2].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_2[previous_block_index_2], 1, 1, () => {
+          if_blocks_2[previous_block_index_2] = null;
+        });
+        check_outros();
+        if_block4 = if_blocks_2[current_block_type_index_2];
+        if (!if_block4) {
+          if_block4 = if_blocks_2[current_block_type_index_2] = if_block_creators_2[current_block_type_index_2](ctx2);
+          if_block4.c();
+        } else {
+          if_block4.p(ctx2, dirty);
+        }
+        transition_in(if_block4, 1);
+        if_block4.m(p3, t25);
       }
-      autocomplete0.$set(autocomplete0_changes);
-      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.featurebody)) {
+      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.featurevibe)) {
         input7.value = input7_value_value;
       }
-      const autocomplete1_changes = {};
-      if (dirty[0] & 4)
-        autocomplete1_changes.items = ctx2[2];
-      if (!updating_selectedItem_1 && dirty[0] & 2) {
-        updating_selectedItem_1 = true;
-        autocomplete1_changes.selectedItem = ctx2[1].data.featurebody;
-        add_flush_callback(() => updating_selectedItem_1 = false);
+      let previous_block_index_3 = current_block_type_index_3;
+      current_block_type_index_3 = select_block_type_5(ctx2, dirty);
+      if (current_block_type_index_3 === previous_block_index_3) {
+        if_blocks_3[current_block_type_index_3].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_3[previous_block_index_3], 1, 1, () => {
+          if_blocks_3[previous_block_index_3] = null;
+        });
+        check_outros();
+        if_block5 = if_blocks_3[current_block_type_index_3];
+        if (!if_block5) {
+          if_block5 = if_blocks_3[current_block_type_index_3] = if_block_creators_3[current_block_type_index_3](ctx2);
+          if_block5.c();
+        } else {
+          if_block5.p(ctx2, dirty);
+        }
+        transition_in(if_block5, 1);
+        if_block5.m(p3, t27);
       }
-      autocomplete1.$set(autocomplete1_changes);
-      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.featureface)) {
+      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.style1)) {
         input8.value = input8_value_value;
       }
-      const autocomplete2_changes = {};
-      if (dirty[0] & 8)
-        autocomplete2_changes.items = ctx2[3];
-      if (!updating_selectedItem_2 && dirty[0] & 2) {
-        updating_selectedItem_2 = true;
-        autocomplete2_changes.selectedItem = ctx2[1].data.featureface;
-        add_flush_callback(() => updating_selectedItem_2 = false);
+      let previous_block_index_4 = current_block_type_index_4;
+      current_block_type_index_4 = select_block_type_6(ctx2, dirty);
+      if (current_block_type_index_4 === previous_block_index_4) {
+        if_blocks_4[current_block_type_index_4].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_4[previous_block_index_4], 1, 1, () => {
+          if_blocks_4[previous_block_index_4] = null;
+        });
+        check_outros();
+        if_block6 = if_blocks_4[current_block_type_index_4];
+        if (!if_block6) {
+          if_block6 = if_blocks_4[current_block_type_index_4] = if_block_creators_4[current_block_type_index_4](ctx2);
+          if_block6.c();
+        } else {
+          if_block6.p(ctx2, dirty);
+        }
+        transition_in(if_block6, 1);
+        if_block6.m(p4, t31);
       }
-      autocomplete2.$set(autocomplete2_changes);
-      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.featurevibe)) {
+      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.style2)) {
         input9.value = input9_value_value;
       }
-      const autocomplete3_changes = {};
-      if (dirty[0] & 16)
-        autocomplete3_changes.items = ctx2[4];
-      if (!updating_selectedItem_3 && dirty[0] & 2) {
-        updating_selectedItem_3 = true;
-        autocomplete3_changes.selectedItem = ctx2[1].data.featurevibe;
-        add_flush_callback(() => updating_selectedItem_3 = false);
+      let previous_block_index_5 = current_block_type_index_5;
+      current_block_type_index_5 = select_block_type_7(ctx2, dirty);
+      if (current_block_type_index_5 === previous_block_index_5) {
+        if_blocks_5[current_block_type_index_5].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_5[previous_block_index_5], 1, 1, () => {
+          if_blocks_5[previous_block_index_5] = null;
+        });
+        check_outros();
+        if_block7 = if_blocks_5[current_block_type_index_5];
+        if (!if_block7) {
+          if_block7 = if_blocks_5[current_block_type_index_5] = if_block_creators_5[current_block_type_index_5](ctx2);
+          if_block7.c();
+        } else {
+          if_block7.p(ctx2, dirty);
+        }
+        transition_in(if_block7, 1);
+        if_block7.m(p4, t33);
       }
-      autocomplete3.$set(autocomplete3_changes);
-      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.style1)) {
+      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.style3)) {
         input10.value = input10_value_value;
       }
-      const autocomplete4_changes = {};
-      if (dirty[0] & 32)
-        autocomplete4_changes.items = ctx2[5];
-      if (!updating_selectedItem_4 && dirty[0] & 2) {
-        updating_selectedItem_4 = true;
-        autocomplete4_changes.selectedItem = ctx2[1].data.style1;
-        add_flush_callback(() => updating_selectedItem_4 = false);
+      let previous_block_index_6 = current_block_type_index_6;
+      current_block_type_index_6 = select_block_type_8(ctx2, dirty);
+      if (current_block_type_index_6 === previous_block_index_6) {
+        if_blocks_6[current_block_type_index_6].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_6[previous_block_index_6], 1, 1, () => {
+          if_blocks_6[previous_block_index_6] = null;
+        });
+        check_outros();
+        if_block8 = if_blocks_6[current_block_type_index_6];
+        if (!if_block8) {
+          if_block8 = if_blocks_6[current_block_type_index_6] = if_block_creators_6[current_block_type_index_6](ctx2);
+          if_block8.c();
+        } else {
+          if_block8.p(ctx2, dirty);
+        }
+        transition_in(if_block8, 1);
+        if_block8.m(p4, t35);
       }
-      autocomplete4.$set(autocomplete4_changes);
-      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.style2)) {
+      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.home)) {
         input11.value = input11_value_value;
       }
-      const autocomplete5_changes = {};
-      if (dirty[0] & 32)
-        autocomplete5_changes.items = ctx2[5];
-      if (!updating_selectedItem_5 && dirty[0] & 2) {
-        updating_selectedItem_5 = true;
-        autocomplete5_changes.selectedItem = ctx2[1].data.style2;
-        add_flush_callback(() => updating_selectedItem_5 = false);
+      let previous_block_index_7 = current_block_type_index_7;
+      current_block_type_index_7 = select_block_type_9(ctx2, dirty);
+      if (current_block_type_index_7 === previous_block_index_7) {
+        if_blocks_7[current_block_type_index_7].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_7[previous_block_index_7], 1, 1, () => {
+          if_blocks_7[previous_block_index_7] = null;
+        });
+        check_outros();
+        if_block9 = if_blocks_7[current_block_type_index_7];
+        if (!if_block9) {
+          if_block9 = if_blocks_7[current_block_type_index_7] = if_block_creators_7[current_block_type_index_7](ctx2);
+          if_block9.c();
+        } else {
+          if_block9.p(ctx2, dirty);
+        }
+        transition_in(if_block9, 1);
+        if_block9.m(p5, t39);
       }
-      autocomplete5.$set(autocomplete5_changes);
-      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.style3)) {
+      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.community)) {
         input12.value = input12_value_value;
       }
-      const autocomplete6_changes = {};
-      if (dirty[0] & 64)
-        autocomplete6_changes.items = ctx2[6];
-      if (!updating_selectedItem_6 && dirty[0] & 2) {
-        updating_selectedItem_6 = true;
-        autocomplete6_changes.selectedItem = ctx2[1].data.style3;
-        add_flush_callback(() => updating_selectedItem_6 = false);
+      let previous_block_index_8 = current_block_type_index_8;
+      current_block_type_index_8 = select_block_type_10(ctx2, dirty);
+      if (current_block_type_index_8 === previous_block_index_8) {
+        if_blocks_8[current_block_type_index_8].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_8[previous_block_index_8], 1, 1, () => {
+          if_blocks_8[previous_block_index_8] = null;
+        });
+        check_outros();
+        if_block10 = if_blocks_8[current_block_type_index_8];
+        if (!if_block10) {
+          if_block10 = if_blocks_8[current_block_type_index_8] = if_block_creators_8[current_block_type_index_8](ctx2);
+          if_block10.c();
+        } else {
+          if_block10.p(ctx2, dirty);
+        }
+        transition_in(if_block10, 1);
+        if_block10.m(p5, t41);
       }
-      autocomplete6.$set(autocomplete6_changes);
-      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.home)) {
+      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.ideal)) {
         input13.value = input13_value_value;
       }
-      const autocomplete7_changes = {};
-      if (dirty[0] & 128)
-        autocomplete7_changes.items = ctx2[7];
-      if (!updating_selectedItem_7 && dirty[0] & 2) {
-        updating_selectedItem_7 = true;
-        autocomplete7_changes.selectedItem = ctx2[1].data.home;
-        add_flush_callback(() => updating_selectedItem_7 = false);
+      let previous_block_index_9 = current_block_type_index_9;
+      current_block_type_index_9 = select_block_type_11(ctx2, dirty);
+      if (current_block_type_index_9 === previous_block_index_9) {
+        if_blocks_9[current_block_type_index_9].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_9[previous_block_index_9], 1, 1, () => {
+          if_blocks_9[previous_block_index_9] = null;
+        });
+        check_outros();
+        if_block11 = if_blocks_9[current_block_type_index_9];
+        if (!if_block11) {
+          if_block11 = if_blocks_9[current_block_type_index_9] = if_block_creators_9[current_block_type_index_9](ctx2);
+          if_block11.c();
+        } else {
+          if_block11.p(ctx2, dirty);
+        }
+        transition_in(if_block11, 1);
+        if_block11.m(p6, t45);
       }
-      autocomplete7.$set(autocomplete7_changes);
-      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.community)) {
+      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.flaw)) {
         input14.value = input14_value_value;
       }
-      const autocomplete8_changes = {};
-      if (dirty[0] & 1024)
-        autocomplete8_changes.items = ctx2[10];
-      if (!updating_selectedItem_8 && dirty[0] & 2) {
-        updating_selectedItem_8 = true;
-        autocomplete8_changes.selectedItem = ctx2[1].data.community;
-        add_flush_callback(() => updating_selectedItem_8 = false);
+      let previous_block_index_10 = current_block_type_index_10;
+      current_block_type_index_10 = select_block_type_12(ctx2, dirty);
+      if (current_block_type_index_10 === previous_block_index_10) {
+        if_blocks_10[current_block_type_index_10].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_10[previous_block_index_10], 1, 1, () => {
+          if_blocks_10[previous_block_index_10] = null;
+        });
+        check_outros();
+        if_block12 = if_blocks_10[current_block_type_index_10];
+        if (!if_block12) {
+          if_block12 = if_blocks_10[current_block_type_index_10] = if_block_creators_10[current_block_type_index_10](ctx2);
+          if_block12.c();
+        } else {
+          if_block12.p(ctx2, dirty);
+        }
+        transition_in(if_block12, 1);
+        if_block12.m(p6, t47);
       }
-      autocomplete8.$set(autocomplete8_changes);
-      if (!current || dirty[0] & 2 && input15_value_value !== (input15_value_value = ctx2[1].data.ideal)) {
+      if (!current || dirty[0] & 2 && input15_value_value !== (input15_value_value = ctx2[1].data.dream)) {
         input15.value = input15_value_value;
       }
-      const autocomplete9_changes = {};
-      if (dirty[0] & 256)
-        autocomplete9_changes.items = ctx2[8];
-      if (!updating_selectedItem_9 && dirty[0] & 2) {
-        updating_selectedItem_9 = true;
-        autocomplete9_changes.selectedItem = ctx2[1].data.ideal;
-        add_flush_callback(() => updating_selectedItem_9 = false);
+      let previous_block_index_11 = current_block_type_index_11;
+      current_block_type_index_11 = select_block_type_13(ctx2, dirty);
+      if (current_block_type_index_11 === previous_block_index_11) {
+        if_blocks_11[current_block_type_index_11].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks_11[previous_block_index_11], 1, 1, () => {
+          if_blocks_11[previous_block_index_11] = null;
+        });
+        check_outros();
+        if_block13 = if_blocks_11[current_block_type_index_11];
+        if (!if_block13) {
+          if_block13 = if_blocks_11[current_block_type_index_11] = if_block_creators_11[current_block_type_index_11](ctx2);
+          if_block13.c();
+        } else {
+          if_block13.p(ctx2, dirty);
+        }
+        transition_in(if_block13, 1);
+        if_block13.m(p7, t51);
       }
-      autocomplete9.$set(autocomplete9_changes);
-      if (!current || dirty[0] & 2 && input16_value_value !== (input16_value_value = ctx2[1].data.flaw)) {
-        input16.value = input16_value_value;
-      }
-      const autocomplete10_changes = {};
-      if (dirty[0] & 512)
-        autocomplete10_changes.items = ctx2[9];
-      if (!updating_selectedItem_10 && dirty[0] & 2) {
-        updating_selectedItem_10 = true;
-        autocomplete10_changes.selectedItem = ctx2[1].data.flaw;
-        add_flush_callback(() => updating_selectedItem_10 = false);
-      }
-      autocomplete10.$set(autocomplete10_changes);
-      if (!current || dirty[0] & 2 && input17_value_value !== (input17_value_value = ctx2[1].data.dream)) {
-        input17.value = input17_value_value;
-      }
-      const autocomplete11_changes = {};
-      if (dirty[0] & 1024)
-        autocomplete11_changes.items = ctx2[10];
-      if (!updating_selectedItem_11 && dirty[0] & 2) {
-        updating_selectedItem_11 = true;
-        autocomplete11_changes.selectedItem = ctx2[1].data.dream;
-        add_flush_callback(() => updating_selectedItem_11 = false);
-      }
-      autocomplete11.$set(autocomplete11_changes);
     },
     i(local) {
       if (current)
         return;
-      transition_in(autocomplete0.$$.fragment, local);
-      transition_in(autocomplete1.$$.fragment, local);
-      transition_in(autocomplete2.$$.fragment, local);
-      transition_in(autocomplete3.$$.fragment, local);
-      transition_in(autocomplete4.$$.fragment, local);
-      transition_in(autocomplete5.$$.fragment, local);
-      transition_in(autocomplete6.$$.fragment, local);
-      transition_in(autocomplete7.$$.fragment, local);
-      transition_in(autocomplete8.$$.fragment, local);
-      transition_in(autocomplete9.$$.fragment, local);
-      transition_in(autocomplete10.$$.fragment, local);
-      transition_in(autocomplete11.$$.fragment, local);
+      transition_in(if_block2);
+      transition_in(if_block3);
+      transition_in(if_block4);
+      transition_in(if_block5);
+      transition_in(if_block6);
+      transition_in(if_block7);
+      transition_in(if_block8);
+      transition_in(if_block9);
+      transition_in(if_block10);
+      transition_in(if_block11);
+      transition_in(if_block12);
+      transition_in(if_block13);
       transition_in(tabs.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(autocomplete0.$$.fragment, local);
-      transition_out(autocomplete1.$$.fragment, local);
-      transition_out(autocomplete2.$$.fragment, local);
-      transition_out(autocomplete3.$$.fragment, local);
-      transition_out(autocomplete4.$$.fragment, local);
-      transition_out(autocomplete5.$$.fragment, local);
-      transition_out(autocomplete6.$$.fragment, local);
-      transition_out(autocomplete7.$$.fragment, local);
-      transition_out(autocomplete8.$$.fragment, local);
-      transition_out(autocomplete9.$$.fragment, local);
-      transition_out(autocomplete10.$$.fragment, local);
-      transition_out(autocomplete11.$$.fragment, local);
+      transition_out(if_block2);
+      transition_out(if_block3);
+      transition_out(if_block4);
+      transition_out(if_block5);
+      transition_out(if_block6);
+      transition_out(if_block7);
+      transition_out(if_block8);
+      transition_out(if_block9);
+      transition_out(if_block10);
+      transition_out(if_block11);
+      transition_out(if_block12);
+      transition_out(if_block13);
       transition_out(tabs.$$.fragment, local);
       current = false;
     },
@@ -5086,18 +6289,20 @@ function create_fragment5(ctx) {
         detach(t7);
       if (detaching)
         detach(div6);
-      destroy_component(autocomplete0);
-      destroy_component(autocomplete1);
-      destroy_component(autocomplete2);
-      destroy_component(autocomplete3);
-      destroy_component(autocomplete4);
-      destroy_component(autocomplete5);
-      destroy_component(autocomplete6);
-      destroy_component(autocomplete7);
-      destroy_component(autocomplete8);
-      destroy_component(autocomplete9);
-      destroy_component(autocomplete10);
-      destroy_component(autocomplete11);
+      if_block0.d();
+      if_block1.d();
+      if_blocks[current_block_type_index].d();
+      if_blocks_1[current_block_type_index_1].d();
+      if_blocks_2[current_block_type_index_2].d();
+      if_blocks_3[current_block_type_index_3].d();
+      if_blocks_4[current_block_type_index_4].d();
+      if_blocks_5[current_block_type_index_5].d();
+      if_blocks_6[current_block_type_index_6].d();
+      if_blocks_7[current_block_type_index_7].d();
+      if_blocks_8[current_block_type_index_8].d();
+      if_blocks_9[current_block_type_index_9].d();
+      if_blocks_10[current_block_type_index_10].d();
+      if_blocks_11[current_block_type_index_11].d();
       destroy_component(tabs);
       mounted = false;
       dispose();
@@ -5105,7 +6310,7 @@ function create_fragment5(ctx) {
   };
 }
 function instance4($$self, $$props, $$invalidate) {
-  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(24, $dataStore = $$value)), dataStore);
+  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(26, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
   $$subscribe_dataStore();
@@ -5241,7 +6446,7 @@ function instance4($$self, $$props, $$invalidate) {
     "a remote village",
     "afrontier town",
     "a lonely island",
-    "a capitalcity",
+    "a capital city",
     "a seastead",
     "a remote stronghold",
     "a traveling caravan",
@@ -5250,7 +6455,7 @@ function instance4($$self, $$props, $$invalidate) {
     "a roadside inn",
     "a ship atsea",
     "a place I can't name",
-    "a subterraneancity",
+    "a subterranean city",
     "a forgotten nation",
     "a mountain town",
     "a city in the mist",
@@ -5310,7 +6515,7 @@ function instance4($$self, $$props, $$invalidate) {
     "returning to my hometown as a renowned hero",
     "freeing myself from agang that wants me dead",
     "getting revengeon someone who wronged me",
-    "findinga corner of the world to make my own",
+    "finding a corner of the world to make my own",
     "publishing a book that's found in everyhome",
     "sparking an idea that transforms the world",
     "becoming the greatest scholarin my field",
@@ -5327,7 +6532,7 @@ function instance4($$self, $$props, $$invalidate) {
     "becoming a notorious gambler",
     "making every stranger smile",
     "becoming a master artisan",
-    "dying anhonorable death",
+    "dying an honorable death",
     "mapping the entir eworld",
     "meeting the grim reaper",
     "pullingoff the big score",
@@ -5338,6 +6543,10 @@ function instance4($$self, $$props, $$invalidate) {
   ];
   let selectedBody;
   let toCreateBody = "";
+  let edit = true;
+  if (data.data.dream == "") {
+    edit = true;
+  }
   function handleCreate(newItem) {
     toCreateBody = "Creating " + newItem;
     featurebody.unshift(newItem);
@@ -5377,28 +6586,28 @@ function instance4($$self, $$props, $$invalidate) {
   function handleCreateh2(newItem) {
     toCreateBody = "Creating " + newItem;
     legacy.unshift(newItem);
-    legacy = legacy;
+    $$invalidate(8, legacy);
     return newItem;
   }
   function handleCreateI(newItem) {
     toCreateBody = "Creating " + newItem;
     ideal.unshift(newItem);
-    $$invalidate(8, ideal);
+    $$invalidate(9, ideal);
     return newItem;
   }
   function handleCreateF(newItem) {
     toCreateBody = "Creating " + newItem;
     flaw.unshift(newItem);
-    $$invalidate(9, flaw);
+    $$invalidate(10, flaw);
     return newItem;
   }
   function handleCreateD(newItem) {
     toCreateBody = "Creating " + newItem;
     dream.unshift(newItem);
-    $$invalidate(10, dream);
+    $$invalidate(11, dream);
     return newItem;
   }
-  let items2 = [
+  let items = [
     {
       label: "Inventory",
       value: 1,
@@ -5427,109 +6636,109 @@ function instance4($$self, $$props, $$invalidate) {
   const func = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete0_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.role, value)) {
       data.data.role = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_1 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete1_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_1(value) {
     if ($$self.$$.not_equal(data.data.featurebody, value)) {
       data.data.featurebody = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_2 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete2_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_2(value) {
     if ($$self.$$.not_equal(data.data.featureface, value)) {
       data.data.featureface = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_3 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete3_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_3(value) {
     if ($$self.$$.not_equal(data.data.featurevibe, value)) {
       data.data.featurevibe = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_4 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete4_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_4(value) {
     if ($$self.$$.not_equal(data.data.style1, value)) {
       data.data.style1 = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_5 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete5_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_5(value) {
     if ($$self.$$.not_equal(data.data.style2, value)) {
       data.data.style2 = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_6 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete6_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_6(value) {
     if ($$self.$$.not_equal(data.data.style3, value)) {
       data.data.style3 = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_7 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete7_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_7(value) {
     if ($$self.$$.not_equal(data.data.home, value)) {
       data.data.home = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_8 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete8_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_8(value) {
     if ($$self.$$.not_equal(data.data.community, value)) {
       data.data.community = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_9 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete9_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_9(value) {
     if ($$self.$$.not_equal(data.data.ideal, value)) {
       data.data.ideal = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_10 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete10_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_10(value) {
     if ($$self.$$.not_equal(data.data.flaw, value)) {
       data.data.flaw = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   const func_11 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete11_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_11(value) {
     if ($$self.$$.not_equal(data.data.dream, value)) {
       data.data.dream = value;
-      $$invalidate(1, data), $$invalidate(24, $dataStore);
+      $$invalidate(1, data), $$invalidate(26, $dataStore);
     }
   }
   $$self.$$set = ($$props2) => {
@@ -5537,7 +6746,7 @@ function instance4($$self, $$props, $$invalidate) {
       $$subscribe_dataStore($$invalidate(0, dataStore = $$props2.dataStore));
   };
   $$self.$$.update = () => {
-    if ($$self.$$.dirty[0] & 16777216) {
+    if ($$self.$$.dirty[0] & 67108864) {
       $:
         $$invalidate(1, data = $dataStore.data);
     }
@@ -5551,9 +6760,11 @@ function instance4($$self, $$props, $$invalidate) {
     styleoutfit,
     stylemovement,
     homeland,
+    legacy,
     ideal,
     flaw,
     dream,
+    edit,
     sheet,
     roles,
     handleCreate,
@@ -5565,33 +6776,33 @@ function instance4($$self, $$props, $$invalidate) {
     handleCreateI,
     handleCreateF,
     handleCreateD,
-    items2,
+    items,
     filePicker,
     $dataStore,
     func,
-    autocomplete0_selectedItem_binding,
+    autocomplete_selectedItem_binding,
     func_1,
-    autocomplete1_selectedItem_binding,
+    autocomplete_selectedItem_binding_1,
     func_2,
-    autocomplete2_selectedItem_binding,
+    autocomplete_selectedItem_binding_2,
     func_3,
-    autocomplete3_selectedItem_binding,
+    autocomplete_selectedItem_binding_3,
     func_4,
-    autocomplete4_selectedItem_binding,
+    autocomplete_selectedItem_binding_4,
     func_5,
-    autocomplete5_selectedItem_binding,
+    autocomplete_selectedItem_binding_5,
     func_6,
-    autocomplete6_selectedItem_binding,
+    autocomplete_selectedItem_binding_6,
     func_7,
-    autocomplete7_selectedItem_binding,
+    autocomplete_selectedItem_binding_7,
     func_8,
-    autocomplete8_selectedItem_binding,
+    autocomplete_selectedItem_binding_8,
     func_9,
-    autocomplete9_selectedItem_binding,
+    autocomplete_selectedItem_binding_9,
     func_10,
-    autocomplete10_selectedItem_binding,
+    autocomplete_selectedItem_binding_10,
     func_11,
-    autocomplete11_selectedItem_binding
+    autocomplete_selectedItem_binding_11
   ];
 }
 var QuestActorSheetBase = class extends SvelteComponent {
@@ -5612,7 +6823,7 @@ var QuestActorSheet = class extends ActorSheet {
       classes: ["quest", "sheet", "actor"],
       template: "systems/quest/templates/actor-sheetv2.html",
       width: 850,
-      height: 690,
+      height: 740,
       tabs: []
     });
   }
@@ -5638,7 +6849,7 @@ var QuestActorSheet = class extends ActorSheet {
       case "create":
         const cls = getDocumentClass("Item");
         return cls.create({
-          name: game.i18n.localize("MOUSEGUARD.ItemNew"),
+          name: "New Item",
           type: "item"
         }, { parent: this.actor });
       case "edit":
@@ -5672,6 +6883,10 @@ var QuestActorSheet = class extends ActorSheet {
       { _id: id, data: _data }
     ]);
   }
+  async _onItemEdit(itemId) {
+    const item2 = this.actor.items.get(itemId);
+    return item2.sheet.render(true);
+  }
   async _onItemDelete(itemId) {
     const item2 = this.actor.items.get(itemId);
     item2.delete();
@@ -5690,9 +6905,28 @@ var QuestActorSheet = class extends ActorSheet {
     };
     itemData.data = { rank: 1 };
     delete itemData.data["type"];
+    if (type == "item" && Object(this.actor.itemTypes.item).length >= 12) {
+      ui.notifications.error(this.actor.name + " can not carry another item.");
+      return false;
+    }
     return await Item.create(itemData, { parent: this.actor }).then((item2) => {
       item2.sheet.render(true);
     });
+  }
+  async _onDropItem(event, data) {
+    if (!this.actor.isOwner)
+      return false;
+    const item2 = await Item.implementation.fromDropData(data);
+    const itemData = item2.toObject();
+    const actor = this.actor;
+    let sameActor = data.actorId === actor.id || actor.isToken && data.tokenId === actor.token.id;
+    if (sameActor)
+      return this._onSortItem(event, itemData);
+    if (Object(actor.itemTypes.item).length >= 12) {
+      ui.notifications.error(actor.name + " can not carry another item.");
+    } else {
+      return this._onDropItemCreate(itemData);
+    }
   }
   render(force = false, options = {}) {
     let sheetData = this.getData();
@@ -5808,7 +7042,7 @@ var QuestNPCActorSheet = class extends ActorSheet {
       case "create":
         const cls = getDocumentClass("Item");
         return cls.create({
-          name: game.i18n.localize("MOUSEGUARD.ItemNew"),
+          name: game.i18n.localize("QUEST.ItemNew"),
           type: "item"
         }, { parent: this.actor });
       case "edit":
@@ -5907,8 +7141,8 @@ var QuestNPCActorSheet = class extends ActorSheet {
 // module/templates.js
 var preloadHandlebarsTemplates = async function() {
   const templatePaths = [
-    "systems/mouseguard/templates/parts/sheet-attributes.html",
-    "systems/mouseguard/templates/parts/sheet-groups.html"
+    "systems/quest/templates/parts/sheet-attributes.html",
+    "systems/quest/templates/parts/sheet-groups.html"
   ];
   return loadTemplates(templatePaths);
 };
@@ -5930,16 +7164,69 @@ async function createQuestMacro(data, slot) {
   return false;
 }
 
+// module/quest-roll.js
+var QuestRoll = class extends Roll {
+  constructor(...args) {
+    super(...args);
+  }
+  async render(chatOptions = {}) {
+    chatOptions = foundry.utils.mergeObject({
+      user: game.user.id,
+      flavor: null,
+      template: this.constructor.CHAT_TEMPLATE,
+      blind: false
+    }, chatOptions);
+    if (!this._evaluated)
+      this.evaluate();
+    let chatData = await questChatData(this, chatOptions);
+    return renderTemplate(chatOptions.template, chatData);
+  }
+};
+__publicField(QuestRoll, "CHAT_TEMPLATE", "systems/quest/templates/dice/roll.html");
+var questChatData = async (roll, chatOptions) => {
+  const isPrivate = chatOptions.isPrivate;
+  let outcome;
+  let css;
+  if (roll.result == "20") {
+    outcome = "Triumph";
+    css = "triumph";
+  } else if (roll.result > 11) {
+    outcome = "Success";
+    css = "success";
+  } else if (roll.result > 6) {
+    outcome = "tough choice";
+    css = "touch-choice";
+  } else if (roll.result > 1) {
+    outcome = "Failure";
+    css = "catastrophe";
+  } else {
+    outcome = "Catastrophe";
+    css = "catastrophe";
+  }
+  return {
+    formula: isPrivate ? "???" : roll._formula,
+    flavor: isPrivate ? null : chatOptions.flavor,
+    user: chatOptions.user,
+    tooltip: isPrivate ? "" : await roll.getTooltip(),
+    result: isPrivate ? "?" : roll.result,
+    total: isPrivate ? "?" : roll.total,
+    outcome: isPrivate ? "?" : outcome,
+    css: isPrivate ? "?" : css
+  };
+};
+
 // module/quest.js
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
   let RollCount = 0;
   game.quest = {
     QuestActor,
-    createQuestMacro
+    createQuestMacro,
+    QuestRoll
   };
   CONFIG.Actor.documentClass = QuestActor;
   CONFIG.Item.documentClass = QuestItem;
+  CONFIG.Dice.rolls.push(QuestRoll);
   CONFIG.Combat.initiative = {
     formula: "1d20",
     decimals: 2

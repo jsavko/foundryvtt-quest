@@ -77,33 +77,33 @@
                         {{/each}}
                     </div>
                     <div class="item-controls">
-                        <a class="item-control" title="{{ localize "MOUSEGUARD.ItemEdit" }}" data-action="edit"><i class="fas fa-edit"></i></a>
-                        <a class="item-control" title="{{ localize "MOUSEGUARD.ItemDelete" }}" data-action="delete"><i class="fas fa-trash"></i></a>
+                        <a class="item-control" title="{{ localize "QUEST.ItemEdit" }}" data-action="edit"><i class="fas fa-edit"></i></a>
+                        <a class="item-control" title="{{ localize "QUEST.ItemDelete" }}" data-action="delete"><i class="fas fa-trash"></i></a>
                     </div>
                 </li>
                 {{/each}}
             </ol>
             <p>
-                <a class="item-control" title="{{ localize "MOUSEGUARD.ItemCreate" }}" data-action="create"><i class="fas fa-plus"></i> {{ localize "MOUSEGUARD.ItemCreate" }}</a>
+                <a class="item-control" title="{{ localize "QUEST.ItemCreate" }}" data-action="create"><i class="fas fa-plus"></i> {{ localize "QUEST.ItemCreate" }}</a>
             </p>
         </div>
 
         {{!-- Attributes Tab --}}
         <div class="tab attributes" data-group="primary" data-tab="attributes">
             <header class="attributes-header flexrow">
-                <span class="attribute-key">{{localize "MOUSEGUARD.AttributeKey"}}</span>
-                <span class="attribute-value">{{localize "MOUSEGUARD.AttributeValue"}}</span>
-                <span class="attribute-label">{{localize "MOUSEGUARD.AttributeLabel"}}</span>
-                <span class="attribute-dtype">{{localize "MOUSEGUARD.AttributeDtype"}}</span>
+                <span class="attribute-key">{{localize "QUEST.AttributeKey"}}</span>
+                <span class="attribute-value">{{localize "QUEST.AttributeValue"}}</span>
+                <span class="attribute-label">{{localize "QUEST.AttributeLabel"}}</span>
+                <span class="attribute-dtype">{{localize "QUEST.AttributeDtype"}}</span>
                 <a class="attribute-control" data-action="create" data-group="{{group}}"><i class="fas fa-plus"></i></a>
             </header>
 
             {{!-- Render the attribute list partial. --}}
-            {{> "systems/mouseguard/templates/parts/sheet-attributes.html" attributes=systemData.ungroupedAttributes dtypes=dtypes}}
+            {{> "systems/quest/templates/parts/sheet-attributes.html" attributes=systemData.ungroupedAttributes dtypes=dtypes}}
 
             {{!-- Render the grouped attributes partial and control. --}}
             <div class="groups">
-                {{> "systems/mouseguard/templates/parts/sheet-groups.html" attributes=systemData.groupedAttributes groups=systemData.groups dtypes=dtypes}}
+                {{> "systems/quest/templates/parts/sheet-groups.html" attributes=systemData.groupedAttributes groups=systemData.groups dtypes=dtypes}}
 
                 <div class="group-controls flexrow">
                     <input class="group-prefix" type="text" value=""/>
