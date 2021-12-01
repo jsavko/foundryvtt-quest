@@ -44,7 +44,7 @@ const questChatData = async (roll, chatOptions) => {
         outcome = "Success";
         css = "success";
     } else if (roll.result > 6) {
-        outcome = "tough choice";
+        outcome = "Tough Choice";
         css = "touch-choice";
     } else if (roll.result > 1) {
         outcome = "Failure";

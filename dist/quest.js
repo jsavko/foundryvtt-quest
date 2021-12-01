@@ -22,15 +22,22 @@ var require_2 = __commonJS({
   }
 });
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css
 var require_3 = __commonJS({
+  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css"(exports, module) {
+    module.exports = {};
+  }
+});
+
+// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
+var require_4 = __commonJS({
   "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
 
 // fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css
-var require_4 = __commonJS({
+var require_5 = __commonJS({
   "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
@@ -423,11 +430,20 @@ var QuestActor = class extends Actor {
   prepareData() {
     super.prepareData();
     const actorData = this.data;
-    this._prepareCharacterData(this.data);
+    return this._prepareCharacterData(this.data);
   }
   _prepareCharacterData(actorData) {
     actorData.data.itemTypes = this.itemTypes;
-    console.log(actorData);
+    let abilities = this.itemTypes.ability;
+    let paths = {};
+    for (let ability of abilities) {
+      console.log(ability.data.data.path);
+      if (!!paths[ability.data.data.path] == false)
+        paths[ability.data.data.path] = [];
+      paths[ability.data.data.path].push(ability);
+    }
+    actorData.data.abilityTypes = paths;
+    return actorData;
   }
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
@@ -585,6 +601,54 @@ var QuestItemSheet = class extends ItemSheet {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["quest", "sheet", "item"],
       template: "systems/quest/templates/item-sheet.html",
+      width: 520,
+      height: 480,
+      tabs: [
+        {
+          navSelector: ".sheet-tabs",
+          contentSelector: ".sheet-body",
+          initial: "description"
+        }
+      ],
+      scrollY: [".attributes"]
+    });
+  }
+  getData() {
+    const context = super.getData();
+    EntitySheetHelper.getAttributeData(context.data);
+    context.systemData = context.data.data;
+    context.dtypes = ATTRIBUTE_TYPES;
+    return context;
+  }
+  activateListeners(html) {
+    super.activateListeners(html);
+    if (!this.isEditable)
+      return;
+    html.find(".attributes").on("click", ".attribute-control", EntitySheetHelper.onClickAttributeControl.bind(this));
+    html.find(".groups").on("click", ".group-control", EntitySheetHelper.onClickAttributeGroupControl.bind(this));
+    html.find(".attributes").on("click", "a.attribute-roll", EntitySheetHelper.onAttributeRoll.bind(this));
+    html.find(".attributes a.attribute-roll").each((i, a) => {
+      a.setAttribute("draggable", true);
+      a.addEventListener("dragstart", (ev) => {
+        let dragData = ev.currentTarget.dataset;
+        ev.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+      }, false);
+    });
+  }
+  _getSubmitData(updateData) {
+    let formData = super._getSubmitData(updateData);
+    formData = EntitySheetHelper.updateAttributes(formData, this.object);
+    formData = EntitySheetHelper.updateGroups(formData, this.object);
+    return formData;
+  }
+};
+
+// module/ability-sheet.js
+var QuestAbilitySheet = class extends ItemSheet {
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["quest", "sheet", "item"],
+      template: "systems/quest/templates/ability-sheet.html",
       width: 520,
       height: 480,
       tabs: [
@@ -969,7 +1033,7 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance6, create_fragment7, not_equal, props, dirty = [-1]) {
+function init(component, options, instance7, create_fragment7, not_equal, props, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
@@ -990,7 +1054,7 @@ function init(component, options, instance6, create_fragment7, not_equal, props,
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance6 ? instance6(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance7 ? instance7(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -1413,7 +1477,7 @@ function make_dirty2(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init2(component, options, instance6, create_fragment7, not_equal, props, dirty = [-1]) {
+function init2(component, options, instance7, create_fragment7, not_equal, props, dirty = [-1]) {
   const parent_component = current_component2;
   set_current_component2(component);
   const $$ = component.$$ = {
@@ -1434,7 +1498,7 @@ function init2(component, options, instance6, create_fragment7, not_equal, props
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance6 ? instance6(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance7 ? instance7(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -4235,31 +4299,232 @@ var QuestActorSheetInventory_default = QuestActorSheetInventory;
 require_2();
 
 // module/svelte/QuestActorSheetAbilities.svelte
-function create_fragment4(ctx) {
-  let t;
+function get_each_context4(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[9] = list[i];
+  child_ctx[11] = i;
+  return child_ctx;
+}
+function get_each_context_13(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[12] = list[i];
+  return child_ctx;
+}
+function create_each_block_13(ctx) {
+  let li;
+  let div1;
+  let t0_value = ctx[12].name + "";
+  let t0;
+  let t1;
+  let div0;
+  let a0;
+  let t2;
+  let a1;
+  let mounted;
+  let dispose;
+  function click_handler(...args) {
+    return ctx[4](ctx[12], ...args);
+  }
+  function click_handler_1(...args) {
+    return ctx[5](ctx[12], ...args);
+  }
   return {
     c() {
-      t = text("Abilities Tab");
+      li = element("li");
+      div1 = element("div");
+      t0 = text(t0_value);
+      t1 = space();
+      div0 = element("div");
+      a0 = element("a");
+      a0.innerHTML = `<i class="fas fa-pen svelte-m3h802"></i>`;
+      t2 = space();
+      a1 = element("a");
+      a1.innerHTML = `<i class="fas fa-trash svelte-m3h802"></i>`;
+      attr(div0, "class", "flex medium svelte-m3h802");
+      attr(div1, "class", "flex svelte-m3h802");
+      attr(li, "class", "svelte-m3h802");
     },
     m(target, anchor) {
-      insert(target, t, anchor);
+      insert(target, li, anchor);
+      append(li, div1);
+      append(div1, t0);
+      append(div1, t1);
+      append(div1, div0);
+      append(div0, a0);
+      append(div0, t2);
+      append(div0, a1);
+      if (!mounted) {
+        dispose = [listen(a0, "click", click_handler), listen(a1, "click", click_handler_1)];
+        mounted = true;
+      }
     },
-    p: noop,
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (dirty & 1 && t0_value !== (t0_value = ctx[12].name + ""))
+        set_data(t0, t0_value);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(li);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_each_block4(ctx) {
+  let h3;
+  let t0_value = Object.keys(ctx[0])[ctx[11]] + "";
+  let t0;
+  let t1;
+  let ul;
+  let t2;
+  let each_value_1 = ctx[0][Object.keys(ctx[0])[ctx[11]]];
+  let each_blocks = [];
+  for (let i = 0; i < each_value_1.length; i += 1) {
+    each_blocks[i] = create_each_block_13(get_each_context_13(ctx, each_value_1, i));
+  }
+  return {
+    c() {
+      h3 = element("h3");
+      t0 = text(t0_value);
+      t1 = space();
+      ul = element("ul");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      t2 = space();
+      attr(ul, "class", "svelte-m3h802");
+    },
+    m(target, anchor) {
+      insert(target, h3, anchor);
+      append(h3, t0);
+      insert(target, t1, anchor);
+      insert(target, ul, anchor);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(ul, null);
+      }
+      append(ul, t2);
+    },
+    p(ctx2, dirty) {
+      if (dirty & 1 && t0_value !== (t0_value = Object.keys(ctx2[0])[ctx2[11]] + ""))
+        set_data(t0, t0_value);
+      if (dirty & 5) {
+        each_value_1 = ctx2[0][Object.keys(ctx2[0])[ctx2[11]]];
+        let i;
+        for (i = 0; i < each_value_1.length; i += 1) {
+          const child_ctx = get_each_context_13(ctx2, each_value_1, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block_13(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(ul, t2);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value_1.length;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(h3);
+      if (detaching)
+        detach(t1);
+      if (detaching)
+        detach(ul);
+      destroy_each(each_blocks, detaching);
+    }
+  };
+}
+function create_fragment4(ctx) {
+  let each_1_anchor;
+  let each_value = {
+    length: Object.keys(ctx[0]).length
+  };
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block4(get_each_context4(ctx, each_value, i));
+  }
+  return {
+    c() {
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      each_1_anchor = empty();
+    },
+    m(target, anchor) {
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(target, anchor);
+      }
+      insert(target, each_1_anchor, anchor);
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 5) {
+        each_value = {
+          length: Object.keys(ctx2[0]).length
+        };
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context4(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block4(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+    },
     i: noop,
     o: noop,
     d(detaching) {
+      destroy_each(each_blocks, detaching);
       if (detaching)
-        detach(t);
+        detach(each_1_anchor);
     }
   };
+}
+function instance4($$self, $$props, $$invalidate) {
+  let abilityTypes;
+  let $sheetData;
+  let sheetData = getContext("sheetStore");
+  component_subscribe($$self, sheetData, (value) => $$invalidate(3, $sheetData = value));
+  let { actor, sheet } = $sheetData;
+  let data;
+  let abilities;
+  const click_handler = (ability, e) => {
+    sheet?._onItemEdit(ability.data._id);
+  };
+  const click_handler_1 = (ability, e) => {
+    sheet?._onItemDelete(ability.data._id);
+  };
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 8) {
+      $:
+        data = $sheetData.data;
+    }
+    if ($$self.$$.dirty & 8) {
+      $:
+        $$invalidate(0, abilityTypes = $sheetData.data.data.abilityTypes);
+    }
+  };
+  return [abilityTypes, sheetData, sheet, $sheetData, click_handler, click_handler_1];
 }
 var QuestActorSheetAbilities = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, null, create_fragment4, safe_not_equal, {});
+    init(this, options, instance4, create_fragment4, safe_not_equal, {});
   }
 };
 var QuestActorSheetAbilities_default = QuestActorSheetAbilities;
+require_3();
 
 // module/svelte/QuestActorSheetBase.svelte
 function create_else_block_13(ctx) {
@@ -6309,7 +6574,7 @@ function create_fragment5(ctx) {
     }
   };
 }
-function instance4($$self, $$props, $$invalidate) {
+function instance5($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(26, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
@@ -6808,11 +7073,11 @@ function instance4($$self, $$props, $$invalidate) {
 var QuestActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance4, create_fragment5, safe_not_equal, { dataStore: 0 }, [-1, -1]);
+    init(this, options, instance5, create_fragment5, safe_not_equal, { dataStore: 0 }, [-1, -1]);
   }
 };
 var QuestActorSheetBase_default = QuestActorSheetBase;
-require_3();
+require_4();
 
 // module/actor-sheet.js
 var QuestActorSheet = class extends ActorSheet {
@@ -6922,7 +7187,7 @@ var QuestActorSheet = class extends ActorSheet {
     let sameActor = data.actorId === actor.id || actor.isToken && data.tokenId === actor.token.id;
     if (sameActor)
       return this._onSortItem(event, itemData);
-    if (Object(actor.itemTypes.item).length >= 12) {
+    if (Object(actor.itemTypes.item).length >= 12 && item2.type == "item") {
       ui.notifications.error(actor.name + " can not carry another item.");
     } else {
       return this._onDropItemCreate(itemData);
@@ -6930,6 +7195,7 @@ var QuestActorSheet = class extends ActorSheet {
   }
   render(force = false, options = {}) {
     let sheetData = this.getData();
+    console.log(sheetData);
     if (this.app !== null) {
       let states = Application.RENDER_STATES;
       if (this._state == states.RENDERING || this._state == states.RENDERED) {
@@ -6965,7 +7231,7 @@ var QuestActorSheet = class extends ActorSheet {
 };
 
 // module/svelte/QuestEditor.svelte
-require_4();
+require_5();
 
 // module/svelte/QuestNPCActorSheetBase.svelte
 function create_fragment6(ctx) {
@@ -6986,7 +7252,7 @@ function create_fragment6(ctx) {
     }
   };
 }
-function instance5($$self, $$props, $$invalidate) {
+function instance6($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(1, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
@@ -7002,7 +7268,7 @@ function instance5($$self, $$props, $$invalidate) {
 var QuestNPCActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance5, create_fragment6, safe_not_equal, { dataStore: 0 });
+    init(this, options, instance6, create_fragment6, safe_not_equal, { dataStore: 0 });
   }
 };
 var QuestNPCActorSheetBase_default = QuestNPCActorSheetBase;
@@ -7194,7 +7460,7 @@ var questChatData = async (roll, chatOptions) => {
     outcome = "Success";
     css = "success";
   } else if (roll.result > 6) {
-    outcome = "tough choice";
+    outcome = "Tough Choice";
     css = "touch-choice";
   } else if (roll.result > 1) {
     outcome = "Failure";
@@ -7239,6 +7505,10 @@ Hooks.once("init", async function() {
   Items.registerSheet("quest", QuestItemSheet, {
     makeDefault: true
   });
+  Items.registerSheet("quest", QuestAbilitySheet, {
+    types: ["ability"],
+    makeDefault: true
+  });
   game.settings.register("quest", "macroShorthand", {
     name: "SETTINGS.QuestMacroShorthandN",
     hint: "SETTINGS.QuestMacroShorthandL",
@@ -7273,6 +7543,61 @@ Hooks.once("init", async function() {
   await preloadHandlebarsTemplates();
 });
 Hooks.once("init", async function() {
+  TextEditor.enrichHTML = function(content, {
+    secrets = false,
+    documents = true,
+    links = true,
+    rolls = true,
+    cost = true,
+    rollData,
+    ...options
+  } = {}) {
+    const html = document.createElement("div");
+    html.innerHTML = String(content || "");
+    if (!secrets) {
+      let elements = html.querySelectorAll("section.secret");
+      elements.forEach((e) => e.parentNode.removeChild(e));
+    }
+    let updateTextArray = true;
+    let text3 = [];
+    if (options.entities) {
+      console.warn("The 'entities' option for TextEditor.enrichHTML is deprecated. Please use 'documents' instead.");
+      documents = options.entities;
+    }
+    if (documents) {
+      if (updateTextArray)
+        text3 = this._getTextNodes(html);
+      const documentTypes = CONST.DOCUMENT_LINK_TYPES.concat("Compendium");
+      const rgx = new RegExp(`@(${documentTypes.join("|")})\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+      updateTextArray = this._replaceTextContent(text3, rgx, this._createContentLink);
+    }
+    if (links) {
+      if (updateTextArray)
+        text3 = this._getTextNodes(html);
+      const rgx = /(https?:\/\/)(www\.)?([^\s<]+)/gi;
+      updateTextArray = this._replaceTextContent(text3, rgx, this._createHyperlink);
+    }
+    if (rolls) {
+      rollData = rollData instanceof Function ? rollData() : rollData || {};
+      if (updateTextArray)
+        text3 = this._getTextNodes(html);
+      const rgx = /\[\[(\/[a-zA-Z]+\s)?(.*?)([\]]{2,3})(?:{([^}]+)})?/gi;
+      updateTextArray = this._replaceTextContent(text3, rgx, (...args) => this._createInlineRoll(...args, rollData));
+    }
+    if (cost) {
+      if (updateTextArray)
+        text3 = this._getTextNodes(html);
+      const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+      updateTextArray = this._replaceTextContent(text3, rgx, this._createCost);
+    }
+    return html.innerHTML;
+  };
+  TextEditor._createCost = function(match) {
+    const a = document.createElement("a");
+    match = match.substring(6, match.length - 1);
+    a.innerHTML = '<i class="cost">' + match + "</i>";
+    return a;
+  };
 });
 Hooks.once("ready", async () => {
 });

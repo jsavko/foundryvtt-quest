@@ -60,6 +60,26 @@ li.svelte-gddmne i.svelte-gddmne:hover {
   opacity: 100%;
 }
 
+/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css */
+ul.svelte-m3h802.svelte-m3h802 {
+  padding-left: 30px;
+}
+.flex.svelte-m3h802.svelte-m3h802 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.medium.svelte-m3h802.svelte-m3h802 {
+  width: 40px;
+}
+li.svelte-m3h802 i.svelte-m3h802 {
+  opacity: 66%;
+}
+li.svelte-m3h802 i.svelte-m3h802:hover {
+  opacity: 100%;
+}
+
 /* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
 input.svelte-bzv5hr.svelte-bzv5hr {
   border-top: none;

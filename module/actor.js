@@ -16,12 +16,25 @@ export class QuestActor extends Actor {
         super.prepareData();
         const actorData = this.data;
         //console.log(actorData)
-        this._prepareCharacterData(this.data);
+        return this._prepareCharacterData(this.data);
     }
 
     _prepareCharacterData(actorData) {
         actorData.data.itemTypes = this.itemTypes;
-        console.log(actorData);
+
+        // Set abilities into paths
+        let abilities = this.itemTypes.ability;
+
+        let paths = {};
+        for (let ability of abilities) {
+            console.log(ability.data.data.path);
+            if (!!paths[ability.data.data.path] == false)
+                paths[ability.data.data.path] = [];
+            paths[ability.data.data.path].push(ability);
+        }
+        actorData.data.abilityTypes = paths;
+        //console.log(actorData);
+        return actorData;
         //mergeObject(actorData.data, this.itemTypes)
     }
 

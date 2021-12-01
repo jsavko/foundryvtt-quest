@@ -1,0 +1,52 @@
+<form class="flexcol {{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img
+            class="profile-img"
+            src="{{data.img}}"
+            data-edit="img"
+            title="{{data.name}}"
+        />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input
+                    name="name"
+                    type="text"
+                    value="{{data.name}}"
+                    placeholder="Name"
+                />
+            </h1>
+            <div class="resource">
+                <label>Role</label>
+                <input
+                    type="text"
+                    name="data.role"
+                    value="{{data.data.role}}"
+                />
+            </div>
+            <div class="resource">
+                <label>Path</label>
+                <input
+                    type="text"
+                    name="data.path"
+                    value="{{data.data.path}}"
+                />
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">Description</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="description">
+            {{editor content=systemData.description target="data.description"
+            button=true owner=owner editable=editable rollData=rollData}}
+        </div>
+
+        {{!-- Attributes Tab --}}
+    </section>
+</form>

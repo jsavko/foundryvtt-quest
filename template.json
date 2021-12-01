@@ -3,8 +3,8 @@
         "types": ["character"],
         "character": {
             "biography": "",
-            "hp": 0,
-            "ap": 0,
+            "hp": 10,
+            "ap": 10,
             "pronouns": "",
             "age": "",
             "height": "",
@@ -33,7 +33,9 @@
         },
         "ability": {
             "description": "",
-            "cost": 1
+            "cost": 1,
+            "role": "",
+            "path": ""
         }
     }
 }

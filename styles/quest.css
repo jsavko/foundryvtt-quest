@@ -2,17 +2,29 @@
     /* Sheet Tabs */
     /* Items List */
     /* Attributes */
-    font-family: "Ovo", serif;
+    font-family: "Ovo", sans-serif;
+    color: #222831;
+    font-size: 1.1rem;
+    font-weight: 500;
 }
+
 .quest .window-content {
     height: 100%;
     padding: 5px;
     overflow-y: hidden;
+    line-height: 1.2rem;
+    font-size: 1.1rem;
 }
 .quest form {
     height: 100%;
     overflow: scroll;
 }
+
+.message-sender h4 {
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 700;
+}
+
 .quest .sheet-header {
     flex: 0 0 100px;
     overflow: hidden;
@@ -22,6 +34,7 @@
     justify-content: flex-start;
     margin-bottom: 10px;
 }
+
 .quest .sheet-header .profile-img {
     flex: 0 0 100px;
     height: 100px;
@@ -301,4 +314,32 @@
     font-family: "Alegreya Sans", sans-serif;
     font-weight: 700;
     font-size: 1.9rem;
+}
+
+.cost {
+    flex: 0 0 auto;
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 700;
+    margin-right: 20px;
+    padding-left: 10px;
+    border-radius: 3px 0px 0px 3px;
+    background: #222831;
+    color: #fff;
+    height: 20px;
+    line-height: 1rem;
+    position: relative;
+    padding-right: 5px;
+    width: 1.8rem;
+}
+.cost:after {
+    content: "";
+    float: right;
+    position: absolute;
+    top: 0;
+    right: -11px;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent transparent #222831;
+    border-style: solid;
+    border-width: 10px 0px 10px 11px;
 }

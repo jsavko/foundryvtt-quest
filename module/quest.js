@@ -7,6 +7,7 @@
 import { QuestActor } from "./actor.js";
 import { QuestItem } from "./item.js";
 import { QuestItemSheet } from "./item-sheet.js";
+import { QuestAbilitySheet } from "./ability-sheet.js";
 import { QuestActorSheet } from "./actor-sheet.js";
 import { QuestNPCActorSheet } from "./npcactor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
@@ -57,6 +58,10 @@ Hooks.once("init", async function () {
     });
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("quest", QuestItemSheet, {
+        makeDefault: true
+    });
+    Items.registerSheet("quest", QuestAbilitySheet, {
+        types: ["ability"],
         makeDefault: true
     });
 
@@ -120,7 +125,111 @@ Hooks.once("init", async function () {
  */
 //Hooks.on("hotbarDrop", (bar, data, slot) => createQuestMacro(data, slot));
 
-Hooks.once("init", async function () {});
+Hooks.once("init", async function () {
+    // Replace functions for tinyMCE
+
+    TextEditor.enrichHTML = function (
+        content,
+        {
+            secrets = false,
+            documents = true,
+            links = true,
+            rolls = true,
+            cost = true,
+            rollData,
+            ...options
+        } = {}
+    ) {
+        // Create the HTML element
+        const html = document.createElement("div");
+        html.innerHTML = String(content || "");
+
+        // Remove secret blocks
+        if (!secrets) {
+            let elements = html.querySelectorAll("section.secret");
+            elements.forEach((e) => e.parentNode.removeChild(e));
+        }
+
+        // Plan text content replacements
+        let updateTextArray = true;
+        let text = [];
+
+        // Replace document links
+        if (options.entities) {
+            console.warn(
+                "The 'entities' option for TextEditor.enrichHTML is deprecated. Please use 'documents' instead."
+            );
+            documents = options.entities;
+        }
+
+        if (documents) {
+            if (updateTextArray) text = this._getTextNodes(html);
+            const documentTypes =
+                CONST.DOCUMENT_LINK_TYPES.concat("Compendium");
+            const rgx = new RegExp(
+                `@(${documentTypes.join("|")})\\[([^\\]]+)\\](?:{([^}]+)})?`,
+                "g"
+            );
+            updateTextArray = this._replaceTextContent(
+                text,
+                rgx,
+                this._createContentLink
+            );
+        }
+
+        // Replace hyperlinks
+        if (links) {
+            if (updateTextArray) text = this._getTextNodes(html);
+            const rgx = /(https?:\/\/)(www\.)?([^\s<]+)/gi;
+            updateTextArray = this._replaceTextContent(
+                text,
+                rgx,
+                this._createHyperlink
+            );
+        }
+
+        // Replace inline rolls
+        if (rolls) {
+            rollData =
+                rollData instanceof Function ? rollData() : rollData || {};
+            if (updateTextArray) text = this._getTextNodes(html);
+            const rgx = /\[\[(\/[a-zA-Z]+\s)?(.*?)([\]]{2,3})(?:{([^}]+)})?/gi;
+            updateTextArray = this._replaceTextContent(text, rgx, (...args) =>
+                this._createInlineRoll(...args, rollData)
+            );
+        }
+
+        // Look for Cost?
+        if (cost) {
+            if (updateTextArray) text = this._getTextNodes(html);
+            const rgx = new RegExp(
+                `@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`,
+                "g"
+            );
+            updateTextArray = this._replaceTextContent(
+                text,
+                rgx,
+                this._createCost
+            );
+        }
+
+        // Return the enriched HTML
+        return html.innerHTML;
+    };
+
+    TextEditor._createCost = function (match) {
+        const a = document.createElement("a");
+
+        //match = match.replace(/@(cost|Cost)\[/g, "");
+        //match = match.replace(/]/g, "");
+        // (?<=\[).+?(?=\])
+        match = match.substring(6, match.length - 1);
+        a.innerHTML = '<i class="cost">' + match + "</i>";
+        //a.classList.add("cost");
+
+        return a;
+    };
+});
 
 Hooks.once("ready", async () => {});
 

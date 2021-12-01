@@ -173,7 +173,7 @@ export class QuestActorSheet extends ActorSheet {
             (actor.isToken && data.tokenId === actor.token.id);
         if (sameActor) return this._onSortItem(event, itemData);
 
-        if (Object(actor.itemTypes.item).length >= 12) {
+        if (Object(actor.itemTypes.item).length >= 12 && item.type == "item") {
             ui.notifications.error(actor.name + " can not carry another item.");
         } else {
             // Create the owned item
@@ -184,6 +184,7 @@ export class QuestActorSheet extends ActorSheet {
     render(force = false, options = {}) {
         // Grab the sheetdata for both updates and new apps.
         let sheetData = this.getData();
+        console.log(sheetData);
         // Exit if Vue has already rendered.
         if (this.app !== null) {
             let states = Application.RENDER_STATES;
