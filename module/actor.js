@@ -27,7 +27,7 @@ export class QuestActor extends Actor {
 
         let paths = {};
         for (let ability of abilities) {
-            console.log(ability.data.data.path);
+            //console.log(ability.data.data.path);
             if (!!paths[ability.data.data.path] == false)
                 paths[ability.data.data.path] = [];
             paths[ability.data.data.path].push(ability);

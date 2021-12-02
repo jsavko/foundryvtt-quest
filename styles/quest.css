@@ -316,7 +316,7 @@
     font-size: 1.9rem;
 }
 
-.cost {
+.costd {
     flex: 0 0 auto;
     font-family: "Alegreya Sans", sans-serif;
     font-weight: 700;
@@ -331,7 +331,7 @@
     padding-right: 5px;
     width: 1.8rem;
 }
-.cost:after {
+.costd:after {
     content: "";
     float: right;
     position: absolute;
@@ -342,4 +342,22 @@
     border-color: transparent transparent transparent #222831;
     border-style: solid;
     border-width: 10px 0px 10px 11px;
+}
+
+.cost {
+    background-image: url(../assets/pointedrec.svg);
+    background-repeat: no-repeat;
+    min-width: 42px;
+    padding-left: 7px;
+    display: inline-block;
+    color: #fff;
+    flex: 0 0 auto;
+    font-family: "Alegreya Sans", sans-serif;
+    margin-right: 5px;
+}
+
+.ability-name h2 {
+    font-family: "Alegreya", serif;
+    font-weight: 900;
+    text-align: center;
 }

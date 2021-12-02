@@ -228,14 +228,14 @@
         "freeing myself from agang that wants me dead",
         "getting revengeon someone who wronged me",
         "finding a corner of the world to make my own",
-        "publishing a book that's found in everyhome",
+        "publishing a book that's found in every home",
         "sparking an idea that transforms the world",
         "becoming the greatest scholarin my field",
         "recovering a stolen artifact for my people",
         "stealing from the rich togive to the poor",
         "having my name spoken by my leader",
         "meeting my parents for the first time",
-        "spreading my ideal across theland",
+        "spreading my ideal across the land",
         "overturning a corrupt government",
         "producing a timeless work of art",
         "becoming tremendously wealthy",
@@ -367,7 +367,11 @@
             value={data.data.hp}
         /> / 10
     </div>
-    <div class="roll-generic"><i class="fas fa-dice-d20 fa-2x" /></div>
+    <div class="roll-generic">
+        <a on:click={sheet?._rollDice.bind(sheet)}
+            ><i class="fas fa-dice-d20 fa-2x" /></a
+        >
+    </div>
     <div class="actionpoints">
         <label class="character-label" for="data.actionpoints">AP: </label>
         <input

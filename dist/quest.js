@@ -437,7 +437,6 @@ var QuestActor = class extends Actor {
     let abilities = this.itemTypes.ability;
     let paths = {};
     for (let ability of abilities) {
-      console.log(ability.data.data.path);
       if (!!paths[ability.data.data.path] == false)
         paths[ability.data.data.path] = [];
       paths[ability.data.data.path].push(ability);
@@ -592,6 +591,18 @@ var QuestItem = class extends Item {
     super.prepareDerivedData();
     this.data.data.groups = this.data.data.groups || {};
     this.data.data.attributes = this.data.data.attributes || {};
+    if (this.data.type == "ability") {
+      let tmp = String(this.data.data.description).toLowerCase();
+      const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+      let CostArray = rgx.exec(tmp);
+      this.data.data.cost = 0;
+      if (!!CostArray) {
+        this.data.data.cost = CostArray[2];
+        var count = (tmp.match(/@cost/g) || []).length;
+        if (count > 1)
+          this.data.data.cost = CostArray[2] + "+";
+      }
+    }
   }
 };
 
@@ -4301,67 +4312,90 @@ require_2();
 // module/svelte/QuestActorSheetAbilities.svelte
 function get_each_context4(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[9] = list[i];
-  child_ctx[11] = i;
+  child_ctx[10] = list[i];
+  child_ctx[12] = i;
   return child_ctx;
 }
 function get_each_context_13(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[12] = list[i];
+  child_ctx[13] = list[i];
   return child_ctx;
 }
 function create_each_block_13(ctx) {
   let li;
-  let div1;
-  let t0_value = ctx[12].name + "";
-  let t0;
-  let t1;
+  let div2;
   let div0;
   let a0;
+  let i0;
+  let t0_value = ctx[13].data.data.cost + "";
+  let t0;
+  let t1_value = ctx[13].name + "";
+  let t1;
   let t2;
+  let div1;
   let a1;
+  let t3;
+  let a2;
   let mounted;
   let dispose;
   function click_handler(...args) {
-    return ctx[4](ctx[12], ...args);
+    return ctx[4](ctx[13], ...args);
   }
   function click_handler_1(...args) {
-    return ctx[5](ctx[12], ...args);
+    return ctx[5](ctx[13], ...args);
+  }
+  function click_handler_2(...args) {
+    return ctx[6](ctx[13], ...args);
   }
   return {
     c() {
       li = element("li");
-      div1 = element("div");
-      t0 = text(t0_value);
-      t1 = space();
+      div2 = element("div");
       div0 = element("div");
       a0 = element("a");
-      a0.innerHTML = `<i class="fas fa-pen svelte-m3h802"></i>`;
+      i0 = element("i");
+      t0 = text(t0_value);
+      t1 = text(t1_value);
       t2 = space();
+      div1 = element("div");
       a1 = element("a");
-      a1.innerHTML = `<i class="fas fa-trash svelte-m3h802"></i>`;
-      attr(div0, "class", "flex medium svelte-m3h802");
-      attr(div1, "class", "flex svelte-m3h802");
-      attr(li, "class", "svelte-m3h802");
+      a1.innerHTML = `<i class="fas fa-info-circle svelte-17i6vo1"></i>`;
+      t3 = space();
+      a2 = element("a");
+      a2.innerHTML = `<i class="fas fa-trash svelte-17i6vo1"></i>`;
+      attr(i0, "class", "cost svelte-17i6vo1");
+      attr(div1, "class", "flex medium svelte-17i6vo1");
+      attr(div2, "class", "flex svelte-17i6vo1");
+      attr(li, "class", "svelte-17i6vo1");
     },
     m(target, anchor) {
       insert(target, li, anchor);
-      append(li, div1);
-      append(div1, t0);
-      append(div1, t1);
-      append(div1, div0);
+      append(li, div2);
+      append(div2, div0);
       append(div0, a0);
-      append(div0, t2);
-      append(div0, a1);
+      append(a0, i0);
+      append(i0, t0);
+      append(div0, t1);
+      append(div2, t2);
+      append(div2, div1);
+      append(div1, a1);
+      append(div1, t3);
+      append(div1, a2);
       if (!mounted) {
-        dispose = [listen(a0, "click", click_handler), listen(a1, "click", click_handler_1)];
+        dispose = [
+          listen(a0, "click", click_handler),
+          listen(a1, "click", click_handler_1),
+          listen(a2, "click", click_handler_2)
+        ];
         mounted = true;
       }
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      if (dirty & 1 && t0_value !== (t0_value = ctx[12].name + ""))
+      if (dirty & 1 && t0_value !== (t0_value = ctx[13].data.data.cost + ""))
         set_data(t0, t0_value);
+      if (dirty & 1 && t1_value !== (t1_value = ctx[13].name + ""))
+        set_data(t1, t1_value);
     },
     d(detaching) {
       if (detaching)
@@ -4373,12 +4407,12 @@ function create_each_block_13(ctx) {
 }
 function create_each_block4(ctx) {
   let h3;
-  let t0_value = Object.keys(ctx[0])[ctx[11]] + "";
+  let t0_value = Object.keys(ctx[0])[ctx[12]] + "";
   let t0;
   let t1;
   let ul;
   let t2;
-  let each_value_1 = ctx[0][Object.keys(ctx[0])[ctx[11]]];
+  let each_value_1 = ctx[0][Object.keys(ctx[0])[ctx[12]]];
   let each_blocks = [];
   for (let i = 0; i < each_value_1.length; i += 1) {
     each_blocks[i] = create_each_block_13(get_each_context_13(ctx, each_value_1, i));
@@ -4393,7 +4427,8 @@ function create_each_block4(ctx) {
         each_blocks[i].c();
       }
       t2 = space();
-      attr(ul, "class", "svelte-m3h802");
+      attr(h3, "class", "svelte-17i6vo1");
+      attr(ul, "class", "svelte-17i6vo1");
     },
     m(target, anchor) {
       insert(target, h3, anchor);
@@ -4406,10 +4441,10 @@ function create_each_block4(ctx) {
       append(ul, t2);
     },
     p(ctx2, dirty) {
-      if (dirty & 1 && t0_value !== (t0_value = Object.keys(ctx2[0])[ctx2[11]] + ""))
+      if (dirty & 1 && t0_value !== (t0_value = Object.keys(ctx2[0])[ctx2[12]] + ""))
         set_data(t0, t0_value);
       if (dirty & 5) {
-        each_value_1 = ctx2[0][Object.keys(ctx2[0])[ctx2[11]]];
+        each_value_1 = ctx2[0][Object.keys(ctx2[0])[ctx2[12]]];
         let i;
         for (i = 0; i < each_value_1.length; i += 1) {
           const child_ctx = get_each_context_13(ctx2, each_value_1, i);
@@ -4500,9 +4535,12 @@ function instance4($$self, $$props, $$invalidate) {
   let data;
   let abilities;
   const click_handler = (ability, e) => {
-    sheet?._onItemEdit(ability.data._id);
+    sheet?._chatAbility(ability.data._id);
   };
   const click_handler_1 = (ability, e) => {
+    sheet?._onItemEdit(ability.data._id);
+  };
+  const click_handler_2 = (ability, e) => {
     sheet?._onItemDelete(ability.data._id);
   };
   $$self.$$.update = () => {
@@ -4515,7 +4553,15 @@ function instance4($$self, $$props, $$invalidate) {
         $$invalidate(0, abilityTypes = $sheetData.data.data.abilityTypes);
     }
   };
-  return [abilityTypes, sheetData, sheet, $sheetData, click_handler, click_handler_1];
+  return [
+    abilityTypes,
+    sheetData,
+    sheet,
+    $sheetData,
+    click_handler,
+    click_handler_1,
+    click_handler_2
+  ];
 }
 var QuestActorSheetAbilities = class extends SvelteComponent {
   constructor(options) {
@@ -5617,6 +5663,7 @@ function create_fragment5(ctx) {
   let t2;
   let t3;
   let div1;
+  let a;
   let t4;
   let div2;
   let label1;
@@ -5877,7 +5924,8 @@ function create_fragment5(ctx) {
       t2 = text(" / 10");
       t3 = space();
       div1 = element("div");
-      div1.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-bzv5hr"></i>`;
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-bzv5hr"></i>`;
       t4 = space();
       div2 = element("div");
       label1 = element("label");
@@ -5982,6 +6030,7 @@ function create_fragment5(ctx) {
       attr(input0, "data-dtype", "Number");
       input0.value = input0_value_value = ctx[1].data.hp;
       attr(div0, "class", "hitpoints svelte-bzv5hr");
+      attr(a, "class", "svelte-bzv5hr");
       attr(div1, "class", "roll-generic svelte-bzv5hr");
       attr(label1, "class", "character-label");
       attr(label1, "for", "data.actionpoints");
@@ -6093,6 +6142,7 @@ function create_fragment5(ctx) {
       append(div0, t2);
       append(div3, t3);
       append(div3, div1);
+      append(div1, a);
       append(div3, t4);
       append(div3, div2);
       append(div2, label1);
@@ -6190,7 +6240,10 @@ function create_fragment5(ctx) {
       mount_component(tabs, content1, null);
       current = true;
       if (!mounted) {
-        dispose = listen(img, "click", ctx[25]);
+        dispose = [
+          listen(a, "click", ctx[13]?._rollDice.bind(ctx[13])),
+          listen(img, "click", ctx[25])
+        ];
         mounted = true;
       }
     },
@@ -6570,7 +6623,7 @@ function create_fragment5(ctx) {
       if_blocks_11[current_block_type_index_11].d();
       destroy_component(tabs);
       mounted = false;
-      dispose();
+      run_all(dispose);
     }
   };
 }
@@ -6781,14 +6834,14 @@ function instance5($$self, $$props, $$invalidate) {
     "freeing myself from agang that wants me dead",
     "getting revengeon someone who wronged me",
     "finding a corner of the world to make my own",
-    "publishing a book that's found in everyhome",
+    "publishing a book that's found in every home",
     "sparking an idea that transforms the world",
     "becoming the greatest scholarin my field",
     "recovering a stolen artifact for my people",
     "stealing from the rich togive to the poor",
     "having my name spoken by my leader",
     "meeting my parents for the first time",
-    "spreading my ideal across theland",
+    "spreading my ideal across the land",
     "overturning a corrupt government",
     "producing a timeless work of art",
     "becoming tremendously wealthy",
@@ -7192,6 +7245,31 @@ var QuestActorSheet = class extends ActorSheet {
     } else {
       return this._onDropItemCreate(itemData);
     }
+  }
+  async _rollDice() {
+    let roll = new game.quest.QuestRoll("1d20");
+    await roll.evaluate({ async: true });
+    roll.toMessage({
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker({ actor: this.actor })
+    });
+  }
+  async _chatAbility(id) {
+    const item2 = this.actor.items.get(id);
+    console.log(item2);
+    let template = "systems/quest/templates/chat/ability.html";
+    let data = { ability: item2.data, actor: this.actor.data };
+    console.log(data);
+    const html = await renderTemplate(template, data);
+    const chatData = {
+      actor: this.actor._id,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      content: html,
+      speaker: {
+        actor: this.actor
+      }
+    };
+    return ChatMessage.create(chatData);
   }
   render(force = false, options = {}) {
     let sheetData = this.getData();

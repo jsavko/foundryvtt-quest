@@ -181,6 +181,34 @@ export class QuestActorSheet extends ActorSheet {
         }
     }
 
+    async _rollDice() {
+        let roll = new game.quest.QuestRoll("1d20");
+        await roll.evaluate({ async: true });
+        roll.toMessage({
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor })
+        });
+    }
+
+    async _chatAbility(id) {
+        const item = this.actor.items.get(id);
+        console.log(item);
+        //Prep Chat Card using Ability Template
+        let template = "systems/quest/templates/chat/ability.html";
+        let data = { ability: item.data, actor: this.actor.data };
+        console.log(data);
+        const html = await renderTemplate(template, data);
+        const chatData = {
+            actor: this.actor._id,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            content: html,
+            speaker: {
+                actor: this.actor
+            }
+        };
+        return ChatMessage.create(chatData);
+    }
+
     render(force = false, options = {}) {
         // Grab the sheetdata for both updates and new apps.
         let sheetData = this.getData();

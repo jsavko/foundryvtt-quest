@@ -61,23 +61,32 @@ li.svelte-gddmne i.svelte-gddmne:hover {
 }
 
 /* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css */
-ul.svelte-m3h802.svelte-m3h802 {
-  padding-left: 30px;
+ul.svelte-17i6vo1.svelte-17i6vo1 {
+  padding-left: 15px;
+  list-style-type: none;
 }
-.flex.svelte-m3h802.svelte-m3h802 {
+li.svelte-17i6vo1.svelte-17i6vo1 {
+  line-height: 1.5;
+}
+.flex.svelte-17i6vo1.svelte-17i6vo1 {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
-.medium.svelte-m3h802.svelte-m3h802 {
+.medium.svelte-17i6vo1.svelte-17i6vo1 {
   width: 40px;
 }
-li.svelte-m3h802 i.svelte-m3h802 {
+li.svelte-17i6vo1 i.svelte-17i6vo1 {
   opacity: 66%;
 }
-li.svelte-m3h802 i.svelte-m3h802:hover {
+li.svelte-17i6vo1 i.svelte-17i6vo1:hover {
   opacity: 100%;
+}
+h3.svelte-17i6vo1.svelte-17i6vo1 {
+  padding-left: 5px;
+  font-family: "Alegreya Sans", sans-serif;
+  font-weight: 900;
 }
 
 /* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
