@@ -1,0 +1,35 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <div class="flex" style="justify-content: space-between">
+        <div>&nbsp</div>
+        <div style="text-align: right">
+            <select id="displayrole" name="displayrole">
+                {{#select content.role}} {{#each content.roleList as |role|}}
+                <option value="{{role}}">{{role}}</option>
+                {{/each}} {{/select}}
+            </select>
+        </div>
+    </div>
+
+    <h1 style="text-align: center">The {{content.role}}</h1>
+    <p><strong>{{content.role}} quick start</strong></p>
+    <p>Choose these abilities:</p>
+    <p>
+        {{#each content.quickStart}} {{{abilityLink name "Item" data._id}}}
+        {{/each}}
+    </p>
+    <p>
+        Paths: {{#each content.abilities}} {{name}}{{#unless @last}},{{/unless}}
+        {{/each}}
+    </p>
+    <p>&nbsp;</p>
+    {{#each content.abilities}}
+    <h2 style="text-align: center">{{name}}</h2>
+    {{#each data}}
+    <p>
+        {{{cost data.data.cost}}} {{{abilityLink data.name "Item" data._id}}}
+        <span>{{{enrich_stripcost data.data.description}}}</span>
+    </p>
+    {{/each}}
+    <p>&nbsp;</p>
+    {{/each}}
+</form>

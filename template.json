@@ -35,7 +35,10 @@
             "description": "",
             "cost": 1,
             "role": "",
-            "path": ""
+            "path": "",
+            "order": 0,
+            "quickstart": false,
+            "long_description": ""
         }
     }
 }

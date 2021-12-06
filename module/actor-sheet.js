@@ -127,6 +127,10 @@ export class QuestActorSheet extends ActorSheet {
         this.render();
     }
 
+    async _openAbilityDialog() {
+        game.quest.AbilityDialog.showAbilityDialog(this.object.data.data.role);
+    }
+
     async _onItemCreate(event) {
         event.preventDefault();
         const header = event.currentTarget;
@@ -212,7 +216,7 @@ export class QuestActorSheet extends ActorSheet {
     render(force = false, options = {}) {
         // Grab the sheetdata for both updates and new apps.
         let sheetData = this.getData();
-        console.log(sheetData);
+        //console.log(sheetData);
         // Exit if Vue has already rendered.
         if (this.app !== null) {
             let states = Application.RENDER_STATES;

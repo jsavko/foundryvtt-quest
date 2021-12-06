@@ -1,5 +1,5 @@
 <form class="flexcol {{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
+    <header class="abilitysheet-header">
         <img
             class="profile-img"
             src="{{data.img}}"
@@ -31,6 +31,23 @@
                     value="{{data.data.path}}"
                 />
             </div>
+            <div class="resource">
+                <label>Order</label>
+                <input
+                    type="text"
+                    name="data.order"
+                    value="{{data.data.order}}"
+                />
+            </div>
+            <div class="resource">
+                <label>Quickstart</label>
+                <input
+                    type="checkbox"
+                    name="data.quickstart"
+                    {{checked
+                    data.data.quickstart}}
+                />
+            </div>
         </div>
     </header>
 
@@ -46,7 +63,5 @@
             {{editor content=systemData.description target="data.description"
             button=true owner=owner editable=editable rollData=rollData}}
         </div>
-
-        {{!-- Attributes Tab --}}
     </section>
 </form>

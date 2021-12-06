@@ -4474,7 +4474,13 @@ function create_each_block4(ctx) {
   };
 }
 function create_fragment4(ctx) {
+  let ul;
+  let li;
+  let a;
+  let t;
   let each_1_anchor;
+  let mounted;
+  let dispose;
   let each_value = {
     length: Object.keys(ctx[0]).length
   };
@@ -4484,16 +4490,33 @@ function create_fragment4(ctx) {
   }
   return {
     c() {
+      ul = element("ul");
+      li = element("li");
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-plus svelte-17i6vo1"></i>`;
+      t = space();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
       each_1_anchor = empty();
+      set_style(li, "list-style-type", "none");
+      set_style(li, "text-align", "right");
+      attr(li, "class", "svelte-17i6vo1");
+      attr(ul, "class", "svelte-17i6vo1");
     },
     m(target, anchor) {
+      insert(target, ul, anchor);
+      append(ul, li);
+      append(li, a);
+      insert(target, t, anchor);
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].m(target, anchor);
       }
       insert(target, each_1_anchor, anchor);
+      if (!mounted) {
+        dispose = listen(a, "click", ctx[2]?._openAbilityDialog.bind(ctx[2]));
+        mounted = true;
+      }
     },
     p(ctx2, [dirty]) {
       if (dirty & 5) {
@@ -4520,9 +4543,15 @@ function create_fragment4(ctx) {
     i: noop,
     o: noop,
     d(detaching) {
+      if (detaching)
+        detach(ul);
+      if (detaching)
+        detach(t);
       destroy_each(each_blocks, detaching);
       if (detaching)
         detach(each_1_anchor);
+      mounted = false;
+      dispose();
     }
   };
 }
@@ -4712,13 +4741,16 @@ function create_if_block_112(ctx) {
   let t;
   let current;
   function autocomplete_selectedItem_binding(value) {
-    ctx[28](value);
+    ctx[29](value);
   }
   let autocomplete_props = {
     placeholder: "Role",
-    items: ctx[14],
+    items: ctx[2],
     inputClassName: "dotted medium",
-    onChange: ctx[27]
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[16],
+    onChange: ctx[28]
   };
   if (ctx[1].data.role !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.role;
@@ -4737,6 +4769,8 @@ function create_if_block_112(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
+      if (dirty[0] & 4)
+        autocomplete_changes.items = ctx2[2];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.role;
@@ -4797,16 +4831,16 @@ function create_if_block_102(ctx) {
   let t;
   let current;
   function autocomplete_selectedItem_binding_1(value) {
-    ctx[30](value);
+    ctx[31](value);
   }
   let autocomplete_props = {
-    items: ctx[2],
+    items: ctx[3],
     placeholder: "Body",
     inputClassName: "dotted long",
     create: true,
     createText: "Item doesn't exist, create one?",
     onCreate: ctx[15],
-    onChange: ctx[29]
+    onChange: ctx[30]
   };
   if (ctx[1].data.featurebody !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.featurebody;
@@ -4825,8 +4859,8 @@ function create_if_block_102(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 4)
-        autocomplete_changes.items = ctx2[2];
+      if (dirty[0] & 8)
+        autocomplete_changes.items = ctx2[3];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.featurebody;
@@ -4881,16 +4915,16 @@ function create_if_block_92(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_2(value) {
-    ctx[32](value);
+    ctx[33](value);
   }
   let autocomplete_props = {
-    items: ctx[3],
+    items: ctx[4],
     placeholder: "Face",
     inputClassName: "dotted long",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[16],
-    onChange: ctx[31]
+    onCreate: ctx[17],
+    onChange: ctx[32]
   };
   if (ctx[1].data.featureface !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.featureface;
@@ -4907,8 +4941,8 @@ function create_if_block_92(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 8)
-        autocomplete_changes.items = ctx2[3];
+      if (dirty[0] & 16)
+        autocomplete_changes.items = ctx2[4];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.featureface;
@@ -4961,16 +4995,16 @@ function create_if_block_82(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_3(value) {
-    ctx[34](value);
+    ctx[35](value);
   }
   let autocomplete_props = {
-    items: ctx[4],
+    items: ctx[5],
     inputClassName: "dotted long",
     placeholder: "Vibe",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[17],
-    onChange: ctx[33]
+    onCreate: ctx[18],
+    onChange: ctx[34]
   };
   if (ctx[1].data.featurevibe !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.featurevibe;
@@ -4987,8 +5021,8 @@ function create_if_block_82(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 16)
-        autocomplete_changes.items = ctx2[4];
+      if (dirty[0] & 32)
+        autocomplete_changes.items = ctx2[5];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.featurevibe;
@@ -5041,16 +5075,16 @@ function create_if_block_72(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_4(value) {
-    ctx[36](value);
+    ctx[37](value);
   }
   let autocomplete_props = {
-    items: ctx[5],
+    items: ctx[6],
     placeholder: "Outfit",
     inputClassName: "dotted long",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[18],
-    onChange: ctx[35]
+    onCreate: ctx[19],
+    onChange: ctx[36]
   };
   if (ctx[1].data.style1 !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.style1;
@@ -5067,8 +5101,8 @@ function create_if_block_72(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 32)
-        autocomplete_changes.items = ctx2[5];
+      if (dirty[0] & 64)
+        autocomplete_changes.items = ctx2[6];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.style1;
@@ -5121,16 +5155,16 @@ function create_if_block_62(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_5(value) {
-    ctx[38](value);
+    ctx[39](value);
   }
   let autocomplete_props = {
-    items: ctx[5],
+    items: ctx[6],
     placeholder: "Outfit",
     inputClassName: "dotted long",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[18],
-    onChange: ctx[37]
+    onCreate: ctx[19],
+    onChange: ctx[38]
   };
   if (ctx[1].data.style2 !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.style2;
@@ -5147,8 +5181,8 @@ function create_if_block_62(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 32)
-        autocomplete_changes.items = ctx2[5];
+      if (dirty[0] & 64)
+        autocomplete_changes.items = ctx2[6];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.style2;
@@ -5201,16 +5235,16 @@ function create_if_block_52(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_6(value) {
-    ctx[40](value);
+    ctx[41](value);
   }
   let autocomplete_props = {
-    items: ctx[6],
+    items: ctx[7],
     inputClassName: "dotted long",
     placeholder: "Movement",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[19],
-    onChange: ctx[39]
+    onCreate: ctx[20],
+    onChange: ctx[40]
   };
   if (ctx[1].data.style3 !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.style3;
@@ -5227,8 +5261,8 @@ function create_if_block_52(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 64)
-        autocomplete_changes.items = ctx2[6];
+      if (dirty[0] & 128)
+        autocomplete_changes.items = ctx2[7];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.style3;
@@ -5281,16 +5315,16 @@ function create_if_block_42(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_7(value) {
-    ctx[42](value);
+    ctx[43](value);
   }
   let autocomplete_props = {
-    items: ctx[7],
+    items: ctx[8],
     inputClassName: "dotted long",
     placeholder: "My Home",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[20],
-    onChange: ctx[41]
+    onCreate: ctx[21],
+    onChange: ctx[42]
   };
   if (ctx[1].data.home !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.home;
@@ -5307,8 +5341,8 @@ function create_if_block_42(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 128)
-        autocomplete_changes.items = ctx2[7];
+      if (dirty[0] & 256)
+        autocomplete_changes.items = ctx2[8];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.home;
@@ -5361,17 +5395,17 @@ function create_if_block_32(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_8(value) {
-    ctx[44](value);
+    ctx[45](value);
   }
   let autocomplete_props = {
-    items: ctx[8],
+    items: ctx[9],
     className: "verylong",
     inputClassName: "dotted",
     placeholder: "Legacy",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[23],
-    onChange: ctx[43]
+    onCreate: ctx[24],
+    onChange: ctx[44]
   };
   if (ctx[1].data.community !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.community;
@@ -5388,8 +5422,8 @@ function create_if_block_32(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 256)
-        autocomplete_changes.items = ctx2[8];
+      if (dirty[0] & 512)
+        autocomplete_changes.items = ctx2[9];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.community;
@@ -5442,16 +5476,16 @@ function create_if_block_22(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_9(value) {
-    ctx[46](value);
+    ctx[47](value);
   }
   let autocomplete_props = {
-    items: ctx[9],
+    items: ctx[10],
     placeholder: "Ideal",
     inputClassName: "dotted long",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[21],
-    onChange: ctx[45]
+    onCreate: ctx[22],
+    onChange: ctx[46]
   };
   if (ctx[1].data.ideal !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.ideal;
@@ -5468,8 +5502,8 @@ function create_if_block_22(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 512)
-        autocomplete_changes.items = ctx2[9];
+      if (dirty[0] & 1024)
+        autocomplete_changes.items = ctx2[10];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.ideal;
@@ -5522,16 +5556,16 @@ function create_if_block_14(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_10(value) {
-    ctx[48](value);
+    ctx[49](value);
   }
   let autocomplete_props = {
-    items: ctx[10],
+    items: ctx[11],
     inputClassName: "dotted long",
     placeholder: "Flaw",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[22],
-    onChange: ctx[47]
+    onCreate: ctx[23],
+    onChange: ctx[48]
   };
   if (ctx[1].data.flaw !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.flaw;
@@ -5548,8 +5582,8 @@ function create_if_block_14(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 1024)
-        autocomplete_changes.items = ctx2[10];
+      if (dirty[0] & 2048)
+        autocomplete_changes.items = ctx2[11];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.flaw;
@@ -5602,17 +5636,17 @@ function create_if_block4(ctx) {
   let updating_selectedItem;
   let current;
   function autocomplete_selectedItem_binding_11(value) {
-    ctx[50](value);
+    ctx[51](value);
   }
   let autocomplete_props = {
-    items: ctx[11],
+    items: ctx[12],
     className: "verylong",
     inputClassName: "dotted",
     placeholder: "My Dream",
     create: true,
     createText: "Item doesn't exist, create one?",
-    onCreate: ctx[23],
-    onChange: ctx[49]
+    onCreate: ctx[24],
+    onChange: ctx[50]
   };
   if (ctx[1].data.dream !== void 0) {
     autocomplete_props.selectedItem = ctx[1].data.dream;
@@ -5629,8 +5663,8 @@ function create_if_block4(ctx) {
     },
     p(ctx2, dirty) {
       const autocomplete_changes = {};
-      if (dirty[0] & 2048)
-        autocomplete_changes.items = ctx2[11];
+      if (dirty[0] & 4096)
+        autocomplete_changes.items = ctx2[12];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
         autocomplete_changes.selectedItem = ctx2[1].data.dream;
@@ -5791,14 +5825,14 @@ function create_fragment5(ctx) {
   let mounted;
   let dispose;
   function select_block_type(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return create_if_block_13;
     return create_else_block_13;
   }
   let current_block_type = select_block_type(ctx, [-1, -1]);
   let if_block0 = current_block_type(ctx);
   function select_block_type_1(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return create_if_block_12;
     return create_else_block_12;
   }
@@ -5807,7 +5841,7 @@ function create_fragment5(ctx) {
   const if_block_creators = [create_if_block_112, create_else_block_11];
   const if_blocks = [];
   function select_block_type_2(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5816,7 +5850,7 @@ function create_fragment5(ctx) {
   const if_block_creators_1 = [create_if_block_102, create_else_block_10];
   const if_blocks_1 = [];
   function select_block_type_3(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5825,7 +5859,7 @@ function create_fragment5(ctx) {
   const if_block_creators_2 = [create_if_block_92, create_else_block_9];
   const if_blocks_2 = [];
   function select_block_type_4(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5834,7 +5868,7 @@ function create_fragment5(ctx) {
   const if_block_creators_3 = [create_if_block_82, create_else_block_8];
   const if_blocks_3 = [];
   function select_block_type_5(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5843,7 +5877,7 @@ function create_fragment5(ctx) {
   const if_block_creators_4 = [create_if_block_72, create_else_block_7];
   const if_blocks_4 = [];
   function select_block_type_6(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5852,7 +5886,7 @@ function create_fragment5(ctx) {
   const if_block_creators_5 = [create_if_block_62, create_else_block_6];
   const if_blocks_5 = [];
   function select_block_type_7(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5861,7 +5895,7 @@ function create_fragment5(ctx) {
   const if_block_creators_6 = [create_if_block_52, create_else_block_5];
   const if_blocks_6 = [];
   function select_block_type_8(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5870,7 +5904,7 @@ function create_fragment5(ctx) {
   const if_block_creators_7 = [create_if_block_42, create_else_block_4];
   const if_blocks_7 = [];
   function select_block_type_9(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5879,7 +5913,7 @@ function create_fragment5(ctx) {
   const if_block_creators_8 = [create_if_block_32, create_else_block_3];
   const if_blocks_8 = [];
   function select_block_type_10(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5888,7 +5922,7 @@ function create_fragment5(ctx) {
   const if_block_creators_9 = [create_if_block_22, create_else_block_2];
   const if_blocks_9 = [];
   function select_block_type_11(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5897,7 +5931,7 @@ function create_fragment5(ctx) {
   const if_block_creators_10 = [create_if_block_14, create_else_block_1];
   const if_blocks_10 = [];
   function select_block_type_12(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
@@ -5906,13 +5940,13 @@ function create_fragment5(ctx) {
   const if_block_creators_11 = [create_if_block4, create_else_block3];
   const if_blocks_11 = [];
   function select_block_type_13(ctx2, dirty) {
-    if (!!ctx2[12])
+    if (!!ctx2[13])
       return 0;
     return 1;
   }
   current_block_type_index_11 = select_block_type_13(ctx, [-1, -1]);
   if_block13 = if_blocks_11[current_block_type_index_11] = if_block_creators_11[current_block_type_index_11](ctx);
-  tabs = new Tabs_default({ props: { items: ctx[24] } });
+  tabs = new Tabs_default({ props: { items: ctx[25] } });
   return {
     c() {
       div3 = element("div");
@@ -6069,7 +6103,6 @@ function create_fragment5(ctx) {
       attr(input5, "class", "long svelte-bzv5hr");
       attr(input5, "name", "data.featurebody");
       attr(input5, "type", "hidden");
-      attr(input5, "x", "");
       input5.value = input5_value_value = ctx[1].data.featurebody;
       attr(input5, "placeholder", "Body");
       attr(input6, "class", "long svelte-bzv5hr");
@@ -6241,8 +6274,8 @@ function create_fragment5(ctx) {
       current = true;
       if (!mounted) {
         dispose = [
-          listen(a, "click", ctx[13]?._rollDice.bind(ctx[13])),
-          listen(img, "click", ctx[25])
+          listen(a, "click", ctx[14]?._rollDice.bind(ctx[14])),
+          listen(img, "click", ctx[26])
         ];
         mounted = true;
       }
@@ -6628,7 +6661,7 @@ function create_fragment5(ctx) {
   };
 }
 function instance5($$self, $$props, $$invalidate) {
-  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(26, $dataStore = $$value)), dataStore);
+  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(27, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
   $$subscribe_dataStore();
@@ -6868,61 +6901,67 @@ function instance5($$self, $$props, $$invalidate) {
   function handleCreate(newItem) {
     toCreateBody = "Creating " + newItem;
     featurebody.unshift(newItem);
-    $$invalidate(2, featurebody);
+    $$invalidate(3, featurebody);
+    return newItem;
+  }
+  function handleCreateR(newItem) {
+    toCreateBody = "Creating " + newItem;
+    roles.unshift(newItem);
+    $$invalidate(2, roles);
     return newItem;
   }
   function handleCreatef2(newItem) {
     toCreateBody = "Creating " + newItem;
     featureface.unshift(newItem);
-    $$invalidate(3, featureface);
+    $$invalidate(4, featureface);
     return newItem;
   }
   function handleCreatef3(newItem) {
     toCreateBody = "Creating " + newItem;
     featurevibe.unshift(newItem);
-    $$invalidate(4, featurevibe);
+    $$invalidate(5, featurevibe);
     return newItem;
   }
   function handleCreates1(newItem) {
     toCreateBody = "Creating " + newItem;
     styleoutfit.unshift(newItem);
-    $$invalidate(5, styleoutfit);
+    $$invalidate(6, styleoutfit);
     return newItem;
   }
   function handleCreates2(newItem) {
     toCreateBody = "Creating " + newItem;
     stylemovement.unshift(newItem);
-    $$invalidate(6, stylemovement);
+    $$invalidate(7, stylemovement);
     return newItem;
   }
   function handleCreateh1(newItem) {
     toCreateBody = "Creating " + newItem;
     homeland.unshift(newItem);
-    $$invalidate(7, homeland);
+    $$invalidate(8, homeland);
     return newItem;
   }
   function handleCreateh2(newItem) {
     toCreateBody = "Creating " + newItem;
     legacy.unshift(newItem);
-    $$invalidate(8, legacy);
+    $$invalidate(9, legacy);
     return newItem;
   }
   function handleCreateI(newItem) {
     toCreateBody = "Creating " + newItem;
     ideal.unshift(newItem);
-    $$invalidate(9, ideal);
+    $$invalidate(10, ideal);
     return newItem;
   }
   function handleCreateF(newItem) {
     toCreateBody = "Creating " + newItem;
     flaw.unshift(newItem);
-    $$invalidate(10, flaw);
+    $$invalidate(11, flaw);
     return newItem;
   }
   function handleCreateD(newItem) {
     toCreateBody = "Creating " + newItem;
     dream.unshift(newItem);
-    $$invalidate(11, dream);
+    $$invalidate(12, dream);
     return newItem;
   }
   let items = [
@@ -6957,7 +6996,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.role, value)) {
       data.data.role = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_1 = (e) => {
@@ -6966,7 +7005,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_1(value) {
     if ($$self.$$.not_equal(data.data.featurebody, value)) {
       data.data.featurebody = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_2 = (e) => {
@@ -6975,7 +7014,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_2(value) {
     if ($$self.$$.not_equal(data.data.featureface, value)) {
       data.data.featureface = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_3 = (e) => {
@@ -6984,7 +7023,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_3(value) {
     if ($$self.$$.not_equal(data.data.featurevibe, value)) {
       data.data.featurevibe = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_4 = (e) => {
@@ -6993,7 +7032,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_4(value) {
     if ($$self.$$.not_equal(data.data.style1, value)) {
       data.data.style1 = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_5 = (e) => {
@@ -7002,7 +7041,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_5(value) {
     if ($$self.$$.not_equal(data.data.style2, value)) {
       data.data.style2 = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_6 = (e) => {
@@ -7011,7 +7050,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_6(value) {
     if ($$self.$$.not_equal(data.data.style3, value)) {
       data.data.style3 = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_7 = (e) => {
@@ -7020,7 +7059,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_7(value) {
     if ($$self.$$.not_equal(data.data.home, value)) {
       data.data.home = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_8 = (e) => {
@@ -7029,7 +7068,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_8(value) {
     if ($$self.$$.not_equal(data.data.community, value)) {
       data.data.community = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_9 = (e) => {
@@ -7038,7 +7077,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_9(value) {
     if ($$self.$$.not_equal(data.data.ideal, value)) {
       data.data.ideal = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_10 = (e) => {
@@ -7047,7 +7086,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_10(value) {
     if ($$self.$$.not_equal(data.data.flaw, value)) {
       data.data.flaw = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   const func_11 = (e) => {
@@ -7056,7 +7095,7 @@ function instance5($$self, $$props, $$invalidate) {
   function autocomplete_selectedItem_binding_11(value) {
     if ($$self.$$.not_equal(data.data.dream, value)) {
       data.data.dream = value;
-      $$invalidate(1, data), $$invalidate(26, $dataStore);
+      $$invalidate(1, data), $$invalidate(27, $dataStore);
     }
   }
   $$self.$$set = ($$props2) => {
@@ -7064,7 +7103,7 @@ function instance5($$self, $$props, $$invalidate) {
       $$subscribe_dataStore($$invalidate(0, dataStore = $$props2.dataStore));
   };
   $$self.$$.update = () => {
-    if ($$self.$$.dirty[0] & 67108864) {
+    if ($$self.$$.dirty[0] & 134217728) {
       $:
         $$invalidate(1, data = $dataStore.data);
     }
@@ -7072,6 +7111,7 @@ function instance5($$self, $$props, $$invalidate) {
   return [
     dataStore,
     data,
+    roles,
     featurebody,
     featureface,
     featurevibe,
@@ -7084,8 +7124,8 @@ function instance5($$self, $$props, $$invalidate) {
     dream,
     edit,
     sheet,
-    roles,
     handleCreate,
+    handleCreateR,
     handleCreatef2,
     handleCreatef3,
     handleCreates1,
@@ -7210,6 +7250,9 @@ var QuestActorSheet = class extends ActorSheet {
     item2.delete();
     this.render();
   }
+  async _openAbilityDialog() {
+    game.quest.AbilityDialog.showAbilityDialog(this.object.data.data.role);
+  }
   async _onItemCreate(event) {
     event.preventDefault();
     const header = event.currentTarget;
@@ -7273,7 +7316,6 @@ var QuestActorSheet = class extends ActorSheet {
   }
   render(force = false, options = {}) {
     let sheetData = this.getData();
-    console.log(sheetData);
     if (this.app !== null) {
       let states = Application.RENDER_STATES;
       if (this._state == states.RENDERING || this._state == states.RENDERED) {
@@ -7559,6 +7601,95 @@ var questChatData = async (roll, chatOptions) => {
   };
 };
 
+// module/ability-dialog.js
+var AbilityDialog = class extends Dialog {
+  constructor(options) {
+    super(options);
+    this.data = {};
+    this.data.title = options?.title ?? "Ability Browser";
+    this.data.buttons = {
+      close: { label: "Close", callback: () => {
+      } }
+    };
+    this.data.default = "close";
+  }
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      template: `systems/quest/templates/role-ability.html`,
+      resizable: true,
+      jQuery: true,
+      width: "710",
+      height: "760",
+      close: () => {
+        ui.notify;
+      }
+    });
+  }
+  _getContent(role) {
+    if (!role)
+      role = "Spy";
+    let AllAbilities = game.items.filter((i) => i.data.type == "ability");
+    const roleList = [
+      ...new Set(AllAbilities.map((data) => data.data.data.role))
+    ];
+    let abilityList = game.items.filter((i) => i.data.type == "ability" && i.data.data.role === role);
+    let quickStart = game.items.filter((i) => i.data.type == "ability" && i.data.data.quickstart == true && i.data.data.role === role);
+    abilityList.sort((first, second) => {
+      return first.data.data.path.localeCompare(second.data.data.path) || first.data.data.order.localeCompare(second.data.data.order);
+    });
+    let unGrouped = abilityList.reduce(function(r, a) {
+      let keys = [];
+      r[a.data.data.path] = r[a.data.data.path] || [];
+      r[a.data.data.path].push(a);
+      return r;
+    }, Object.create(null));
+    let groupedAbilitiies = [];
+    for (let i = 0; i < Object.keys(unGrouped).length; i++) {
+      let obj = {};
+      obj.name = Object.keys(unGrouped)[i];
+      obj.data = Object(unGrouped[Object.keys(unGrouped)[i]]);
+      groupedAbilitiies.push(obj);
+    }
+    groupedAbilitiies.sort(function(a, b) {
+      if (a.name == b.name)
+        return 0;
+      if (a.name == "Legendary")
+        return 1;
+      if (b.name == "Legendary")
+        return -1;
+      if (a.name < b.name)
+        return -1;
+      if (a.name > b.name)
+        return 1;
+      return 0;
+    });
+    let content = {
+      role,
+      abilities: groupedAbilitiies,
+      quickStart,
+      roleList
+    };
+    return content;
+  }
+  static showAbilityDialog(role) {
+    let Dialog2 = new AbilityDialog();
+    let content = Dialog2._getContent(role);
+    Dialog2.data.content = content;
+    Dialog2.Dialog = Dialog2;
+    Dialog2.render(true);
+  }
+  _updateContent(event) {
+    console.log(event.currentTarget.value);
+    let content = this._getContent(event.currentTarget.value);
+    this.Dialog.data.content = content;
+    this.Dialog.render(true);
+  }
+  activateListeners(html) {
+    super.activateListeners(html);
+    html.find("#displayrole").change(this._updateContent.bind(this));
+  }
+};
+
 // module/quest.js
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
@@ -7566,7 +7697,8 @@ Hooks.once("init", async function() {
   game.quest = {
     QuestActor,
     createQuestMacro,
-    QuestRoll
+    QuestRoll,
+    AbilityDialog
   };
   CONFIG.Actor.documentClass = QuestActor;
   CONFIG.Item.documentClass = QuestItem;
@@ -7692,6 +7824,26 @@ Handlebars.registerHelper("concat", function() {
       outStr += arguments[arg];
     }
   }
+  return outStr;
+});
+Handlebars.registerHelper("enrich", function() {
+  var outStr = TextEditor.enrichHTML(arguments[0]);
+  return outStr;
+});
+Handlebars.registerHelper("enrich_stripcost", function() {
+  var removeCost = arguments[0];
+  const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+  var removeCost = removeCost.replace(rgx, "");
+  removeCost = removeCost.replace(/<p[^>]*>/g, "");
+  var outStr = TextEditor.enrichHTML(removeCost);
+  return outStr;
+});
+Handlebars.registerHelper("cost", function() {
+  var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
+  return outStr;
+});
+Handlebars.registerHelper("abilityLink", function(name, type, id) {
+  var outStr = TextEditor.enrichHTML("@" + type + "[" + id + "]{" + name + "}");
   return outStr;
 });
 /*! *****************************************************************************

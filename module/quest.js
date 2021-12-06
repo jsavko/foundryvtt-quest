@@ -13,6 +13,7 @@ import { QuestNPCActorSheet } from "./npcactor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { createQuestMacro } from "./macro.js";
 import { QuestRoll } from "./quest-roll.js";
+import { AbilityDialog } from "./ability-dialog.js";
 
 //import MouseCombatModal from "./mouse-combat-modal.js";
 
@@ -36,7 +37,8 @@ Hooks.once("init", async function () {
     game.quest = {
         QuestActor,
         createQuestMacro,
-        QuestRoll
+        QuestRoll,
+        AbilityDialog
     };
 
     // Define custom Entity classes
@@ -246,5 +248,31 @@ Handlebars.registerHelper("concat", function () {
             outStr += arguments[arg];
         }
     }
+    return outStr;
+});
+
+Handlebars.registerHelper("enrich", function () {
+    var outStr = TextEditor.enrichHTML(arguments[0]);
+    return outStr;
+});
+
+Handlebars.registerHelper("enrich_stripcost", function () {
+    var removeCost = arguments[0];
+    const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+    var removeCost = removeCost.replace(rgx, "");
+    removeCost = removeCost.replace(/<p[^>]*>/g, "");
+    var outStr = TextEditor.enrichHTML(removeCost);
+    return outStr;
+});
+
+Handlebars.registerHelper("cost", function () {
+    var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
+    return outStr;
+});
+
+Handlebars.registerHelper("abilityLink", function (name, type, id) {
+    var outStr = TextEditor.enrichHTML(
+        "@" + type + "[" + id + "]{" + name + "}"
+    );
     return outStr;
 });

@@ -11,6 +11,13 @@
     $: abilityTypes = $sheetData.data.data.abilityTypes;
 </script>
 
+<ul>
+    <li style="list-style-type: none; text-align:right;">
+        <a on:click={sheet?._openAbilityDialog.bind(sheet)}
+            ><i class="fas fa-plus" /></a
+        >
+    </li>
+</ul>
 {#each { length: Object.keys(abilityTypes).length } as _, i}
     <h3>{Object.keys(abilityTypes)[i]}</h3>
     <ul>

@@ -270,6 +270,13 @@
         return newItem;
     }
 
+    function handleCreateR(newItem) {
+        toCreateBody = "Creating " + newItem;
+        roles.unshift(newItem);
+        roles = roles;
+        return newItem;
+    }
+
     function handleCreatef2(newItem) {
         toCreateBody = "Creating " + newItem;
         featureface.unshift(newItem);
@@ -447,6 +454,9 @@
                         placeholder="Role"
                         items={roles}
                         inputClassName="dotted medium"
+                        create={true}
+                        createText={"Item doesn't exist, create one?"}
+                        onCreate={handleCreateR}
                         bind:selectedItem={data.data.role}
                         onChange={(e) => {
                             sheet?._onSubmit(new Event("submit"));
@@ -461,7 +471,6 @@
                     class="long"
                     name="data.featurebody"
                     type="hidden"
-                    x
                     value={data.data.featurebody}
                     placeholder="Body"
                 />
