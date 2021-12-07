@@ -152,7 +152,7 @@
     let homeland = [
         "a great metropolis",
         "a remote village",
-        "afrontier town",
+        "a frontier town",
         "a lonely island",
         "a capital city",
         "a seastead",
@@ -172,7 +172,7 @@
 
     let legacy = [
         "their steady pursuit of pleasure",
-        "theireasygoing temperament",
+        "their easy going temperament",
         "their unhurried sense of time",
         "treating strangers with love",
         "restoring justice to the land",

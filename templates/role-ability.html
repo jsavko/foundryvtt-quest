@@ -18,12 +18,13 @@
         {{/each}}
     </p>
     <p>
-        Paths: {{#each content.abilities}} {{name}}{{#unless @last}},{{/unless}}
-        {{/each}}
+        Paths: {{#each content.abilities}}
+        <a class="paths" data-target="{{name}}">{{name}}</a>{{#unless
+        @last}},{{/unless}} {{/each}}
     </p>
     <p>&nbsp;</p>
     {{#each content.abilities}}
-    <h2 style="text-align: center">{{name}}</h2>
+    <h2 style="text-align: center" id="{{name}}">{{name}}</h2>
     {{#each data}}
     <p>
         {{{cost data.data.cost}}} {{{abilityLink data.name "Item" data._id}}}

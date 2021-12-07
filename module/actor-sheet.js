@@ -113,7 +113,6 @@ export class QuestActorSheet extends ActorSheet {
         await this.actor.updateEmbeddedDocuments("Item", [
             { _id: id, data: _data }
         ]);
-        //console.log(this.actor)
     }
 
     async _onItemEdit(itemId) {
@@ -150,7 +149,6 @@ export class QuestActorSheet extends ActorSheet {
         // Remove the type from the dataset since it's in the itemData.type prop.
         delete itemData.data["type"];
         // Finally, create the item!
-        //console.log(itemData);
 
         if (type == "item" && Object(this.actor.itemTypes.item).length >= 12) {
             ui.notifications.error(
@@ -196,11 +194,9 @@ export class QuestActorSheet extends ActorSheet {
 
     async _chatAbility(id) {
         const item = this.actor.items.get(id);
-        console.log(item);
         //Prep Chat Card using Ability Template
         let template = "systems/quest/templates/chat/ability.html";
         let data = { ability: item.data, actor: this.actor.data };
-        console.log(data);
         const html = await renderTemplate(template, data);
         const chatData = {
             actor: this.actor._id,
@@ -216,7 +212,7 @@ export class QuestActorSheet extends ActorSheet {
     render(force = false, options = {}) {
         // Grab the sheetdata for both updates and new apps.
         let sheetData = this.getData();
-        //console.log(sheetData);
+
         // Exit if Vue has already rendered.
         if (this.app !== null) {
             let states = Application.RENDER_STATES;

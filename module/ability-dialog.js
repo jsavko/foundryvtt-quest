@@ -102,11 +102,25 @@ export class AbilityDialog extends Dialog {
         this.Dialog.render(true);
     }
 
+    _scrollTo(event) {
+        event.preventDefault();
+        console.log(event);
+        const header = event.currentTarget;
+        // Get the type of item to create.
+        const target = header.dataset.target;
+        //console.log(target);
+        //console.log($.find("#" + target)[0].offsetTop);
+        $(".window-content").animate(
+            { scrollTop: $.find("#" + target)[0].offsetTop },
+            600
+        );
+    }
     activateListeners(html) {
         super.activateListeners(html);
 
         //html.find("#displayrole").on("change", this._updateContent.bind(this));
         //console.log(html.find("#displayrole"));
         html.find("#displayrole").change(this._updateContent.bind(this));
+        html.find(".paths").click(this._scrollTo.bind(this));
     }
 }

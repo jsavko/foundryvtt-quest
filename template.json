@@ -28,6 +28,7 @@
             "description": "",
             "quantity": 1,
             "weight": 0,
+            "rarity": "Uncommon",
             "attributes": {},
             "groups": {}
         },

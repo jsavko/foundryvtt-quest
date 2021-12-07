@@ -16,8 +16,17 @@
         {#if !!items[i]}
             <li>
                 <div class="flex">
-                    {items[i].data.name}
-                    <div class="flex medium">
+                    <span class={items[i].data.data.rarity}
+                        >{items[i].data.name}</span
+                    >
+                    <div class="right">
+                        <a
+                            on:click={(e) =>
+                                // sheet.delete.id
+                                {
+                                    sheet?._chatAbility(items[i].data._id);
+                                }}><i class="fas fa-bullhorn" /></a
+                        >
                         <a
                             on:click={(e) =>
                                 // sheet.delete.id

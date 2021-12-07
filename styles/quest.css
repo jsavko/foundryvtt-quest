@@ -355,6 +355,18 @@
     margin-right: 5px;
 }
 
+.damage {
+    min-width: 22px;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    color: #dc2027;
+    border: 3px solid#dc2027;
+    flex: 0 0 auto;
+    font-family: "Alegreya Sans", sans-serif;
+    margin-right: 5px;
+}
+
 .ability-name h2 {
     font-family: "Alegreya", serif;
     font-weight: 900;
@@ -390,4 +402,23 @@
     width: 100%;
     height: 100%;
     margin: 0;
+}
+
+.Uncommon {
+    color: #000;
+}
+
+.Rare {
+    color: #0070dd;
+}
+.Legendary {
+    color: #a335ee;
+}
+
+.Supreme {
+    color: #ff8000;
+}
+
+.right {
+    text-align: right;
 }

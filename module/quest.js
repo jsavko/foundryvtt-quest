@@ -138,6 +138,7 @@ Hooks.once("init", async function () {
             links = true,
             rolls = true,
             cost = true,
+            damage = true,
             rollData,
             ...options
         } = {}
@@ -215,19 +216,36 @@ Hooks.once("init", async function () {
             );
         }
 
+        if (damage) {
+            if (updateTextArray) text = this._getTextNodes(html);
+            const rgx = new RegExp(
+                `@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`,
+                "g"
+            );
+            updateTextArray = this._replaceTextContent(
+                text,
+                rgx,
+                this._createDamage
+            );
+        }
+
         // Return the enriched HTML
         return html.innerHTML;
     };
 
     TextEditor._createCost = function (match) {
         const a = document.createElement("a");
-
-        //match = match.replace(/@(cost|Cost)\[/g, "");
-        //match = match.replace(/]/g, "");
-        // (?<=\[).+?(?=\])
         match = match.substring(6, match.length - 1);
         a.innerHTML = '<i class="cost">' + match + "</i>";
-        //a.classList.add("cost");
+
+        return a;
+    };
+
+    TextEditor._createDamage = function (match) {
+        const a = document.createElement("a");
+        console.log(match);
+        match = match.substring(8, match.length - 1);
+        a.innerHTML = '<i class="damage">' + match + "</i>";
 
         return a;
     };

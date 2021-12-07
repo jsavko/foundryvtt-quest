@@ -4081,8 +4081,8 @@ require_();
 // module/svelte/QuestActorSheetInventory.svelte
 function get_each_context3(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[9] = list[i];
-  child_ctx[11] = i;
+  child_ctx[10] = list[i];
+  child_ctx[12] = i;
   return child_ctx;
 }
 function create_else_block2(ctx) {
@@ -4105,55 +4105,77 @@ function create_else_block2(ctx) {
 function create_if_block3(ctx) {
   let li;
   let div1;
-  let t0_value = ctx[0][ctx[11]].data.name + "";
+  let span;
+  let t0_value = ctx[0][ctx[12]].data.name + "";
   let t0;
+  let span_class_value;
   let t1;
   let div0;
   let a0;
   let t2;
   let a1;
+  let t3;
+  let a2;
   let mounted;
   let dispose;
   function click_handler(...args) {
-    return ctx[4](ctx[11], ...args);
+    return ctx[4](ctx[12], ...args);
   }
   function click_handler_1(...args) {
-    return ctx[5](ctx[11], ...args);
+    return ctx[5](ctx[12], ...args);
+  }
+  function click_handler_2(...args) {
+    return ctx[6](ctx[12], ...args);
   }
   return {
     c() {
       li = element("li");
       div1 = element("div");
+      span = element("span");
       t0 = text(t0_value);
       t1 = space();
       div0 = element("div");
       a0 = element("a");
-      a0.innerHTML = `<i class="fas fa-pen svelte-gddmne"></i>`;
+      a0.innerHTML = `<i class="fas fa-bullhorn svelte-gddmne"></i>`;
       t2 = space();
       a1 = element("a");
-      a1.innerHTML = `<i class="fas fa-trash svelte-gddmne"></i>`;
-      attr(div0, "class", "flex medium svelte-gddmne");
+      a1.innerHTML = `<i class="fas fa-pen svelte-gddmne"></i>`;
+      t3 = space();
+      a2 = element("a");
+      a2.innerHTML = `<i class="fas fa-trash svelte-gddmne"></i>`;
+      attr(span, "class", span_class_value = "" + (null_to_empty(ctx[0][ctx[12]].data.data.rarity) + " svelte-gddmne"));
+      attr(div0, "class", "right");
       attr(div1, "class", "flex svelte-gddmne");
       attr(li, "class", "svelte-gddmne");
     },
     m(target, anchor) {
       insert(target, li, anchor);
       append(li, div1);
-      append(div1, t0);
+      append(div1, span);
+      append(span, t0);
       append(div1, t1);
       append(div1, div0);
       append(div0, a0);
       append(div0, t2);
       append(div0, a1);
+      append(div0, t3);
+      append(div0, a2);
       if (!mounted) {
-        dispose = [listen(a0, "click", click_handler), listen(a1, "click", click_handler_1)];
+        dispose = [
+          listen(a0, "click", click_handler),
+          listen(a1, "click", click_handler_1),
+          listen(a2, "click", click_handler_2)
+        ];
         mounted = true;
       }
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      if (dirty & 1 && t0_value !== (t0_value = ctx[0][ctx[11]].data.name + ""))
+      if (dirty & 1 && t0_value !== (t0_value = ctx[0][ctx[12]].data.name + ""))
         set_data(t0, t0_value);
+      if (dirty & 1 && span_class_value !== (span_class_value = "" + (null_to_empty(ctx[0][ctx[12]].data.data.rarity) + " svelte-gddmne"))) {
+        attr(span, "class", span_class_value);
+      }
     },
     d(detaching) {
       if (detaching)
@@ -4166,7 +4188,7 @@ function create_if_block3(ctx) {
 function create_each_block3(ctx) {
   let if_block_anchor;
   function select_block_type(ctx2, dirty) {
-    if (!!ctx2[0][ctx2[11]])
+    if (!!ctx2[0][ctx2[12]])
       return create_if_block3;
     return create_else_block2;
   }
@@ -4283,9 +4305,12 @@ function instance3($$self, $$props, $$invalidate) {
   let data;
   let abilities;
   const click_handler = (i, e) => {
-    sheet?._onItemEdit(items[i].data._id);
+    sheet?._chatAbility(items[i].data._id);
   };
   const click_handler_1 = (i, e) => {
+    sheet?._onItemEdit(items[i].data._id);
+  };
+  const click_handler_2 = (i, e) => {
     sheet?._onItemDelete(items[i].data._id);
   };
   $$self.$$.update = () => {
@@ -4298,7 +4323,15 @@ function instance3($$self, $$props, $$invalidate) {
         $$invalidate(0, items = $sheetData.data.data.itemTypes.item);
     }
   };
-  return [items, sheetData, sheet, $sheetData, click_handler, click_handler_1];
+  return [
+    items,
+    sheetData,
+    sheet,
+    $sheetData,
+    click_handler,
+    click_handler_1,
+    click_handler_2
+  ];
 }
 var QuestActorSheetInventory = class extends SvelteComponent {
   constructor(options) {
@@ -6795,7 +6828,7 @@ function instance5($$self, $$props, $$invalidate) {
   let homeland = [
     "a great metropolis",
     "a remote village",
-    "afrontier town",
+    "a frontier town",
     "a lonely island",
     "a capital city",
     "a seastead",
@@ -6814,7 +6847,7 @@ function instance5($$self, $$props, $$invalidate) {
   ];
   let legacy = [
     "their steady pursuit of pleasure",
-    "theireasygoing temperament",
+    "their easy going temperament",
     "their unhurried sense of time",
     "treating strangers with love",
     "restoring justice to the land",
@@ -7299,10 +7332,8 @@ var QuestActorSheet = class extends ActorSheet {
   }
   async _chatAbility(id) {
     const item2 = this.actor.items.get(id);
-    console.log(item2);
     let template = "systems/quest/templates/chat/ability.html";
     let data = { ability: item2.data, actor: this.actor.data };
-    console.log(data);
     const html = await renderTemplate(template, data);
     const chatData = {
       actor: this.actor._id,
@@ -7684,9 +7715,17 @@ var AbilityDialog = class extends Dialog {
     this.Dialog.data.content = content;
     this.Dialog.render(true);
   }
+  _scrollTo(event) {
+    event.preventDefault();
+    console.log(event);
+    const header = event.currentTarget;
+    const target = header.dataset.target;
+    $(".window-content").animate({ scrollTop: $.find("#" + target)[0].offsetTop }, 600);
+  }
   activateListeners(html) {
     super.activateListeners(html);
     html.find("#displayrole").change(this._updateContent.bind(this));
+    html.find(".paths").click(this._scrollTo.bind(this));
   }
 };
 
@@ -7759,6 +7798,7 @@ Hooks.once("init", async function() {
     links = true,
     rolls = true,
     cost = true,
+    damage = true,
     rollData,
     ...options
   } = {}) {
@@ -7800,12 +7840,25 @@ Hooks.once("init", async function() {
       const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
       updateTextArray = this._replaceTextContent(text3, rgx, this._createCost);
     }
+    if (damage) {
+      if (updateTextArray)
+        text3 = this._getTextNodes(html);
+      const rgx = new RegExp(`@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+      updateTextArray = this._replaceTextContent(text3, rgx, this._createDamage);
+    }
     return html.innerHTML;
   };
   TextEditor._createCost = function(match) {
     const a = document.createElement("a");
     match = match.substring(6, match.length - 1);
     a.innerHTML = '<i class="cost">' + match + "</i>";
+    return a;
+  };
+  TextEditor._createDamage = function(match) {
+    const a = document.createElement("a");
+    console.log(match);
+    match = match.substring(8, match.length - 1);
+    a.innerHTML = '<i class="damage">' + match + "</i>";
     return a;
   };
 });

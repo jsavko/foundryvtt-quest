@@ -16,19 +16,22 @@
                 />
             </h1>
             <div class="resource">
+                <label>Rarity</label>
+                <select name="data.rarity">
+                    {{#select data.data.rarity}}
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Legendary">Legendary</option>
+                    <option value="Supreme">Supreme</option>
+                    {{/select}}
+                </select>
+            </div>
+            <div class="resource">
                 <label>Quantity</label>
                 <input
                     type="number"
                     name="data.quantity"
                     value="{{systemData.quantity}}"
-                />
-            </div>
-            <div class="resource">
-                <label>Weight</label>
-                <input
-                    type="number"
-                    name="data.weight"
-                    value="{{systemData.weight}}"
                 />
             </div>
         </div>
@@ -37,7 +40,6 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="attributes">Attributes</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -46,46 +48,6 @@
         <div class="tab" data-group="primary" data-tab="description">
             {{editor content=systemData.description target="data.description"
             button=true owner=owner editable=editable rollData=rollData}}
-        </div>
-
-        {{!-- Attributes Tab --}}
-        <div class="tab attributes" data-group="primary" data-tab="attributes">
-            <header class="attributes-header flexrow">
-                <span class="attribute-key"
-                    >{{localize "QUEST.AttributeKey"}}</span
-                >
-                <span class="attribute-value"
-                    >{{localize "QUEST.AttributeValue"}}</span
-                >
-                <span class="attribute-label"
-                    >{{localize "QUEST.AttributeLabel"}}</span
-                >
-                <span class="attribute-dtype"
-                    >{{localize "QUEST.AttributeDtype"}}</span
-                >
-                <a
-                    class="attribute-control"
-                    data-action="create"
-                    data-group="{{group}}"
-                    ><i class="fas fa-plus"></i
-                ></a>
-            </header>
-
-            {{!-- Render the attribute list partial. --}} {{>
-            "systems/quest/templates/parts/sheet-attributes.html"
-            attributes=systemData.ungroupedAttributes dtypes=dtypes}} {{!--
-            Render the grouped attributes partial and control. --}}
-            <div class="groups">
-                {{> "systems/quest/templates/parts/sheet-groups.html"
-                attributes=systemData.groupedAttributes groups=systemData.groups
-                dtypes=dtypes}}
-                <div class="group-controls flexrow">
-                    <input class="group-prefix" type="text" value="" />
-                    <a class="button group-control" data-action="create-group"
-                        ><i class="fas fa-plus"></i>Add Attribute Group</a
-                    >
-                </div>
-            </div>
         </div>
     </section>
 </form>
