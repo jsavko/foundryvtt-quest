@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form id="abilityform" class="{{cssClass}}" autocomplete="off">
     <div class="flex" style="justify-content: space-between">
         <div>&nbsp</div>
         <div style="text-align: right">
@@ -19,12 +19,12 @@
     </p>
     <p>
         Paths: {{#each content.abilities}}
-        <a class="paths" data-target="{{name}}">{{name}}</a>{{#unless
+        <a class="paths" data-target="{{slugify name}}">{{name}}</a>{{#unless
         @last}},{{/unless}} {{/each}}
     </p>
     <p>&nbsp;</p>
     {{#each content.abilities}}
-    <h2 style="text-align: center" id="{{name}}">{{name}}</h2>
+    <h2 style="text-align: center" id="{{slugify name}}">{{name}}</h2>
     {{#each data}}
     <p>
         {{{cost data.data.cost}}} {{{abilityLink data.name "Item" data._id}}}

@@ -16,7 +16,10 @@ export class QuestActor extends Actor {
         super.prepareData();
         const actorData = this.data;
         //console.log(actorData)
-        return this._prepareCharacterData(this.data);
+        if (actorData.type == "character") {
+            this._prepareCharacterData(this.data);
+        }
+        return this.data;
     }
 
     _prepareCharacterData(actorData) {

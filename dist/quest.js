@@ -430,7 +430,10 @@ var QuestActor = class extends Actor {
   prepareData() {
     super.prepareData();
     const actorData = this.data;
-    return this._prepareCharacterData(this.data);
+    if (actorData.type == "character") {
+      this._prepareCharacterData(this.data);
+    }
+    return this.data;
   }
   _prepareCharacterData(actorData) {
     actorData.data.itemTypes = this.itemTypes;
@@ -7656,17 +7659,18 @@ var AbilityDialog = class extends Dialog {
       }
     });
   }
-  _getContent(role) {
+  async _getContent(role) {
     if (!role)
       role = "Spy";
-    let AllAbilities = game.items.filter((i) => i.data.type == "ability");
+    const QUESTAbilities = await game.packs.get("world.role-abilities");
+    let AllAbilities = await QUESTAbilities.getDocuments();
     const roleList = [
       ...new Set(AllAbilities.map((data) => data.data.data.role))
     ];
-    let abilityList = game.items.filter((i) => i.data.type == "ability" && i.data.data.role === role);
-    let quickStart = game.items.filter((i) => i.data.type == "ability" && i.data.data.quickstart == true && i.data.data.role === role);
+    let abilityList = AllAbilities.filter((i) => i.data.type == "ability" && i.data.data.role === role);
+    let quickStart = await abilityList.filter((i) => i.data.type == "ability" && i.data.data.quickstart == true && i.data.data.role === role);
     abilityList.sort((first, second) => {
-      return first.data.data.path.localeCompare(second.data.data.path) || first.data.data.order.localeCompare(second.data.data.order);
+      return String(first.data.data.path).localeCompare(second.data.data.path) || String(first.data.data.order).localeCompare(second.data.data.order);
     });
     let unGrouped = abilityList.reduce(function(r, a) {
       let keys = [];
@@ -7702,25 +7706,25 @@ var AbilityDialog = class extends Dialog {
     };
     return content;
   }
-  static showAbilityDialog(role) {
+  static async showAbilityDialog(role) {
     let Dialog2 = new AbilityDialog();
-    let content = Dialog2._getContent(role);
+    let content = await Dialog2._getContent(role);
     Dialog2.data.content = content;
     Dialog2.Dialog = Dialog2;
     Dialog2.render(true);
   }
-  _updateContent(event) {
-    console.log(event.currentTarget.value);
-    let content = this._getContent(event.currentTarget.value);
+  async _updateContent(event) {
+    let content = await this._getContent(event.currentTarget.value);
     this.Dialog.data.content = content;
     this.Dialog.render(true);
   }
   _scrollTo(event) {
     event.preventDefault();
-    console.log(event);
     const header = event.currentTarget;
     const target = header.dataset.target;
-    $(".window-content").animate({ scrollTop: $.find("#" + target)[0].offsetTop }, 600);
+    $(".window-content").animate({
+      scrollTop: $.find("#" + target)[0].offsetTop - $.find("#" + target)[0].scrollHeight - 10
+    }, 600);
   }
   activateListeners(html) {
     super.activateListeners(html);
@@ -7786,12 +7790,7 @@ Hooks.once("init", async function() {
     }
     CONFIG.Combat.initiative.formula = formula;
   }
-  Handlebars.registerHelper("slugify", function(value) {
-    return value.slugify({ strict: true });
-  });
   await preloadHandlebarsTemplates();
-});
-Hooks.once("init", async function() {
   TextEditor.enrichHTML = function(content, {
     secrets = false,
     documents = true,
@@ -7898,6 +7897,12 @@ Handlebars.registerHelper("cost", function() {
 Handlebars.registerHelper("abilityLink", function(name, type, id) {
   var outStr = TextEditor.enrichHTML("@" + type + "[" + id + "]{" + name + "}");
   return outStr;
+});
+Handlebars.registerHelper("replace", function(value, find, replace) {
+  return value.replace(find, replace);
+});
+Handlebars.registerHelper("slugify", function(value) {
+  return value.slugify({ strict: true });
 });
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.

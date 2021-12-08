@@ -111,25 +111,10 @@ Hooks.once("init", async function () {
         CONFIG.Combat.initiative.formula = formula;
     }
 
-    /**
-     * Slugify a string.
-     */
-    Handlebars.registerHelper("slugify", function (value) {
-        return value.slugify({ strict: true });
-    });
-
     // Preload template partials
     await preloadHandlebarsTemplates();
-});
 
-/**
- * Macrobar hook.
- */
-//Hooks.on("hotbarDrop", (bar, data, slot) => createQuestMacro(data, slot));
-
-Hooks.once("init", async function () {
     // Replace functions for tinyMCE
-
     TextEditor.enrichHTML = function (
         content,
         {
@@ -251,6 +236,11 @@ Hooks.once("init", async function () {
     };
 });
 
+/**
+ * Macrobar hook.
+ */
+//Hooks.on("hotbarDrop", (bar, data, slot) => createQuestMacro(data, slot));
+
 Hooks.once("ready", async () => {});
 
 Handlebars.registerHelper("times", function (n, block) {
@@ -293,4 +283,15 @@ Handlebars.registerHelper("abilityLink", function (name, type, id) {
         "@" + type + "[" + id + "]{" + name + "}"
     );
     return outStr;
+});
+
+Handlebars.registerHelper("replace", function (value, find, replace) {
+    return value.replace(find, replace);
+});
+
+/**
+ * Slugify a string.
+ */
+Handlebars.registerHelper("slugify", function (value) {
+    return value.slugify({ strict: true });
 });

@@ -25,19 +25,21 @@ export class AbilityDialog extends Dialog {
         });
     }
 
-    _getContent(role) {
+    async _getContent(role) {
         if (!role) role = "Spy";
 
-        let AllAbilities = game.items.filter((i) => i.data.type == "ability");
+        const QUESTAbilities = await game.packs.get("world.role-abilities");
+
+        let AllAbilities = await QUESTAbilities.getDocuments();
         const roleList = [
             ...new Set(AllAbilities.map((data) => data.data.data.role))
         ];
 
-        let abilityList = game.items.filter(
+        let abilityList = AllAbilities.filter(
             (i) => i.data.type == "ability" && i.data.data.role === role
         );
 
-        let quickStart = game.items.filter(
+        let quickStart = await abilityList.filter(
             (i) =>
                 i.data.type == "ability" &&
                 i.data.data.quickstart == true &&
@@ -46,8 +48,12 @@ export class AbilityDialog extends Dialog {
 
         abilityList.sort((first, second) => {
             return (
-                first.data.data.path.localeCompare(second.data.data.path) ||
-                first.data.data.order.localeCompare(second.data.data.order)
+                String(first.data.data.path).localeCompare(
+                    second.data.data.path
+                ) ||
+                String(first.data.data.order).localeCompare(
+                    second.data.data.order
+                )
             );
         });
 
@@ -87,31 +93,32 @@ export class AbilityDialog extends Dialog {
         return content;
     }
 
-    static showAbilityDialog(role) {
+    static async showAbilityDialog(role) {
         let Dialog = new AbilityDialog();
-        let content = Dialog._getContent(role);
+        let content = await Dialog._getContent(role);
         Dialog.data.content = content;
         Dialog.Dialog = Dialog;
         Dialog.render(true);
     }
 
-    _updateContent(event) {
-        console.log(event.currentTarget.value);
-        let content = this._getContent(event.currentTarget.value);
+    async _updateContent(event) {
+        let content = await this._getContent(event.currentTarget.value);
         this.Dialog.data.content = content;
         this.Dialog.render(true);
     }
 
     _scrollTo(event) {
         event.preventDefault();
-        console.log(event);
         const header = event.currentTarget;
-        // Get the type of item to create.
+        // Get the target element.
         const target = header.dataset.target;
-        //console.log(target);
-        //console.log($.find("#" + target)[0].offsetTop);
         $(".window-content").animate(
-            { scrollTop: $.find("#" + target)[0].offsetTop },
+            {
+                scrollTop:
+                    $.find("#" + target)[0].offsetTop -
+                    $.find("#" + target)[0].scrollHeight -
+                    10
+            },
             600
         );
     }
@@ -119,7 +126,6 @@ export class AbilityDialog extends Dialog {
         super.activateListeners(html);
 
         //html.find("#displayrole").on("change", this._updateContent.bind(this));
-        //console.log(html.find("#displayrole"));
         html.find("#displayrole").change(this._updateContent.bind(this));
         html.find(".paths").click(this._scrollTo.bind(this));
     }
