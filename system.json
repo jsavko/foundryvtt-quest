@@ -7,9 +7,16 @@
     "compatibleCoreVersion": "9",
     "author": "LostPhoenix",
     "esmodules": ["dist/quest.js"],
-    "socket": true,
+    "socket": false,
     "styles": ["styles/quest.css", "dist/quest.css"],
-    "packs": [],
+    "packs": [
+        {
+            "name": "role-abilities",
+            "label": "Quest System - Role Abilities [Do Not Edit]",
+            "path": "packs/role-abilities.db",
+            "entity": "Item"
+        }
+    ],
     "languages": [
         {
             "lang": "en",

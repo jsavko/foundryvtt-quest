@@ -196,6 +196,13 @@ export class QuestActorSheet extends ActorSheet {
         const item = this.actor.items.get(id);
         //Prep Chat Card using Ability Template
         let template = "systems/quest/templates/chat/ability.html";
+
+        if (
+            item.data.data.long_description == "" ||
+            !!item.data.data.long_description == false
+        )
+            item.data.data.long_description = item.data.data.description;
+
         let data = { ability: item.data, actor: this.actor.data };
         const html = await renderTemplate(template, data);
         const chatData = {

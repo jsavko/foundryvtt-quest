@@ -20,6 +20,12 @@
             "ideal": "",
             "flaw": "",
             "dream": ""
+        },
+        "npc": {
+            "biography": "",
+            "hp": 2,
+            "attack": 1,
+            "type": "commoner"
         }
     },
     "Item": {

@@ -7336,6 +7336,8 @@ var QuestActorSheet = class extends ActorSheet {
   async _chatAbility(id) {
     const item2 = this.actor.items.get(id);
     let template = "systems/quest/templates/chat/ability.html";
+    if (item2.data.data.long_description == "" || !!item2.data.data.long_description == false)
+      item2.data.data.long_description = item2.data.data.description;
     let data = { ability: item2.data, actor: this.actor.data };
     const html = await renderTemplate(template, data);
     const chatData = {
@@ -7733,6 +7735,31 @@ var AbilityDialog = class extends Dialog {
   }
 };
 
+// module/compendium-helper.js
+var CompendiumImportHelper = class {
+  static async findCompendium() {
+    let QUESTAbilities = await game.packs.get("world.role-abilities");
+    return !!QUESTAbilities;
+  }
+  static async getCompendium() {
+    let QUESTAbilities = await game.packs.get("world.role-abilities");
+    return QUESTAbilities;
+  }
+  static async getSystemCompendium() {
+    return await game.packs.get("quest.role-abilities");
+  }
+  static async createCompenium() {
+    if (await this.findCompendium() == false) {
+      ui.notifications.info("Importing Role Abiltiies into an editable world compendium. This should only take a moment.");
+      let systemCompendium = await this.getSystemCompendium();
+      return systemCompendium.duplicateCompendium({
+        label: "Role Abilities"
+      });
+    }
+    return false;
+  }
+};
+
 // module/quest.js
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
@@ -7741,7 +7768,8 @@ Hooks.once("init", async function() {
     QuestActor,
     createQuestMacro,
     QuestRoll,
-    AbilityDialog
+    AbilityDialog,
+    CompendiumImportHelper
   };
   CONFIG.Actor.documentClass = QuestActor;
   CONFIG.Item.documentClass = QuestItem;
@@ -7862,6 +7890,10 @@ Hooks.once("init", async function() {
   };
 });
 Hooks.once("ready", async () => {
+  let compendium = await game.quest.CompendiumImportHelper.createCompenium();
+  if (!!compendium != false) {
+    ui.notifications.info("Importing Complete.");
+  }
 });
 Handlebars.registerHelper("times", function(n, block) {
   var accum = "";

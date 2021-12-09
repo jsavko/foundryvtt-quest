@@ -53,7 +53,8 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
+        <a class="item" data-tab="description">Short Description</a>
+        <a class="item" data-tab="long_description">Long Description</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -62,6 +63,12 @@
         <div class="tab" data-group="primary" data-tab="description">
             {{editor content=systemData.description target="data.description"
             button=true owner=owner editable=editable rollData=rollData}}
+        </div>
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="long_description">
+            {{editor content=systemData.long_description
+            target="data.long_description" button=true owner=owner
+            editable=editable rollData=rollData}}
         </div>
     </section>
 </form>

@@ -14,6 +14,7 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import { createQuestMacro } from "./macro.js";
 import { QuestRoll } from "./quest-roll.js";
 import { AbilityDialog } from "./ability-dialog.js";
+import { CompendiumImportHelper } from "./compendium-helper.js";
 
 //import MouseCombatModal from "./mouse-combat-modal.js";
 
@@ -38,7 +39,8 @@ Hooks.once("init", async function () {
         QuestActor,
         createQuestMacro,
         QuestRoll,
-        AbilityDialog
+        AbilityDialog,
+        CompendiumImportHelper
     };
 
     // Define custom Entity classes
@@ -241,7 +243,13 @@ Hooks.once("init", async function () {
  */
 //Hooks.on("hotbarDrop", (bar, data, slot) => createQuestMacro(data, slot));
 
-Hooks.once("ready", async () => {});
+Hooks.once("ready", async () => {
+    //Check if world compendium exisits and if not create it
+    let compendium = await game.quest.CompendiumImportHelper.createCompenium();
+    if (!!compendium != false) {
+        ui.notifications.info("Importing Complete.");
+    }
+});
 
 Handlebars.registerHelper("times", function (n, block) {
     var accum = "";
