@@ -2,6 +2,7 @@
 .idea/
 .vs/
 quest.lock
+.vscode/
 
 # Node Modules
 node_modules/
