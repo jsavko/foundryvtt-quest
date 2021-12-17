@@ -288,7 +288,7 @@ Handlebars.registerHelper("cost", function () {
 
 Handlebars.registerHelper("abilityLink", function (name, type, id) {
     var outStr = TextEditor.enrichHTML(
-        "@" + type + "[" + id + "]{" + name + "}"
+        "@Compendium[world.role-abilities." + id + "]{" + name + "}"
     );
     return outStr;
 });
