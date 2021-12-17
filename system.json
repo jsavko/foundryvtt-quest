@@ -28,8 +28,8 @@
     "gridUnits": "ft",
     "primaryTokenAttribute": "health",
     "secondaryTokenAttribute": "power",
-    "url": "",
-    "manifest": "",
+    "url": "https://github.com/jsavko/foundryvtt-quest",
+    "manifest": "https://raw.githubusercontent.com/jsavko/foundryvtt-quest/main/system.json",
     "download": "",
     "license": "LICENSE.txt"
 }
