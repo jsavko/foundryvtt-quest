@@ -6,7 +6,8 @@
         "build": "gulp build",
         "css": "gulp css",
         "watch": "gulp",
-        "gulp": "gulp"
+        "gulp": "gulp",
+        "minfy": "gulp buildMin"
     },
     "browserslist": [
         "last 3 versions"

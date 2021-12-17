@@ -30,6 +30,6 @@
     "secondaryTokenAttribute": "power",
     "url": "https://github.com/jsavko/foundryvtt-quest",
     "manifest": "https://raw.githubusercontent.com/jsavko/foundryvtt-quest/main/system.json",
-    "download": "",
+    "download": "https://github.com/jsavko/foundryvtt-quest/archive/refs/heads/main.zip",
     "license": "LICENSE.txt"
 }
