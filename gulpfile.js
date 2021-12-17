@@ -34,6 +34,23 @@ async function buildCode() {
 const build = gulp.series(buildCode);
 exports.build = build;
 
+async function buildCodeMin() {
+    return esbuild.build({
+        entryPoints: ["./module/quest.js"],
+        bundle: true,
+        outfile: `./dist/quest.js`,
+        sourcemap: true,
+        minify: true,
+        format: "esm",
+        platform: "browser",
+        plugins: [esbuildSvelte()],
+        external: ["../assets/*"]
+    });
+}
+
+const buildMin = gulp.series(buildCodeMin);
+exports.buildMin = buildMin;
+
 const STSTEM_JS = ["module/**/*.js", "module/*.js", "module/**/*.svelte"];
 
 /* ----------------------------------------- */
