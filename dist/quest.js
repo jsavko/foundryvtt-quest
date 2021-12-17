@@ -7927,7 +7927,7 @@ Handlebars.registerHelper("cost", function() {
   return outStr;
 });
 Handlebars.registerHelper("abilityLink", function(name, type, id) {
-  var outStr = TextEditor.enrichHTML("@" + type + "[" + id + "]{" + name + "}");
+  var outStr = TextEditor.enrichHTML("@Compendium[world.role-abilities." + id + "]{" + name + "}");
   return outStr;
 });
 Handlebars.registerHelper("replace", function(value, find, replace) {
