@@ -1,5 +1,5 @@
 {
-    "name": "quest",
+    "name": "foundryvtt-quest",
     "title": "Quest",
     "description": "A system for playing the Quest RPG in Foundry VTT.",
     "version": "0.1.0",
