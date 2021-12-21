@@ -8,37 +8,37 @@ var __publicField = (obj, key, value) => {
   return value;
 };
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/Tabs.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/Tabs.esbuild-svelte-fake-css
 var require_ = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/Tabs.esbuild-svelte-fake-css"(exports, module) {
+  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/Tabs.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css
 var require_2 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css"(exports, module) {
+  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css
 var require_3 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css"(exports, module) {
+  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
 var require_4 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
+  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
 
-// fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css
+// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css
 var require_5 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css"(exports, module) {
+  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css"(exports, module) {
     module.exports = {};
   }
 });
@@ -614,7 +614,7 @@ var QuestItemSheet = class extends ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["quest", "sheet", "item"],
-      template: "systems/quest/templates/item-sheet.html",
+      template: "systems/foundryvtt-quest/templates/item-sheet.html",
       width: 520,
       height: 480,
       tabs: [
@@ -662,7 +662,7 @@ var QuestAbilitySheet = class extends ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["quest", "sheet", "item"],
-      template: "systems/quest/templates/ability-sheet.html",
+      template: "systems/foundryvtt-quest/templates/ability-sheet.html",
       width: 520,
       height: 480,
       tabs: [
@@ -7215,7 +7215,7 @@ var QuestActorSheet = class extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["quest", "sheet", "actor"],
-      template: "systems/quest/templates/actor-sheetv2.html",
+      template: "systems/foundryvtt-quest/templates/actor-sheetv2.html",
       width: 850,
       height: 740,
       tabs: []
@@ -7335,7 +7335,7 @@ var QuestActorSheet = class extends ActorSheet {
   }
   async _chatAbility(id) {
     const item2 = this.actor.items.get(id);
-    let template = "systems/quest/templates/chat/ability.html";
+    let template = "systems/foundryvtt-quest/templates/chat/ability.html";
     if (item2.data.data.long_description == "" || !!item2.data.data.long_description == false)
       item2.data.data.long_description = item2.data.data.description;
     let data = { ability: item2.data, actor: this.actor.data };
@@ -7436,7 +7436,7 @@ var QuestNPCActorSheet = class extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["quest", "sheet", "actor"],
-      template: "systems/quest/templates/actor-sheetv2.html",
+      template: "systems/foundryvtt-quest/templates/actor-sheetv2.html",
       width: 550,
       height: 600,
       tabs: []
@@ -7563,8 +7563,8 @@ var QuestNPCActorSheet = class extends ActorSheet {
 // module/templates.js
 var preloadHandlebarsTemplates = async function() {
   const templatePaths = [
-    "systems/quest/templates/parts/sheet-attributes.html",
-    "systems/quest/templates/parts/sheet-groups.html"
+    "systems/foundryvtt-quest/templates/parts/sheet-attributes.html",
+    "systems/foundryvtt-quest/templates/parts/sheet-groups.html"
   ];
   return loadTemplates(templatePaths);
 };
@@ -7604,7 +7604,7 @@ var QuestRoll = class extends Roll {
     return renderTemplate(chatOptions.template, chatData);
   }
 };
-__publicField(QuestRoll, "CHAT_TEMPLATE", "systems/quest/templates/dice/roll.html");
+__publicField(QuestRoll, "CHAT_TEMPLATE", "systems/foundryvtt-quest/templates/dice/roll.html");
 var questChatData = async (roll, chatOptions) => {
   const isPrivate = chatOptions.isPrivate;
   let outcome;
@@ -7651,7 +7651,7 @@ var AbilityDialog = class extends Dialog {
   }
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      template: `systems/quest/templates/role-ability.html`,
+      template: `systems/foundryvtt-quest/templates/role-ability.html`,
       resizable: true,
       jQuery: true,
       width: "710",
