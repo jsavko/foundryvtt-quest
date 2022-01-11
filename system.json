@@ -2,7 +2,7 @@
     "name": "foundryvtt-quest",
     "title": "Quest",
     "description": "A system for playing the Quest RPG in Foundry VTT.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9",
     "author": "LostPhoenix",
@@ -14,7 +14,8 @@
             "name": "role-abilities",
             "label": "Quest System - Role Abilities [Do Not Edit]",
             "path": "packs/role-abilities.db",
-            "entity": "Item"
+            "entity": "Item",
+            "type": "Item"
         }
     ],
     "languages": [

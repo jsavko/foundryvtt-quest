@@ -7746,7 +7746,7 @@ var CompendiumImportHelper = class {
     return QUESTAbilities;
   }
   static async getSystemCompendium() {
-    return await game.packs.get("foundryvtt-quest.role-abilities");
+    return await game.packs.get("quest.role-abilities");
   }
   static async createCompenium() {
     if (await this.findCompendium() == false) {

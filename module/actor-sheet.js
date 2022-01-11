@@ -13,7 +13,7 @@ export class QuestActorSheet extends ActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["quest", "sheet", "actor"],
-            template: "systems/quest/templates/actor-sheetv2.html",
+            template: "systems/foundryvtt-quest/templates/actor-sheetv2.html",
             width: 850,
             height: 740,
             tabs: []
@@ -195,7 +195,7 @@ export class QuestActorSheet extends ActorSheet {
     async _chatAbility(id) {
         const item = this.actor.items.get(id);
         //Prep Chat Card using Ability Template
-        let template = "systems/quest/templates/chat/ability.html";
+        let template = "systems/foundryvtt-quest/templates/chat/ability.html";
 
         if (
             item.data.data.long_description == "" ||

@@ -1,5 +1,5 @@
 export class AbilityDialog extends Dialog {
-    //static TEMPLATE = "systems/quest/templates/role-ability.html";
+    //static TEMPLATE = "systems/foundryvtt-quest/templates/role-ability.html";
 
     constructor(options) {
         super(options);
@@ -14,7 +14,7 @@ export class AbilityDialog extends Dialog {
     /** @inheritdoc */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            template: `systems/quest/templates/role-ability.html`,
+            template: `systems/foundryvtt-quest/templates/role-ability.html`,
             resizable: true,
             jQuery: true,
             width: "710",

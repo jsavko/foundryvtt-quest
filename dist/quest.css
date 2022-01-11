@@ -1,4 +1,4 @@
-/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/Tabs.esbuild-svelte-fake-css */
+/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/Tabs.esbuild-svelte-fake-css */
 .box.svelte-8kv0mp.svelte-8kv0mp {
   margin-bottom: 10px;
   padding-top: 20px;
@@ -33,7 +33,7 @@ li.active.svelte-8kv0mp > span.svelte-8kv0mp {
   background-color: #eeeeee;
 }
 
-/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css */
+/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css */
 ol.svelte-gddmne.svelte-gddmne {
   padding-left: 30px;
 }
@@ -60,7 +60,7 @@ li.svelte-gddmne i.svelte-gddmne:hover {
   opacity: 100%;
 }
 
-/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css */
+/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css */
 ul.svelte-17i6vo1.svelte-17i6vo1 {
   padding-left: 15px;
   list-style-type: none;
@@ -89,7 +89,7 @@ h3.svelte-17i6vo1.svelte-17i6vo1 {
   font-weight: 900;
 }
 
-/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
+/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
 input.svelte-bzv5hr.svelte-bzv5hr {
   border-top: none;
   border-left: none;
@@ -190,7 +190,7 @@ input.short.svelte-bzv5hr.svelte-bzv5hr {
   border-bottom: 2px groove #eeeeee;
 }
 
-/* fakecss:D:/FoundryData/Data/systems/quest/module/svelte/QuestEditor.esbuild-svelte-fake-css */
+/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css */
 .editor.svelte-1xgaaf4 {
   display: grid;
   grid-template-rows: 1px 1fr;

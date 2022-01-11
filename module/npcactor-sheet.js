@@ -13,7 +13,7 @@ export class QuestNPCActorSheet extends ActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["quest", "sheet", "actor"],
-            template: "systems/quest/templates/actor-sheetv2.html",
+            template: "systems/foundryvtt-quest/templates/actor-sheetv2.html",
             width: 550,
             height: 600,
             tabs: []

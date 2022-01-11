@@ -7,8 +7,8 @@ export const preloadHandlebarsTemplates = async function () {
     // Define template paths to load
     const templatePaths = [
         // Attribute list partial.
-        "systems/quest/templates/parts/sheet-attributes.html",
-        "systems/quest/templates/parts/sheet-groups.html"
+        "systems/foundryvtt-quest/templates/parts/sheet-attributes.html",
+        "systems/foundryvtt-quest/templates/parts/sheet-groups.html"
     ];
 
     // Load the template parts

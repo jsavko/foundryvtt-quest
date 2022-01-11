@@ -10,7 +10,7 @@ export class QuestItemSheet extends ItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["quest", "sheet", "item"],
-            template: "systems/quest/templates/item-sheet.html",
+            template: "systems/foundryvtt-quest/templates/item-sheet.html",
             width: 520,
             height: 480,
             tabs: [

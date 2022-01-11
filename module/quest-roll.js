@@ -29,7 +29,7 @@ export class QuestRoll extends Roll {
         return renderTemplate(chatOptions.template, chatData);
     }
 
-    static CHAT_TEMPLATE = "systems/quest/templates/dice/roll.html";
+    static CHAT_TEMPLATE = "systems/foundryvtt-quest/templates/dice/roll.html";
 }
 
 const questChatData = async (roll, chatOptions) => {
