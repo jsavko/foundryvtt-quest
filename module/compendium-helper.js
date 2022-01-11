@@ -10,7 +10,7 @@ export class CompendiumImportHelper {
     }
 
     static async getSystemCompendium() {
-        return await game.packs.get("quest.role-abilities");
+        return await game.packs.get("foundryvtt-quest.role-abilities");
     }
 
     static async createCompenium() {
