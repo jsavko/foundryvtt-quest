@@ -43,6 +43,13 @@ var require_5 = __commonJS({
   }
 });
 
+// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestNPCActorSheetBase.esbuild-svelte-fake-css
+var require_6 = __commonJS({
+  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestNPCActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
+    module.exports = {};
+  }
+});
+
 // module/constants.js
 var ATTRIBUTE_TYPES = ["String", "Number", "Boolean", "Formula", "Resource"];
 
@@ -432,6 +439,8 @@ var QuestActor = class extends Actor {
     const actorData = this.data;
     if (actorData.type == "character") {
       this._prepareCharacterData(this.data);
+    } else if (actorData.type == "npc") {
+      this._prepareNPCData(this.data);
     }
     return this.data;
   }
@@ -447,8 +456,36 @@ var QuestActor = class extends Actor {
     actorData.data.abilityTypes = paths;
     return actorData;
   }
+  _prepareNPCData(actorData) {
+    actorData.data.itemTypes = this.itemTypes;
+    return actorData;
+  }
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
+    if (data.type === "npc" && this.itemTypes.detail.length <= 0) {
+      const details = [];
+      let create_detail = [
+        "what do they look like? (body / face / vibe)",
+        "occupation / organizations",
+        "special features / ideal / flaw",
+        "what's something that they want?",
+        "what is a problem that they have?",
+        "what's something useful that they know?",
+        "who are their friends?",
+        "who are their adversaries?",
+        "what's their biggest secret?",
+        "what valuable things do they own?"
+      ];
+      if (Object(create_detail).length > 0) {
+        for (let i of create_detail) {
+          details.push({
+            name: i,
+            type: "detail"
+          });
+        }
+        this.data.update({ items: details });
+      }
+    }
   }
   getRollData() {
     const data = this.toObject(false).data;
@@ -662,7 +699,6 @@ var QuestAbilitySheet = class extends ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["quest", "sheet", "item"],
-      template: "systems/foundryvtt-quest/templates/ability-sheet.html",
       width: 520,
       height: 480,
       tabs: [
@@ -674,6 +710,10 @@ var QuestAbilitySheet = class extends ItemSheet {
       ],
       scrollY: [".attributes"]
     });
+  }
+  get template() {
+    const path = "systems/foundryvtt-quest/templates/";
+    return `${path}/${this.item.type}-sheet.html`;
   }
   getData() {
     const context = super.getData();
@@ -7390,36 +7430,442 @@ var QuestActorSheet = class extends ActorSheet {
 require_5();
 
 // module/svelte/QuestNPCActorSheetBase.svelte
-function create_fragment6(ctx) {
-  let t;
+function get_each_context5(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[10] = list[i];
+  return child_ctx;
+}
+function get_each_context_14(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[13] = list[i];
+  return child_ctx;
+}
+function create_each_block_14(ctx) {
+  let li;
+  let div1;
+  let span;
+  let t0_value = ctx[13].name + "";
+  let t0;
+  let t1;
+  let div0;
+  let a0;
+  let t2;
+  let a1;
+  let t3;
+  let p;
+  let raw_value = ctx[4].enrichHTML(ctx[13].data.data.description) + "";
+  let t4;
+  let mounted;
+  let dispose;
+  function click_handler(...args) {
+    return ctx[6](ctx[13], ...args);
+  }
+  function click_handler_1(...args) {
+    return ctx[7](ctx[13], ...args);
+  }
   return {
     c() {
-      t = text("Hello, My Name is _____________________");
+      li = element("li");
+      div1 = element("div");
+      span = element("span");
+      t0 = text(t0_value);
+      t1 = space();
+      div0 = element("div");
+      a0 = element("a");
+      a0.innerHTML = `<i class="fas fa-pen"></i>`;
+      t2 = space();
+      a1 = element("a");
+      a1.innerHTML = `<i class="fas fa-trash"></i>`;
+      t3 = space();
+      p = element("p");
+      t4 = space();
+      attr(span, "class", "Uncommon svelte-1yi3kjs");
+      attr(div0, "class", "right");
+      attr(div1, "class", "flex svelte-1yi3kjs");
+      attr(p, "class", "shrink svelte-1yi3kjs");
+      attr(li, "class", "svelte-1yi3kjs");
     },
     m(target, anchor) {
-      insert(target, t, anchor);
+      insert(target, li, anchor);
+      append(li, div1);
+      append(div1, span);
+      append(span, t0);
+      append(div1, t1);
+      append(div1, div0);
+      append(div0, a0);
+      append(div0, t2);
+      append(div0, a1);
+      append(li, t3);
+      append(li, p);
+      p.innerHTML = raw_value;
+      append(li, t4);
+      if (!mounted) {
+        dispose = [listen(a0, "click", click_handler), listen(a1, "click", click_handler_1)];
+        mounted = true;
+      }
     },
-    p: noop,
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (dirty & 2 && t0_value !== (t0_value = ctx[13].name + ""))
+        set_data(t0, t0_value);
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[13].data.data.description) + ""))
+        p.innerHTML = raw_value;
+      ;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(li);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_each_block5(ctx) {
+  let li;
+  let div1;
+  let span;
+  let t0_value = ctx[10].name + "";
+  let t0;
+  let t1;
+  let div0;
+  let a;
+  let t2;
+  let p;
+  let raw_value = ctx[4].enrichHTML(ctx[10].data.data.description) + "";
+  let t3;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      li = element("li");
+      div1 = element("div");
+      span = element("span");
+      t0 = text(t0_value);
+      t1 = space();
+      div0 = element("div");
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-trash"></i>`;
+      t2 = space();
+      p = element("p");
+      t3 = space();
+      attr(span, "class", "Uncommon svelte-1yi3kjs");
+      attr(div0, "class", "right");
+      attr(div1, "class", "flex svelte-1yi3kjs");
+      attr(p, "class", "shrink svelte-1yi3kjs");
+      attr(li, "class", "svelte-1yi3kjs");
+    },
+    m(target, anchor) {
+      insert(target, li, anchor);
+      append(li, div1);
+      append(div1, span);
+      append(span, t0);
+      append(div1, t1);
+      append(div1, div0);
+      append(div0, a);
+      append(li, t2);
+      append(li, p);
+      p.innerHTML = raw_value;
+      append(li, t3);
+      if (!mounted) {
+        dispose = listen(a, "click", ctx[8]);
+        mounted = true;
+      }
+    },
+    p(ctx2, dirty) {
+      if (dirty & 2 && t0_value !== (t0_value = ctx2[10].name + ""))
+        set_data(t0, t0_value);
+      if (dirty & 2 && raw_value !== (raw_value = ctx2[4].enrichHTML(ctx2[10].data.data.description) + ""))
+        p.innerHTML = raw_value;
+      ;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(li);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_fragment6(ctx) {
+  let div3;
+  let div0;
+  let label0;
+  let t1;
+  let input0;
+  let input0_value_value;
+  let t2;
+  let div1;
+  let a;
+  let t3;
+  let div2;
+  let label1;
+  let t5;
+  let input1;
+  let input1_value_value;
+  let t6;
+  let content;
+  let img;
+  let img_src_value;
+  let img_alt_value;
+  let img_title_value;
+  let t7;
+  let div4;
+  let label2;
+  let t9;
+  let input2;
+  let input2_value_value;
+  let t10;
+  let ul0;
+  let t11;
+  let ul1;
+  let mounted;
+  let dispose;
+  let each_value_1 = ctx[1].data.itemTypes.detail;
+  let each_blocks_1 = [];
+  for (let i = 0; i < each_value_1.length; i += 1) {
+    each_blocks_1[i] = create_each_block_14(get_each_context_14(ctx, each_value_1, i));
+  }
+  let each_value = ctx[1].data.itemTypes.ability;
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block5(get_each_context5(ctx, each_value, i));
+  }
+  return {
+    c() {
+      div3 = element("div");
+      div0 = element("div");
+      label0 = element("label");
+      label0.textContent = "HP:";
+      t1 = space();
+      input0 = element("input");
+      t2 = space();
+      div1 = element("div");
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-1yi3kjs"></i>`;
+      t3 = space();
+      div2 = element("div");
+      label1 = element("label");
+      label1.textContent = "ATK:";
+      t5 = space();
+      input1 = element("input");
+      t6 = space();
+      content = element("content");
+      img = element("img");
+      t7 = space();
+      div4 = element("div");
+      label2 = element("label");
+      label2.textContent = "Name";
+      t9 = space();
+      input2 = element("input");
+      t10 = space();
+      ul0 = element("ul");
+      for (let i = 0; i < each_blocks_1.length; i += 1) {
+        each_blocks_1[i].c();
+      }
+      t11 = space();
+      ul1 = element("ul");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      attr(label0, "class", "character-label");
+      attr(label0, "for", "data.hp");
+      attr(input0, "type", "number");
+      attr(input0, "class", "hp svelte-1yi3kjs");
+      attr(input0, "name", "data.hp");
+      attr(input0, "data-dtype", "Number");
+      input0.value = input0_value_value = ctx[1].data.hp;
+      attr(div0, "class", "hitpoints svelte-1yi3kjs");
+      attr(a, "class", "svelte-1yi3kjs");
+      attr(div1, "class", "roll-generic svelte-1yi3kjs");
+      attr(label1, "class", "character-label");
+      attr(label1, "for", "data.attack");
+      attr(input1, "type", "number");
+      attr(input1, "class", "hp svelte-1yi3kjs");
+      attr(input1, "name", "data.attack");
+      attr(input1, "data-dtype", "Number");
+      input1.value = input1_value_value = ctx[1].data.attack;
+      attr(div2, "class", "actionpoints svelte-1yi3kjs");
+      attr(div3, "class", "header flexrow svelte-1yi3kjs");
+      attr(img, "class", "profile svelte-1yi3kjs");
+      if (img.src !== (img_src_value = ctx[1].img))
+        attr(img, "src", img_src_value);
+      attr(img, "alt", img_alt_value = ctx[1].name);
+      attr(img, "data-edit", "img");
+      attr(img, "title", img_title_value = ctx[1].name);
+      attr(img, "align", "right");
+      attr(label2, "class", "svelte-1yi3kjs");
+      attr(input2, "class", "name svelte-1yi3kjs");
+      attr(input2, "name", "name");
+      attr(input2, "type", "text");
+      input2.value = input2_value_value = ctx[1].name;
+      attr(input2, "placeholder", "Name");
+      attr(div4, "class", "input-field");
+      attr(content, "class", "svelte-1yi3kjs");
+    },
+    m(target, anchor) {
+      insert(target, div3, anchor);
+      append(div3, div0);
+      append(div0, label0);
+      append(div0, t1);
+      append(div0, input0);
+      append(div3, t2);
+      append(div3, div1);
+      append(div1, a);
+      append(div3, t3);
+      append(div3, div2);
+      append(div2, label1);
+      append(div2, t5);
+      append(div2, input1);
+      insert(target, t6, anchor);
+      insert(target, content, anchor);
+      append(content, img);
+      append(content, t7);
+      append(content, div4);
+      append(div4, label2);
+      append(div4, t9);
+      append(div4, input2);
+      append(content, t10);
+      append(content, ul0);
+      for (let i = 0; i < each_blocks_1.length; i += 1) {
+        each_blocks_1[i].m(ul0, null);
+      }
+      append(content, t11);
+      append(content, ul1);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(ul1, null);
+      }
+      if (!mounted) {
+        dispose = [
+          listen(a, "click", ctx[2]?._rollDice.bind(ctx[2])),
+          listen(img, "click", ctx[3])
+        ];
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 2 && input0_value_value !== (input0_value_value = ctx2[1].data.hp)) {
+        input0.value = input0_value_value;
+      }
+      if (dirty & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.attack)) {
+        input1.value = input1_value_value;
+      }
+      if (dirty & 2 && img.src !== (img_src_value = ctx2[1].img)) {
+        attr(img, "src", img_src_value);
+      }
+      if (dirty & 2 && img_alt_value !== (img_alt_value = ctx2[1].name)) {
+        attr(img, "alt", img_alt_value);
+      }
+      if (dirty & 2 && img_title_value !== (img_title_value = ctx2[1].name)) {
+        attr(img, "title", img_title_value);
+      }
+      if (dirty & 2 && input2_value_value !== (input2_value_value = ctx2[1].name) && input2.value !== input2_value_value) {
+        input2.value = input2_value_value;
+      }
+      if (dirty & 22) {
+        each_value_1 = ctx2[1].data.itemTypes.detail;
+        let i;
+        for (i = 0; i < each_value_1.length; i += 1) {
+          const child_ctx = get_each_context_14(ctx2, each_value_1, i);
+          if (each_blocks_1[i]) {
+            each_blocks_1[i].p(child_ctx, dirty);
+          } else {
+            each_blocks_1[i] = create_each_block_14(child_ctx);
+            each_blocks_1[i].c();
+            each_blocks_1[i].m(ul0, null);
+          }
+        }
+        for (; i < each_blocks_1.length; i += 1) {
+          each_blocks_1[i].d(1);
+        }
+        each_blocks_1.length = each_value_1.length;
+      }
+      if (dirty & 8214) {
+        each_value = ctx2[1].data.itemTypes.ability;
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context5(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block5(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(ul1, null);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+    },
     i: noop,
     o: noop,
     d(detaching) {
       if (detaching)
-        detach(t);
+        detach(div3);
+      if (detaching)
+        detach(t6);
+      if (detaching)
+        detach(content);
+      destroy_each(each_blocks_1, detaching);
+      destroy_each(each_blocks, detaching);
+      mounted = false;
+      run_all(dispose);
     }
   };
 }
 function instance6($$self, $$props, $$invalidate) {
-  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(1, $dataStore = $$value)), dataStore);
+  let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(5, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
   $$subscribe_dataStore();
   setContext("sheetStore", dataStore);
   let { actor, data, sheet } = $dataStore;
+  const filePicker = (event) => {
+    const attr3 = event.currentTarget.dataset.edit;
+    const current = getProperty(data, attr3);
+    const fp = new FilePicker({
+      type: "image",
+      current,
+      callback: (path) => {
+        actor.update({ [attr3]: path });
+      },
+      top: sheet.position.top + 40,
+      left: sheet.position.left + 10
+    });
+    return fp.browse();
+  };
+  const TextEditor2 = globalThis.TextEditor;
+  const click_handler = (detail2, e) => {
+    sheet?._onItemEdit(detail2.data._id);
+  };
+  const click_handler_1 = (detail2, e) => {
+    sheet?._onItemDelete(detail2.data._id);
+  };
+  const click_handler_2 = (e) => {
+    sheet?._onItemDelete(detail.data._id);
+  };
   $$self.$$set = ($$props2) => {
     if ("dataStore" in $$props2)
       $$subscribe_dataStore($$invalidate(0, dataStore = $$props2.dataStore));
   };
-  return [dataStore];
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 32) {
+      $:
+        $$invalidate(1, data = $dataStore.data);
+    }
+  };
+  return [
+    dataStore,
+    data,
+    sheet,
+    filePicker,
+    TextEditor2,
+    $dataStore,
+    click_handler,
+    click_handler_1,
+    click_handler_2
+  ];
 }
 var QuestNPCActorSheetBase = class extends SvelteComponent {
   constructor(options) {
@@ -7428,6 +7874,7 @@ var QuestNPCActorSheetBase = class extends SvelteComponent {
   }
 };
 var QuestNPCActorSheetBase_default = QuestNPCActorSheetBase;
+require_6();
 
 // module/npcactor-sheet.js
 var QuestNPCActorSheet = class extends ActorSheet {
@@ -7472,6 +7919,23 @@ var QuestNPCActorSheet = class extends ActorSheet {
       case "delete":
         return item2.delete();
     }
+  }
+  async _onItemEdit(itemId) {
+    const item2 = this.actor.items.get(itemId);
+    return item2.sheet.render(true);
+  }
+  async _onItemDelete(itemId) {
+    const item2 = this.actor.items.get(itemId);
+    item2.delete();
+    this.render();
+  }
+  async _rollDice() {
+    let roll = new game.quest.QuestRoll("1d20");
+    await roll.evaluate({ async: true });
+    roll.toMessage({
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker({ actor: this.actor })
+    });
   }
   _onItemRoll(event) {
     let button = $(event.currentTarget);
@@ -7780,14 +8244,18 @@ Hooks.once("init", async function() {
   };
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("quest", QuestActorSheet, {
-    makeDefault: true
+    makeDefault: true,
+    types: ["character"]
+  });
+  Actors.registerSheet("quest", QuestNPCActorSheet, {
+    types: ["npc"]
   });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("quest", QuestItemSheet, {
     makeDefault: true
   });
   Items.registerSheet("quest", QuestAbilitySheet, {
-    types: ["ability"],
+    types: ["ability", "detail"],
     makeDefault: true
   });
   game.settings.register("quest", "macroShorthand", {
@@ -7883,7 +8351,6 @@ Hooks.once("init", async function() {
   };
   TextEditor._createDamage = function(match) {
     const a = document.createElement("a");
-    console.log(match);
     match = match.substring(8, match.length - 1);
     a.innerHTML = '<i class="damage">' + match + "</i>";
     return a;

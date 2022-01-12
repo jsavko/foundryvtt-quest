@@ -15,10 +15,13 @@ export class QuestActor extends Actor {
     prepareData() {
         super.prepareData();
         const actorData = this.data;
-        //console.log(actorData)
+
         if (actorData.type == "character") {
             this._prepareCharacterData(this.data);
+        } else if (actorData.type == "npc") {
+            this._prepareNPCData(this.data);
         }
+
         return this.data;
     }
 
@@ -41,10 +44,42 @@ export class QuestActor extends Actor {
         //mergeObject(actorData.data, this.itemTypes)
     }
 
+    _prepareNPCData(actorData) {
+        actorData.data.itemTypes = this.itemTypes;
+        return actorData;
+        //mergeObject(actorData.data, this.itemTypes)
+    }
+
     async _preCreate(data, options, user) {
         await super._preCreate(data, options, user);
         //this.data.update({name: "Some other name"});
         //Create Abilities using localization
+        if (data.type === "npc" && this.itemTypes.detail.length <= 0) {
+            //Setup Abilities
+            const details = [];
+            let create_detail = [
+                "what do they look like? (body / face / vibe)",
+                "occupation / organizations",
+                "special features / ideal / flaw",
+                "what's something that they want?",
+                "what is a problem that they have?",
+                "what's something useful that they know?",
+                "who are their friends?",
+                "who are their adversaries?",
+                "what's their biggest secret?",
+                "what valuable things do they own?"
+            ];
+
+            if (Object(create_detail).length > 0) {
+                for (let i of create_detail) {
+                    details.push({
+                        name: i,
+                        type: "detail"
+                    });
+                }
+                this.data.update({ items: details });
+            }
+        }
     }
 
     /* -------------------------------------------- */

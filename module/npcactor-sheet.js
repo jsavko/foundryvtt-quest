@@ -27,7 +27,6 @@ export class QuestNPCActorSheet extends ActorSheet {
         const context = super.getData();
         context.systemData = context.data.data;
         context.sheet = this;
-
         return context;
     }
 
@@ -76,6 +75,26 @@ export class QuestNPCActorSheet extends ActorSheet {
             case "delete":
                 return item.delete();
         }
+    }
+
+    async _onItemEdit(itemId) {
+        const item = this.actor.items.get(itemId);
+        return item.sheet.render(true);
+    }
+
+    async _onItemDelete(itemId) {
+        const item = this.actor.items.get(itemId);
+        item.delete();
+        this.render();
+    }
+
+    async _rollDice() {
+        let roll = new game.quest.QuestRoll("1d20");
+        await roll.evaluate({ async: true });
+        roll.toMessage({
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor })
+        });
     }
 
     /* -------------------------------------------- */

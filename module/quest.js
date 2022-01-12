@@ -58,14 +58,20 @@ Hooks.once("init", async function () {
     Actors.unregisterSheet("core", ActorSheet);
 
     Actors.registerSheet("quest", QuestActorSheet, {
-        makeDefault: true
+        makeDefault: true,
+        types: ["character"]
     });
+
+    Actors.registerSheet("quest", QuestNPCActorSheet, {
+        types: ["npc"]
+    });
+
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("quest", QuestItemSheet, {
         makeDefault: true
     });
     Items.registerSheet("quest", QuestAbilitySheet, {
-        types: ["ability"],
+        types: ["ability", "detail"],
         makeDefault: true
     });
 
@@ -230,7 +236,7 @@ Hooks.once("init", async function () {
 
     TextEditor._createDamage = function (match) {
         const a = document.createElement("a");
-        console.log(match);
+        //console.log(match);
         match = match.substring(8, match.length - 1);
         a.innerHTML = '<i class="damage">' + match + "</i>";
 

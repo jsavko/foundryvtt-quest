@@ -1,6 +1,6 @@
 {
     "Actor": {
-        "types": ["character"],
+        "types": ["character", "npc"],
         "character": {
             "biography": "",
             "hp": 10,
@@ -29,7 +29,7 @@
         }
     },
     "Item": {
-        "types": ["item", "ability"],
+        "types": ["item", "ability", "detail"],
         "item": {
             "description": "",
             "quantity": 1,
@@ -46,6 +46,9 @@
             "order": 0,
             "quickstart": false,
             "long_description": ""
+        },
+        "detail": {
+            "description": ""
         }
     }
 }

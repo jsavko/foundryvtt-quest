@@ -2,7 +2,7 @@
     "name": "foundryvtt-quest",
     "title": "Quest",
     "description": "A system for playing the Quest RPG in Foundry VTT.",
-    "version": "0.1.2",
+    "version": "0.1.4",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9",
     "author": "LostPhoenix",
@@ -14,6 +14,13 @@
             "name": "role-abilities",
             "label": "Quest System - Role Abilities [Do Not Edit]",
             "path": "packs/role-abilities.db",
+            "entity": "Item",
+            "type": "Item"
+        },
+        {
+            "name": "npc-abilities",
+            "label": "Quest System - NPC Abilities [Do Not Edit]",
+            "path": "packs/npc-abilities.db",
             "entity": "Item",
             "type": "Item"
         }
@@ -29,6 +36,7 @@
     "gridUnits": "ft",
     "primaryTokenAttribute": "health",
     "secondaryTokenAttribute": "power",
+    "templateVersion": 5,
     "url": "https://github.com/jsavko/foundryvtt-quest",
     "manifest": "https://raw.githubusercontent.com/jsavko/foundryvtt-quest/main/system.json",
     "download": "https://github.com/jsavko/foundryvtt-quest/archive/refs/heads/main.zip",
