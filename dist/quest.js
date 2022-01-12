@@ -7432,19 +7432,19 @@ require_5();
 // module/svelte/QuestNPCActorSheetBase.svelte
 function get_each_context5(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[10] = list[i];
+  child_ctx[11] = list[i];
   return child_ctx;
 }
 function get_each_context_14(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[13] = list[i];
+  child_ctx[14] = list[i];
   return child_ctx;
 }
 function create_each_block_14(ctx) {
   let li;
   let div1;
   let span;
-  let t0_value = ctx[13].name + "";
+  let t0_value = ctx[14].name + "";
   let t0;
   let t1;
   let div0;
@@ -7453,15 +7453,15 @@ function create_each_block_14(ctx) {
   let a1;
   let t3;
   let p;
-  let raw_value = ctx[4].enrichHTML(ctx[13].data.data.description) + "";
+  let raw_value = ctx[4].enrichHTML(ctx[14].data.data.description) + "";
   let t4;
   let mounted;
   let dispose;
   function click_handler(...args) {
-    return ctx[6](ctx[13], ...args);
+    return ctx[6](ctx[14], ...args);
   }
   function click_handler_1(...args) {
-    return ctx[7](ctx[13], ...args);
+    return ctx[7](ctx[14], ...args);
   }
   return {
     c() {
@@ -7506,9 +7506,9 @@ function create_each_block_14(ctx) {
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      if (dirty & 2 && t0_value !== (t0_value = ctx[13].name + ""))
+      if (dirty & 2 && t0_value !== (t0_value = ctx[14].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[13].data.data.description) + ""))
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[14].data.data.description) + ""))
         p.innerHTML = raw_value;
       ;
     },
@@ -7524,17 +7524,25 @@ function create_each_block5(ctx) {
   let li;
   let div1;
   let span;
-  let t0_value = ctx[10].name + "";
+  let t0_value = ctx[11].name + "";
   let t0;
   let t1;
   let div0;
-  let a;
+  let a0;
   let t2;
-  let p;
-  let raw_value = ctx[4].enrichHTML(ctx[10].data.data.description) + "";
+  let a1;
   let t3;
+  let p;
+  let raw_value = ctx[4].enrichHTML(ctx[11].data.data.description) + "";
+  let t4;
   let mounted;
   let dispose;
+  function click_handler_2(...args) {
+    return ctx[8](ctx[11], ...args);
+  }
+  function click_handler_3(...args) {
+    return ctx[9](ctx[11], ...args);
+  }
   return {
     c() {
       li = element("li");
@@ -7543,11 +7551,14 @@ function create_each_block5(ctx) {
       t0 = text(t0_value);
       t1 = space();
       div0 = element("div");
-      a = element("a");
-      a.innerHTML = `<i class="fas fa-trash"></i>`;
+      a0 = element("a");
+      a0.innerHTML = `<i class="fas fa-pen"></i>`;
       t2 = space();
-      p = element("p");
+      a1 = element("a");
+      a1.innerHTML = `<i class="fas fa-trash"></i>`;
       t3 = space();
+      p = element("p");
+      t4 = space();
       attr(span, "class", "Uncommon svelte-1yi3kjs");
       attr(div0, "class", "right");
       attr(div1, "class", "flex svelte-1yi3kjs");
@@ -7561,20 +7572,26 @@ function create_each_block5(ctx) {
       append(span, t0);
       append(div1, t1);
       append(div1, div0);
-      append(div0, a);
-      append(li, t2);
+      append(div0, a0);
+      append(div0, t2);
+      append(div0, a1);
+      append(li, t3);
       append(li, p);
       p.innerHTML = raw_value;
-      append(li, t3);
+      append(li, t4);
       if (!mounted) {
-        dispose = listen(a, "click", ctx[8]);
+        dispose = [
+          listen(a0, "click", click_handler_2),
+          listen(a1, "click", click_handler_3)
+        ];
         mounted = true;
       }
     },
-    p(ctx2, dirty) {
-      if (dirty & 2 && t0_value !== (t0_value = ctx2[10].name + ""))
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (dirty & 2 && t0_value !== (t0_value = ctx[11].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && raw_value !== (raw_value = ctx2[4].enrichHTML(ctx2[10].data.data.description) + ""))
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[11].data.data.description) + ""))
         p.innerHTML = raw_value;
       ;
     },
@@ -7582,7 +7599,7 @@ function create_each_block5(ctx) {
       if (detaching)
         detach(li);
       mounted = false;
-      dispose();
+      run_all(dispose);
     }
   };
 }
@@ -7779,7 +7796,7 @@ function create_fragment6(ctx) {
         }
         each_blocks_1.length = each_value_1.length;
       }
-      if (dirty & 8214) {
+      if (dirty & 22) {
         each_value = ctx2[1].data.itemTypes.ability;
         let i;
         for (i = 0; i < each_value.length; i += 1) {
@@ -7836,14 +7853,17 @@ function instance6($$self, $$props, $$invalidate) {
     return fp.browse();
   };
   const TextEditor2 = globalThis.TextEditor;
-  const click_handler = (detail2, e) => {
-    sheet?._onItemEdit(detail2.data._id);
+  const click_handler = (detail, e) => {
+    sheet?._onItemEdit(detail.data._id);
   };
-  const click_handler_1 = (detail2, e) => {
-    sheet?._onItemDelete(detail2.data._id);
-  };
-  const click_handler_2 = (e) => {
+  const click_handler_1 = (detail, e) => {
     sheet?._onItemDelete(detail.data._id);
+  };
+  const click_handler_2 = (ability, e) => {
+    sheet?._onItemEdit(ability.data._id);
+  };
+  const click_handler_3 = (ability, e) => {
+    sheet?._onItemDelete(ability.data._id);
   };
   $$self.$$set = ($$props2) => {
     if ("dataStore" in $$props2)
@@ -7864,7 +7884,8 @@ function instance6($$self, $$props, $$invalidate) {
     $dataStore,
     click_handler,
     click_handler_1,
-    click_handler_2
+    click_handler_2,
+    click_handler_3
   ];
 }
 var QuestNPCActorSheetBase = class extends SvelteComponent {

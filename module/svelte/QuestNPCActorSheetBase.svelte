@@ -127,7 +127,14 @@
                             on:click={(e) =>
                                 // sheet.delete.id
                                 {
-                                    sheet?._onItemDelete(detail.data._id);
+                                    sheet?._onItemEdit(ability.data._id);
+                                }}><i class="fas fa-pen" /></a
+                        >
+                        <a
+                            on:click={(e) =>
+                                // sheet.delete.id
+                                {
+                                    sheet?._onItemDelete(ability.data._id);
                                 }}><i class="fas fa-trash" /></a
                         >
                     </div>
