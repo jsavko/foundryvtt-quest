@@ -1,6 +1,10 @@
 # Quest for FoundryVTT
 
-* Upon first launching a world using Quest a world compendium will be created with all of the quest abilities within. This is done to allow you to edit the abilities will full descriptions without worry of a system update wiping out your hard work. 
+![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2Fjsavko%2Ffoundryvtt-quest%2Fmain%2Fsystem.json)
+
+[![ko-fi](https://img.shields.io/badge/-Buy%20me%20a%20beer-orange)](https://ko-fi.com/lostphoenix)
+
+-   Upon first launching a world using Quest a world compendium will be created with all of the quest abilities within. This is done to allow you to edit the abilities will full descriptions without worry of a system update wiping out your hard work.
 
 ## Character Sheeets
 
@@ -12,18 +16,18 @@
 
 ![image](https://user-images.githubusercontent.com/192591/146588248-838962e5-286c-47ea-b430-7aa2ab49593d.png)
 
+## New Abilities
 
-## New Abilities ##
-* To Create new Roles and Abilties make a new Ability item and fill out the Role and Path. 
-* Import newly created ability in the world compendium [b]Role Abilities[/b]
-* The new ability will appear in the ability browser.
-* Using a new Role and Path will cause a new role/path to be created.
-* Short Descriptions appear in the ability browser.  Long descriptions will be sent to chat. When editing abilities will full text please update the Long Description.  (If no long description exists the short description is sent to chat)
-![image](https://user-images.githubusercontent.com/192591/146589229-e0fb35e0-c43c-4376-a215-5f4b981b6a26.png)
+-   To Create new Roles and Abilties make a new Ability item and fill out the Role and Path.
+-   Import newly created ability in the world compendium [b]Role Abilities[/b]
+-   The new ability will appear in the ability browser.
+-   Using a new Role and Path will cause a new role/path to be created.
+-   Short Descriptions appear in the ability browser. Long descriptions will be sent to chat. When editing abilities will full text please update the Long Description. (If no long description exists the short description is sent to chat)
+    ![image](https://user-images.githubusercontent.com/192591/146589229-e0fb35e0-c43c-4376-a215-5f4b981b6a26.png)
 
+## Short Codes
 
-## Short Codes ##
-* Using @cost[X] and @damage[X] will generate the cost and damage bubbles within the ability editor
+-   Using @cost[X] and @damage[X] will generate the cost and damage bubbles within the ability editor
 
 ## Atributations
 
