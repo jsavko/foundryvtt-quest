@@ -1,7 +1,6 @@
 # Quest for FoundryVTT
 
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2Fjsavko%2Ffoundryvtt-quest%2Fmain%2Fsystem.json)
-
 [![ko-fi](https://img.shields.io/badge/-Buy%20me%20a%20beer-orange)](https://ko-fi.com/lostphoenix)
 
 -   Upon first launching a world using Quest a world compendium will be created with all of the quest abilities within. This is done to allow you to edit the abilities will full descriptions without worry of a system update wiping out your hard work.
