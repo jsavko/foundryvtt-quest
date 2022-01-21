@@ -93,7 +93,7 @@
     ];
 
     let styleoutfit = [
-        "tched leather armor",
+        "etched leather armor",
         "a billowing jumpsuit",
         "a tightly fitted tunic",
         "religious vestments",
@@ -139,7 +139,7 @@
         "a spring in my step",
         "a singularpurpose",
         "no sense of space",
-        "music inmy feet",
+        "music in my feet",
         "an uneven gait",
         "a joyful whistle",
         "relentless focus",
@@ -161,7 +161,7 @@
         "a hidden warren",
         "a working farm",
         "a roadside inn",
-        "a ship atsea",
+        "a ship at sea",
         "a place I can't name",
         "a subterranean city",
         "a forgotten nation",
@@ -225,7 +225,7 @@
 
     let dream = [
         "returning to my hometown as a renowned hero",
-        "freeing myself from agang that wants me dead",
+        "freeing myself from a gang that wants me dead",
         "getting revengeon someone who wronged me",
         "finding a corner of the world to make my own",
         "publishing a book that's found in every home",
@@ -245,7 +245,7 @@
         "making every stranger smile",
         "becoming a master artisan",
         "dying an honorable death",
-        "mapping the entir eworld",
+        "mapping the entire world",
         "meeting the grim reaper",
         "pullingoff the big score",
         "traveling to the stars",
