@@ -1,0 +1,23 @@
+_id: yEeEmO8D3fhdvjR6
+name: Nature's Wrath
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[7]&nbsp;You channel elemental&nbsp;fury, creating one of three
+    natural disasters with an enormous impact on the&nbsp;environment.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Legendary
+  order: '1'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

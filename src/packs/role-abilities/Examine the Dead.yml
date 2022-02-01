@@ -1,0 +1,23 @@
+_id: Oo5oDJ7mZVoN7dIV
+name: Examine the Dead
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] You evaluate a corpse to diagnose its cause of death.</p>
+  cost: 1
+  role: Doctor
+  path: Examination
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

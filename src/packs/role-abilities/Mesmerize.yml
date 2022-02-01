@@ -1,0 +1,21 @@
+_id: eNPvlSBfbi5Mdc1B
+name: Mesmerize
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[0] Dazzle a nearby creature with an optical illusion.</p>
+  cost: 1
+  role: Magician
+  path: Misdirection
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

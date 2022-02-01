@@ -1,0 +1,23 @@
+_id: 9krTzwzD0eTsvCVf
+name: Shapeshift
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] A superior version of your Animal Form spell that allows you to
+    become a more powerful animal.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Shapeshifter
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

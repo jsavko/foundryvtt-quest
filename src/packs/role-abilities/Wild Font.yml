@@ -1,0 +1,23 @@
+_id: U1XX5NCJlakxFiQm
+name: Wild Font
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You touch a container holding food, water, or oil, causing it to
+    spill&nbsp;an excess of its contents.</p>
+  cost: 1
+  role: Naturalist
+  path: Summoner
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

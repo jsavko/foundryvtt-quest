@@ -1,0 +1,25 @@
+_id: 9GoiztldBK2OrHUZ
+name: Scry
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1]&nbsp; Flash forward in time to glimpse your actions in the near
+    future.</p>
+  cost: 1
+  role: Wizard
+  path: Projection
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

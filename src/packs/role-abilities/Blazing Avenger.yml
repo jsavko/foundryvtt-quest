@@ -1,0 +1,23 @@
+_id: 4UnpzVdSfy5Uj8co
+name: Blazing Avenger
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[6] You permanently enchant a weapon, imbuing it with incredible
+    power</p>
+  cost: 1
+  role: Invoker
+  path: Wrath
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

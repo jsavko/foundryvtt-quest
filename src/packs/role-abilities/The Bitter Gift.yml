@@ -1,0 +1,25 @@
+_id: LQDKOVP8mFFzBA39
+name: The Bitter Gift
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[9]&nbsp; You bestow a creature with self-awareness, turning it into
+    a person like you.</p>
+  cost: 1
+  role: Doctor
+  path: Legendary
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

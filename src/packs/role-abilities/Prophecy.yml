@@ -1,0 +1,21 @@
+_id: UXum2epLcsL8xL9t
+name: Prophecy
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[0] You glimpse a creature&rsquo;s fate, shaping its future</p>
+  cost: 1
+  role: Invoker
+  path: Legendary
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

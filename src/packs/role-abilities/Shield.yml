@@ -1,0 +1,21 @@
+_id: JH57KVVeBsSuT8XL
+name: Shield
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Summon a magical shield that blocks damage.&nbsp;</p>
+  cost: 1
+  role: Invoker
+  path: Wards
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

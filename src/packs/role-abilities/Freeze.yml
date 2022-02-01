@@ -1,0 +1,23 @@
+_id: MRe4rrQ4eKF3sAoZ
+name: Freeze
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+] You blow cool air, creating freezing winds that swirl around a
+    nearby target.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Elementalist
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

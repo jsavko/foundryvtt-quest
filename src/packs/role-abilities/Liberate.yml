@@ -1,0 +1,23 @@
+_id: Rek7zBgwhYd38FHF
+name: Liberate
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4] You channel the weight of your devotion to alleviate an NPC of a
+    character flaw</p>
+  cost: 1
+  role: Invoker
+  path: Verdicts
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

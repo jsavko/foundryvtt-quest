@@ -1,0 +1,25 @@
+_id: Wx2rNyspl49Azvw1
+name: Blink Pack
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] A magical messenger pack with a hidden switch that conceals
+    items.</p>
+  cost: 1
+  role: Spy
+  path: Concealment
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.NLXpzieATCJnPfV5

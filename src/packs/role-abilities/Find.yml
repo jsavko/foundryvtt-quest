@@ -1,0 +1,25 @@
+_id: fZ8rSTj9Cd6lzOmv
+name: Find
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3]&nbsp;&nbsp;Discover the location of an object you have held
+    before, and teleport it to your location.</p>
+  cost: 1
+  role: Wizard
+  path: Projection
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

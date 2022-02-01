@@ -1,0 +1,23 @@
+_id: IfN0HSo3u1HjmSFy
+name: Evil Eye
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You close your eyes and sense the worst thing that ever happened
+    nearby.&nbsp;</p>
+  cost: 1
+  role: Invoker
+  path: Inquiries
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

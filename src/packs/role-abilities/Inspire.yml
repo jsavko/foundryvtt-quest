@@ -1,0 +1,23 @@
+_id: IsMGrJhBriZpFXPV
+name: Inspire
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You recite a meaningful statement, inspiring an NPC to live up
+    to their ideal</p>
+  cost: 1
+  role: Invoker
+  path: Verdicts
+  order: '1'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

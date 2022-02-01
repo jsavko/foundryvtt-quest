@@ -1,0 +1,23 @@
+_id: wnz9mdj2r8GJ1hZt
+name: Relieve
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You say something comforting, relieving a creature of anxiety,
+    pain, and discomfort.</p>
+  cost: 1
+  role: Doctor
+  path: Healing
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

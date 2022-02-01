@@ -1,0 +1,25 @@
+_id: 2s1sw2gUt4hfpbWC
+name: Counter Attack
+type: ability
+img: icons/svg/sword.svg
+data:
+  description: >-
+    <p>&nbsp;@cost[0] Quickly turn the tables on an attacker who makes a
+    mistake.</p>
+  cost: 1
+  role: Fighter
+  path: Dueling
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+  quantity: null
+  weight: null
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

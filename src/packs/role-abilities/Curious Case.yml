@@ -1,0 +1,23 @@
+_id: o5TXHGrmvMSCkL5v
+name: Curious Case
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[3] You examine a scene for familiar clues.</p>
+  cost: 1
+  role: Doctor
+  path: Examination
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

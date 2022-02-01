@@ -1,0 +1,25 @@
+_id: 6dYPuVcfR1um3kkm
+name: Wren's Delightful Dream
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1]&nbsp; Give a creature a deeply comforting dream that makes them
+    feel beloved and forgiving.</p>
+  cost: 1
+  role: Magician
+  path: Mind Control
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.H7N4MATTsvZs9MWj

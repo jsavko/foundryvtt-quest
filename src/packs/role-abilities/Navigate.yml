@@ -1,0 +1,23 @@
+_id: w2p4DQj6HIuqF1kP
+name: Navigate
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+] You can&rsquo;t get lost in wilderness, and you can find a
+    special natural reprieve in times of need.</p>
+  cost: 1
+  role: Ranger
+  path: Pathfinder
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,23 @@
+_id: kYAnfXJHUgNZdmMc
+name: Slayer
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4] You devastate a group of minions in an impressive acrobatic
+    fashion, reducing their numbers by half.&nbsp;</p>
+  cost: 1
+  role: Ranger
+  path: Legendary
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

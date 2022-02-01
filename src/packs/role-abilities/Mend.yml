@@ -1,0 +1,23 @@
+_id: ZHWhsIWzp9QxplYB
+name: Mend
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You gently touch a creature, immediately restoring hit points
+    and mending minor wounds.&nbsp;</p>
+  cost: 1
+  role: Doctor
+  path: Healing
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

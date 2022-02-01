@@ -1,0 +1,25 @@
+_id: gPOOt87mYLuUgCSJ
+name: Feign Death
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3 ] You place nearby creatures in suspended animation for up to an
+    hour.&nbsp;</p>
+  cost: 1
+  role: Doctor
+  path: Alteration
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

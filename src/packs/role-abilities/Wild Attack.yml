@@ -1,0 +1,25 @@
+_id: XOY7fLThyDodxien
+name: Wild Attack
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0]&nbsp;<span style="font-family: var(--font-primary); font-size:
+    var(--font-size-14);">Strike a foe with reckless power.</span></p>
+  cost: 1
+  role: Fighter
+  path: Dueling
+  order: '2'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+  quantity: 3
+  weight: null
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

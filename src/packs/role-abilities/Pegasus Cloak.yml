@@ -1,0 +1,25 @@
+_id: nd3ehKuHKxLSswJE
+name: Pegasus Cloak
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3]&nbsp; Bestow yourself and nearby creatures with an illusory
+    cloak that allows them to levitate.</p>
+  cost: 1
+  role: Wizard
+  path: Conjuration
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

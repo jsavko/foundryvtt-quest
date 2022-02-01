@@ -1,0 +1,23 @@
+_id: wGSQXTxnDvFoJR3d
+name: Petrify
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2]&nbsp;&nbsp;You turn the surface of a creature to stone, or
+    encase your own body with a protective shell.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Shapeshifter
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

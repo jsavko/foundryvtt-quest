@@ -1,0 +1,25 @@
+_id: AEpBg29xnENzMpVI
+name: Dark Door
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4] Knock on a door, making it a temporary portal to a shadow
+    plane.</p>
+  cost: 1
+  role: Wizard
+  path: Planeshifting
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

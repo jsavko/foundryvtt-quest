@@ -1,0 +1,23 @@
+_id: BHSO84ci5j5GfOqq
+name: Seeker
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[0+] A levitating orb that can scout adjacent rooms for you.</p>
+  cost: 1
+  role: Spy
+  path: Surveillance
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.NLXpzieATCJnPfV5

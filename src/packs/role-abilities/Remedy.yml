@@ -1,0 +1,23 @@
+_id: OlhjT5jofRzHbSvD
+name: Remedy
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] Scavenge your area to find a plant-based remedy for an
+    ailment.</p>
+  cost: 1
+  role: Ranger
+  path: Survivalist
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

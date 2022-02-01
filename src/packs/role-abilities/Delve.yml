@@ -1,0 +1,23 @@
+_id: LrHXVFhbyCKQJylS
+name: Delve
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You sense the general layout of the next three areas in an
+    underground structure.</p>
+  cost: 1
+  role: Ranger
+  path: Pathfinder
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

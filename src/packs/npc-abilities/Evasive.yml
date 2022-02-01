@@ -1,0 +1,32 @@
+_id: Jc57JORmmDFZCjJF
+name: Evasive
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: |-
+    <p>The creature has an extraordinary method of movement.</p>
+    <p>Choose one:</p>
+    <ul>
+    <li>It can fly.</li>
+    <li>It can climb quickly.</li>
+    <li>It can burrow and travel underground.</li>
+    <li>It can teleport brief distances.</li>
+    <li>It can outrun other creatures by foot.</li>
+    </ul>
+  cost: 1
+  role: NPC
+  path: NPC
+  order: '0'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.Jc57JORmmDFZCjJF

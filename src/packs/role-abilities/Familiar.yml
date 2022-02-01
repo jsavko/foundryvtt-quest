@@ -1,0 +1,23 @@
+_id: 4ycl4fkZcL7ngcTl
+name: Familiar
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[2] You summon a tiny spectral creature who becomes your ally.</p>
+  cost: 1
+  role: Wizard
+  path: Conjuration
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

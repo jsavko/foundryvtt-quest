@@ -1,0 +1,23 @@
+_id: hSde3mUG84XKDFZh
+name: Command Nature
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+]&nbsp; You recite a brief poem to the plants around you, causing
+    them to produce an effect</p>
+  cost: 1
+  role: Naturalist
+  path: Ecologist
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,21 @@
+_id: OE4wcWjdPQ3rUxhV
+name: Recruit
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Command a nearby commoner or minion to assist you</p>
+  cost: 1
+  role: Fighter
+  path: Leadership
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

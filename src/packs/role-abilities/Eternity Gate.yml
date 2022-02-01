@@ -1,0 +1,23 @@
+_id: YUkQcFUNBfPlpEs8
+name: Eternity Gate
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[7] You project yourself past all realities into the beyond to seek
+    and&nbsp;find a single truth.</p>
+  cost: 1
+  role: Invoker
+  path: Legendary
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

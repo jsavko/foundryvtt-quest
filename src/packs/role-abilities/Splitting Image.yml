@@ -1,0 +1,21 @@
+_id: H7N4MATTsvZs9MWj
+name: Splitting Image
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Create illusory duplicates to confuse others.</p>
+  cost: 1
+  role: Magician
+  path: Mannequins
+  order: '3'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,25 @@
+_id: UIxniEzs0jBHtd9w
+name: Veteran
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>Add 4 HP and 1 attack if the creature is highly experienced, like a
+    veteran town guard, a professor of magic, or an ancient elemental</p>
+  cost: 1
+  role: NPC
+  path: NPC
+  order: '0'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.UIxniEzs0jBHtd9w

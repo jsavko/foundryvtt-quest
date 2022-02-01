@@ -1,0 +1,21 @@
+_id: Tq5Yk5LwdxJqfbgW
+name: Petition
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[2] While regrouping, recite a petition to receive a boon.</p>
+  cost: 1
+  role: Invoker
+  path: Invocation
+  order: '2'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

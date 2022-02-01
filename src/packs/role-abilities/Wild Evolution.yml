@@ -1,0 +1,23 @@
+_id: iF3gU5UJ68jvweYc
+name: Wild Evolution
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0] Your physical essence becomes permanently intertwined with a
+    chosen animal's form, allowing you to shapeshift at will</p>
+  cost: 1
+  role: Naturalist
+  path: Legendary
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

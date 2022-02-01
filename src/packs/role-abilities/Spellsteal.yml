@@ -1,0 +1,25 @@
+_id: 8E9USmyjsDYH32gq
+name: Spellsteal
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] Glimpse a creature&rsquo;s mind to learn a spell you have
+    observed them casting.&nbsp;</p>
+  cost: 1
+  role: Wizard
+  path: Magecraft
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

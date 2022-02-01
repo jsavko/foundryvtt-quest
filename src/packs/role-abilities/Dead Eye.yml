@@ -1,0 +1,24 @@
+_id: a1Wi1QZuytuaF4kn
+name: Dead Eye
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+] <span style="font-family: var(--font-primary); font-size:
+    var(--font-size-14);">When you roll a Triumph on a ranged attack, you can
+    neutralize an enemy&rsquo;s body part</span></p>
+  cost: 1
+  role: Ranger
+  path: Hunter
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

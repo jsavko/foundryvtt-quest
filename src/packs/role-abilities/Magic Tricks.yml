@@ -1,0 +1,23 @@
+_id: SbscEBOZy7C1rB2u
+name: Magic Tricks
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0] Produce a tiny magical effect to surprise, delight, or confuse
+    those around you.</p>
+  cost: 1
+  role: Magician
+  path: Misdirection
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

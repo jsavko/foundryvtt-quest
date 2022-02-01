@@ -1,0 +1,21 @@
+_id: iyUyqRzLAGJiLvhG
+name: Plan
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[3] Prepare your party before combat to ambush your enemies</p>
+  cost: 1
+  role: Fighter
+  path: Leadership
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

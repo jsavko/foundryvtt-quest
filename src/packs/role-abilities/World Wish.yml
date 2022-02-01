@@ -1,0 +1,23 @@
+_id: BqcDlak2SUluTE7c
+name: World Wish
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0] You sacrifice yourself to become the seed for a new world,
+    creating life across a planet.</p>
+  cost: 1
+  role: Naturalist
+  path: Legendary
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

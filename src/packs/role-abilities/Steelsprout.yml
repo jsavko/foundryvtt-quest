@@ -1,0 +1,23 @@
+_id: vD5rr37UdRFW7dui
+name: Steelsprout
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You turn a nearby metal object into a weave of delicate
+    plants.</p>
+  cost: 1
+  role: Naturalist
+  path: Shapeshifter
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

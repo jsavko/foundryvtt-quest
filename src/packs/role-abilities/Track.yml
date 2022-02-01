@@ -1,0 +1,25 @@
+_id: QkwPIeZ2BGIRU02K
+name: Track
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+] You can pick up on tracks left nearby and identify the type of
+    creature that left them.&nbsp;</p>
+
+    <p>&nbsp;</p>
+  cost: 1
+  role: Ranger
+  path: Hunter
+  order: '1'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

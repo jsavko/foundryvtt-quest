@@ -1,0 +1,24 @@
+_id: mpGRtEB24kwHvqsk
+name: Stalk
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+] <span style="font-family: var(--font-primary); font-size:
+    var(--font-size-14);">You and your party can stalk tracked prey without it
+    noticing you, setting up an ambush</span></p>
+  cost: 1
+  role: Ranger
+  path: Hunter
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,21 @@
+_id: LDPalWqPaAZzznVi
+name: Smite
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: "<p>@cost[5] You condemn a creature, engulf\x02ing it in radiant flame</p>"
+  cost: 1
+  role: Invoker
+  path: Wrath
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

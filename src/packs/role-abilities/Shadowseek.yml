@@ -1,0 +1,25 @@
+_id: eaiXnBYARgcYmwDG
+name: Shadowseek
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] You project yourself into a shadow plane to seek the location of
+    a creature or object anywhere in the omniverse.</p>
+  cost: 1
+  role: Invoker
+  path: Inquiries
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.IfN0HSo3u1HjmSFy

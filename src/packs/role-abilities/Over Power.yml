@@ -1,0 +1,23 @@
+_id: Rr43hbokz9P3dFiI
+name: Over Power
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: "<p>@cost[1] Put an enemy in a compro\x02mised position.</p>"
+  cost: 1
+  role: Fighter
+  path: Dueling
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+  quantity: null
+  weight: null
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

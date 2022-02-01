@@ -1,0 +1,23 @@
+_id: SoIZC2Fmh1qnxXQS
+name: Gale
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] You create a ferocious windstorm that kicks up dust and small
+    objects and obscures vision.</p>
+  cost: 1
+  role: Naturalist
+  path: Stormcaller
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

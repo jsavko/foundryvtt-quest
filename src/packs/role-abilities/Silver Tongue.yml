@@ -1,0 +1,21 @@
+_id: RRjf91ToC8YCV7Cu
+name: Silver Tongue
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Use quick thinking and charm to evade suspicion.</p>
+  cost: 1
+  role: Spy
+  path: Charisma
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

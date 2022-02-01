@@ -1,0 +1,25 @@
+_id: xdIQEbBmQCrnaqxp
+name: Aura's Silvery Broadcast
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2]&nbsp; Broadcast a message up to 20 words in length to every
+    creature within one kilometer.</p>
+  cost: 1
+  role: Wizard
+  path: Projection
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

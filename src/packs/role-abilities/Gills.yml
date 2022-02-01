@@ -1,0 +1,23 @@
+_id: dzY1JR36bPPR7Ahk
+name: Gills
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You enchant nearby creatures, allowing them to breathe
+    underwater.</p>
+  cost: 1
+  role: Naturalist
+  path: Shapeshifter
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

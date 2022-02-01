@@ -1,0 +1,24 @@
+_id: RZvPeDYJb5C6RMCY
+name: Evening Star
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] <span style="font-family: var(--font-primary); font-size:
+    var(--font-size-14);">You summon a wisp of light in the sky, casting
+    daylight on a huge area.</span></p>
+  cost: 1
+  role: Naturalist
+  path: Summoner
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}
