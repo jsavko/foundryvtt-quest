@@ -35,21 +35,21 @@
                         >{ability.name}
                     </div>
                     <div class="flex medium">
-                        <a
-                            on:click={(e) =>
-                                // sheet.delete.id
-                                {
-                                    sheet?._onItemEdit(ability.data._id);
-                                }}><i class="fas fa-info-circle" /></a
-                        >
+                        {#if sheet.isEditable}<a
+                                on:click={(e) =>
+                                    // sheet.delete.id
+                                    {
+                                        sheet?._onItemEdit(ability.data._id);
+                                    }}><i class="fas fa-info-circle" /></a
+                            >
 
-                        <a
-                            on:click={(e) =>
-                                // sheet.delete.id
-                                {
-                                    sheet?._onItemDelete(ability.data._id);
-                                }}><i class="fas fa-trash" /></a
-                        >
+                            <a
+                                on:click={(e) =>
+                                    // sheet.delete.id
+                                    {
+                                        sheet?._onItemDelete(ability.data._id);
+                                    }}><i class="fas fa-trash" /></a
+                            >{/if}
                     </div>
                 </div>
             </li>

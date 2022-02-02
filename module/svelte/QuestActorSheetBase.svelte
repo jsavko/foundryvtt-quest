@@ -18,7 +18,10 @@
     let { actor, data, sheet } = $dataStore;
     $: data = $dataStore.data;
 
-    const roles = [
+    //TODO: Get rolls from compendiums
+    //
+
+    let roles = [
         "Fighter",
         "Invoker",
         "Ranger",
@@ -240,14 +243,14 @@
         "producing a timeless work of art",
         "becoming tremendously wealthy",
         "finding thesource of eternal life",
-        "becoming a leaderof my nation",
+        "becoming a leader of my nation",
         "becoming a notorious gambler",
         "making every stranger smile",
         "becoming a master artisan",
         "dying an honorable death",
         "mapping the entire world",
         "meeting the grim reaper",
-        "pullingoff the big score",
+        "pulling off the big score",
         "traveling to the stars",
         "becoming a celebrity",
         "meeting my god(s)",
@@ -257,11 +260,16 @@
     let selectedBody;
     let text = "New";
     let toCreateBody = "";
-    let edit = true;
+    let edit = sheet.isEditable;
+    let editclass = "uneditable";
 
-    if (data.data.dream == "") {
-        edit = true;
+    // Allow sheet to be edited
+    if (sheet.isEditable) {
+        editclass = "";
     }
+
+    //TODO: Need more eligant way to deal with this to remove all the extra functions here
+    //This is just bad
 
     function handleCreate(newItem) {
         toCreateBody = "Creating " + newItem;
@@ -368,7 +376,7 @@
         <label class="character-label" for="data.hp">HP:</label>
         <input
             type="number"
-            class="hp"
+            class="hp {editclass}"
             name="data.hp"
             data-dtype="Number"
             value={data.data.hp}
@@ -383,7 +391,7 @@
         <label class="character-label" for="data.actionpoints">AP: </label>
         <input
             type="number"
-            class="hp"
+            class="hp {editclass}"
             name="data.ap"
             data-dtype="Number"
             value={data.data.ap}
@@ -396,312 +404,314 @@
             <p>
                 <img
                     on:click={filePicker}
-                    class="profile"
+                    class="profile {editclass}"
                     src={data.img}
                     alt={data.name}
                     data-edit="img"
                     title={data.name}
                     align="left"
                 />
-                Hi, my name is
+
+                {@html game.i18n.localize("QUEST.Actor.Hello.Before")}
                 <input
-                    class="name"
+                    class="dotted long name quest {editclass}"
                     name="name"
                     type="text"
                     value={data.name}
-                    placeholder="Name"
+                    placeholder={game.i18n.localize("QUEST.Name")}
                 />
+                {@html game.i18n.localize("QUEST.Actor.Hello.After")}
                 <br />(<input
-                    class="medium"
+                    class="dotted medium {editclass}"
                     name="data.pronouns"
                     type="text"
                     value={data.data.pronouns}
-                    placeholder="Pronouns"
+                    placeholder={game.i18n.localize("QUEST.Pronouns")}
                 />).
             </p>
             <p>
-                I'm {#if !!edit}
-                    <input
-                        class="short"
-                        name="data.age"
-                        type="number"
-                        value={data.data.age}
-                        placeholder="Age"
-                    />
-                {:else}<strong>{data.data.age}</strong>{/if}. years old and
-                stand
-                {#if !!edit}
-                    <input
-                        class="medium"
-                        name="data.height"
-                        type="text"
-                        value={data.data.height}
-                        placeholder="Height"
-                    />
-                {:else}<strong>{data.data.height}</strong>{/if}
-                tall.
+                {@html game.i18n.localize("QUEST.Actor.Age.Before")}
+                <input
+                    class="dotted short {editclass}"
+                    name="data.age"
+                    type="number"
+                    value={data.data.age}
+                    placeholder={game.i18n.localize("QUEST.Age")}
+                />
+                {@html game.i18n.localize("QUEST.Actor.Age.After")}
+                {@html game.i18n.localize("QUEST.Actor.Height.Before")}
+                <input
+                    class="dotted medium {editclass}"
+                    name="data.height"
+                    type="text"
+                    value={data.data.height}
+                    placeholder={game.i18n.localize("QUEST.Height")}
+                />
+                {@html game.i18n.localize("QUEST.Actor.Height.After")}
             </p>
             <p>
-                I'm the party's <input
-                    class="long"
-                    name="data.role"
-                    type="hidden"
-                    value={data.data.role}
-                    placeholder="Role"
-                />
-                {#if !!edit}
-                    <AutoComplete
-                        placeholder="Role"
-                        items={roles}
-                        inputClassName="dotted medium"
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateR}
-                        bind:selectedItem={data.data.role}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />
-                {:else}
-                    <strong>{data.data.role}</strong>
-                {/if}.
+                {@html game.i18n.localize("QUEST.Actor.Role.Before")}
+                <AutoComplete
+                    placeholder={game.i18n.localize("QUEST.Role")}
+                    items={roles}
+                    inputClassName="dotted medium {editclass}"
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateR}
+                    bind:selectedItem={data.data.role}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Role.After")}
             </p>
             <p>
-                When people see me, they first notice my <input
-                    class="long"
-                    name="data.featurebody"
-                    type="hidden"
-                    value={data.data.featurebody}
-                    placeholder="Body"
+                {@html game.i18n.localize("QUEST.Actor.Body.Before")}
+                <AutoComplete
+                    items={featurebody}
+                    placeholder={game.i18n.localize("QUEST.Body")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.featurebody}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreate}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Body.After")}
+                {@html game.i18n.localize("QUEST.Actor.Face.Before")}
+                <AutoComplete
+                    items={featureface}
+                    placeholder={game.i18n.localize("QUEST.Face")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.featureface}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreatef2}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}
-                    <AutoComplete
-                        items={featurebody}
-                        placeholder="Body"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.featurebody}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreate}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />
-                {:else}
-                    <strong>{data.data.featurebody}</strong>
-                {/if},
-                <input
-                    class="long"
-                    name="data.featureface"
-                    type="hidden"
-                    value={data.data.featureface}
-                    placeholder="Face"
-                />
-                {#if !!edit}
-                    <AutoComplete
-                        items={featureface}
-                        placeholder="Face"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.featureface}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreatef2}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}
-                    <strong>{data.data.featureface}</strong>{/if}, and
-                <input
-                    class="long"
-                    name="data.featurevibe"
-                    type="hidden"
-                    value={data.data.featurevibe}
-                    placeholder="Vibe"
-                />
-                {#if !!edit}<AutoComplete
-                        items={featurevibe}
-                        inputClassName="dotted long"
-                        placeholder="Vibe"
-                        bind:selectedItem={data.data.featurevibe}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreatef3}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}
-                    <strong>{data.data.featurevibe}</strong>{/if}.
+                {@html game.i18n.localize("QUEST.Actor.Face.After")}
+                {@html game.i18n.localize("QUEST.Actor.Vibe.Before")}
+                <AutoComplete
+                    items={featurevibe}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Vibe")}
+                    bind:selectedItem={data.data.featurevibe}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreatef3}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Vibe.After")}
             </p>
             <p>
-                I wear <input
-                    class="long"
-                    name="data.style1"
-                    type="hidden"
-                    value={data.data.style1}
-                    placeholder="Outfit"
+                {@html game.i18n.localize("QUEST.Actor.Style.One.Before")}
+                <AutoComplete
+                    items={styleoutfit}
+                    placeholder={game.i18n.localize("QUEST.Outfit")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.style1}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreates1}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={styleoutfit}
-                        placeholder="Outfit"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.style1}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreates1}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.style1}</strong>{/if}
-                ,
-                <input
-                    class="long"
-                    name="data.style2"
-                    type="hidden"
-                    value={data.data.style2}
-                    placeholder="Outfit"
+                {@html game.i18n.localize(
+                    "QUEST.Actor.Style.One.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Style.Two.Before")}
+                <AutoComplete
+                    items={styleoutfit}
+                    placeholder={game.i18n.localize("QUEST.Outfit")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.style2}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreates1}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize(
+                    "QUEST.Actor.Style.Two.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Style.Three.Before")}
+                <AutoComplete
+                    items={stylemovement}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Movement")}
+                    bind:selectedItem={data.data.style3}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreates2}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={styleoutfit}
-                        placeholder="Outfit"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.style2}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreates1}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.style2}</strong>{/if}
-                , and move with
-                <input
-                    class="long"
-                    name="data.style3"
-                    type="hidden"
-                    value={data.data.style3}
-                    placeholder="Movement"
-                />
-                {#if !!edit}<AutoComplete
-                        items={stylemovement}
-                        inputClassName="dotted long"
-                        placeholder="Movement"
-                        bind:selectedItem={data.data.style3}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreates2}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.style3}</strong>{/if}
-                .
+                {@html game.i18n.localize("QUEST.Actor.Style.Three.After")}
             </p>
             <p>
-                I'm from <input
-                    class="long"
-                    name="data.home"
-                    type="hidden"
-                    value={data.data.home}
-                    placeholder="My Home"
-                />
-                {#if !!edit}<AutoComplete
-                        items={homeland}
-                        inputClassName="dotted long"
-                        placeholder="My Home"
-                        bind:selectedItem={data.data.home}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateh1}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}
-                    <strong>{data.data.home}</strong>{/if}
-                where my people are known for
-                <input
-                    class="long"
-                    name="data.community"
-                    type="hidden"
-                    value={data.data.community}
-                    placeholder=""
-                />
-                {#if !!edit}<AutoComplete
-                        items={legacy}
-                        className="verylong"
-                        inputClassName="dotted"
-                        placeholder="Legacy"
-                        bind:selectedItem={data.data.community}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateD}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.community}</strong>{/if}.
+                {@html game.i18n.localize("QUEST.Actor.Home.Before")}
+                <AutoComplete
+                    items={homeland}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Home")}
+                    bind:selectedItem={data.data.home}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateh1}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize(
+                    "QUEST.Actor.Home.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Legacy.Before")}
+                <AutoComplete
+                    items={legacy}
+                    className="verylong {editclass}"
+                    inputClassName="dotted"
+                    placeholder={game.i18n.localize("QUEST.Legacy")}
+                    bind:selectedItem={data.data.community}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateh2}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Legacy.After")}
             </p>
             <p>
-                I believe in <input
-                    class="long"
-                    name="data.ideal"
-                    type="hidden"
-                    value={data.data.ideal}
-                    placeholder="my ideal"
+                {@html game.i18n.localize("QUEST.Actor.Ideal.Before")}
+                <AutoComplete
+                    items={ideal}
+                    placeholder={game.i18n.localize("QUEST.Ideal")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.ideal}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateI}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={ideal}
-                        placeholder="Ideal"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.ideal}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateI}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.ideal}</strong>{/if}
-                , but my
-                <input
-                    class="long"
-                    name="data.flaw"
-                    type="hidden"
-                    value={data.data.flaw}
-                    placeholder="flaw"
+                {@html game.i18n.localize(
+                    "QUEST.Actor.Ideal.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Flaw.Before")}
+                <AutoComplete
+                    items={flaw}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Flaw")}
+                    bind:selectedItem={data.data.flaw}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateF}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={flaw}
-                        inputClassName="dotted long"
-                        placeholder="Flaw"
-                        bind:selectedItem={data.data.flaw}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateF}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.flaw}</strong>{/if}
-                side can get in the way.
+                {@html game.i18n.localize("QUEST.Actor.Flaw.After")}
             </p>
             <p>
-                I dream of <input
-                    class="long"
-                    name="data.dream"
-                    type="hidden"
-                    value={data.data.dream}
-                    placeholder="my dream"
-                />
-                {#if !!edit}<AutoComplete
-                        items={dream}
-                        className="verylong"
-                        inputClassName="dotted"
-                        placeholder="My Dream"
-                        bind:selectedItem={data.data.dream}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateD}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.dream}</strong>{/if}
-                .
+                {@html game.i18n.localize("QUEST.Actor.Dream.Before")}
+                <AutoComplete
+                    items={dream}
+                    className="verylong"
+                    inputClassName="dotted {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Dream")}
+                    bind:selectedItem={data.data.dream}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateD}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Dream.After")}
             </p>
+            <input
+                class="long"
+                name="data.role"
+                type="hidden"
+                value={data.data.role}
+                placeholder="Role"
+            />
+            <input
+                class="long"
+                name="data.featurebody"
+                type="hidden"
+                value={data.data.featurebody}
+                placeholder="Body"
+            />
+            <input
+                class="long"
+                name="data.featureface"
+                type="hidden"
+                value={data.data.featureface}
+                placeholder="Face"
+            />
+            <input
+                class="long"
+                name="data.featurevibe"
+                type="hidden"
+                value={data.data.featurevibe}
+                placeholder="Vibe"
+            />
+            <input
+                class="long"
+                name="data.style1"
+                type="hidden"
+                value={data.data.style1}
+                placeholder="Outfit"
+            />
+            <input
+                class="long"
+                name="data.style2"
+                type="hidden"
+                value={data.data.style2}
+                placeholder="Outfit"
+            />
+            <input
+                class="long"
+                name="data.style3"
+                type="hidden"
+                value={data.data.style3}
+                placeholder="Movement"
+            />
+            <input
+                class="long"
+                name="data.home"
+                type="hidden"
+                value={data.data.home}
+                placeholder="My Home"
+            />
+            <input
+                class="long"
+                name="data.community"
+                type="hidden"
+                value={data.data.community}
+                placeholder=""
+            />
+            <input
+                class="long"
+                name="data.ideal"
+                type="hidden"
+                value={data.data.ideal}
+                placeholder="my ideal"
+            />
+            <input
+                class="long"
+                name="data.flaw"
+                type="hidden"
+                value={data.data.flaw}
+                placeholder="flaw"
+            />
+            <input
+                class="long"
+                name="data.dream"
+                type="hidden"
+                value={data.data.dream}
+                placeholder="my dream"
+            />
         </content>
     </div>
     <div class="inventory-abilities flexcol flex1">
@@ -710,7 +720,7 @@
 </div>
 
 <style>
-    input {
+    input :global(.quest) {
         border-top: none;
         border-left: none;
         border-right: none;
@@ -825,5 +835,10 @@
     .header {
         padding-bottom: 5px;
         border-bottom: 2px groove #eeeeee;
+    }
+
+    .uneditable {
+        pointer-events: none;
+        font-weight: bold;
     }
 </style>
