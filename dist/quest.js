@@ -489,7 +489,7 @@ var QuestActor = class extends Actor {
   }
   getRollData() {
     const data = this.toObject(false).data;
-    const shorthand = game.settings.get("quest", "macroShorthand");
+    const shorthand = game.settings.get("foundryvtt-quest", "macroShorthand");
     const formulaAttributes = [];
     const itemAttributes = [];
     this._applyShorthand(data, formulaAttributes, shorthand);
@@ -5212,7 +5212,7 @@ function create_fragment5(ctx) {
       div3 = element("div");
       div0 = element("div");
       label0 = element("label");
-      label0.textContent = "HP:";
+      label0.textContent = `${game.i18n.localize("QUEST.HP")}`;
       t1 = space();
       input0 = element("input");
       t2 = text(" / 10");
@@ -5223,7 +5223,7 @@ function create_fragment5(ctx) {
       t4 = space();
       div2 = element("div");
       label1 = element("label");
-      label1.textContent = "AP:";
+      label1.textContent = `${game.i18n.localize("QUEST.AP")}`;
       t6 = space();
       input1 = element("input");
       t7 = space();
@@ -6242,12 +6242,12 @@ function instance5($$self, $$props, $$invalidate) {
   }
   let items = [
     {
-      label: "Inventory",
+      label: game.i18n.localize("QUEST.Inventory"),
       value: 1,
       component: QuestActorSheetInventory_default
     },
     {
-      label: "Abilities",
+      label: game.i18n.localize("QUEST.Abilities"),
       value: 2,
       component: QuestActorSheetAbilities_default
     }
@@ -7296,19 +7296,19 @@ var questChatData = async (roll, chatOptions) => {
   let outcome;
   let css;
   if (roll.result == "20") {
-    outcome = "Triumph";
+    outcome = game.i18n.localize("Triumph");
     css = "triumph";
   } else if (roll.result > 11) {
-    outcome = "Success";
+    outcome = game.i18n.localize("Success");
     css = "success";
   } else if (roll.result > 6) {
-    outcome = "Tough Choice";
+    outcome = game.i18n.localize("TCHoice");
     css = "touch-choice";
   } else if (roll.result > 1) {
-    outcome = "Failure";
+    outcome = game.i18n.localize("Failure");
     css = "catastrophe";
   } else {
-    outcome = "Catastrophe";
+    outcome = game.i18n.localize("Catastrophe");
     css = "catastrophe";
   }
   return {
@@ -7350,7 +7350,10 @@ var AbilityDialog = class extends Dialog {
   async _getContent(role) {
     if (!role)
       role = "Spy";
-    const QUESTAbilities = await game.packs.get("world.role-abilities");
+    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
+    console.log(sourceCompendium);
+    const QUESTAbilities = await game.packs.get(sourceCompendium);
+    console.log(QUESTAbilities);
     let AllAbilities = await QUESTAbilities.getDocuments();
     const roleList = [
       ...new Set(AllAbilities.map((data) => data.data.data.role))
@@ -7436,10 +7439,10 @@ var CompendiumImportHelper = class {
   }
   static async createCompenium() {
     if (await this.findCompendium() == false) {
-      ui.notifications.info("Importing Role Abiltiies into an editable world compendium. This should only take a moment.");
+      ui.notifications.info(game.i18n.localize("QUEST.ImportMessage"));
       let systemCompendium = await this.getSystemCompendium();
       return systemCompendium.duplicateCompendium({
-        label: "Role Abilities"
+        label: game.i18n.localize("QUEST.RoleAbilities")
       });
     }
     return false;
@@ -7465,22 +7468,22 @@ Hooks.once("init", async function() {
     decimals: 2
   };
   Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("quest", QuestActorSheet, {
+  Actors.registerSheet("foundryvtt-quest", QuestActorSheet, {
     makeDefault: true,
     types: ["character"]
   });
-  Actors.registerSheet("quest", QuestNPCActorSheet, {
+  Actors.registerSheet("foundryvtt-quest", QuestNPCActorSheet, {
     types: ["npc"]
   });
   Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("quest", QuestItemSheet, {
+  Items.registerSheet("foundryvtt-quest", QuestItemSheet, {
     makeDefault: true
   });
-  Items.registerSheet("quest", QuestAbilitySheet, {
+  Items.registerSheet("foundryvtt-quest", QuestAbilitySheet, {
     types: ["ability", "detail"],
     makeDefault: true
   });
-  game.settings.register("quest", "macroShorthand", {
+  game.settings.register("foundryvtt-quest", "macroShorthand", {
     name: "SETTINGS.QuestMacroShorthandN",
     hint: "SETTINGS.QuestMacroShorthandL",
     scope: "world",
@@ -7488,7 +7491,7 @@ Hooks.once("init", async function() {
     default: true,
     config: true
   });
-  game.settings.register("quest", "initFormula", {
+  game.settings.register("foundryvtt-quest", "initFormula", {
     name: "SETTINGS.QuestInitFormulaN",
     hint: "SETTINGS.QuestInitFormulaL",
     scope: "world",
@@ -7497,7 +7500,7 @@ Hooks.once("init", async function() {
     config: true,
     onChange: (formula) => _simpleUpdateInit(formula, true)
   });
-  const initFormula = game.settings.get("quest", "initFormula");
+  const initFormula = game.settings.get("foundryvtt-quest", "initFormula");
   _simpleUpdateInit(initFormula);
   function _simpleUpdateInit(formula, notify = false) {
     const isValid = Roll.validate(formula);
@@ -7583,6 +7586,24 @@ Hooks.once("ready", async () => {
   if (!!compendium != false) {
     ui.notifications.info("Importing Complete.");
   }
+  let gamePacks = game.packs.filter((entry) => entry.documentName === "Item");
+  let itemPacks = {};
+  console.log("getting packs");
+  for (let pack of gamePacks) {
+    console.log(pack);
+    let source = pack.metadata.package + "." + pack.metadata.name;
+    console.log(source);
+    itemPacks[source] = pack.title;
+  }
+  game.settings.register("foundryvtt-quest", "abilityCompendium", {
+    name: "SETTINGS.AbilityCompendium",
+    hint: "SETTINGS.AbilityCompendiumHint",
+    scope: "world",
+    config: true,
+    type: String,
+    default: "world.role-abilities",
+    choices: itemPacks
+  });
 });
 Handlebars.registerHelper("times", function(n, block) {
   var accum = "";

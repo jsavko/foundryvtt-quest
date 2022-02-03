@@ -346,9 +346,13 @@
     //Setup Tabs
 
     let items = [
-        { label: "Inventory", value: 1, component: QuestActorSheetInventory },
         {
-            label: "Abilities",
+            label: game.i18n.localize("QUEST.Inventory"),
+            value: 1,
+            component: QuestActorSheetInventory
+        },
+        {
+            label: game.i18n.localize("QUEST.Abilities"),
             value: 2,
             component: QuestActorSheetAbilities
         }
@@ -373,7 +377,9 @@
 
 <div class="header flexrow">
     <div class="hitpoints">
-        <label class="character-label" for="data.hp">HP:</label>
+        <label class="character-label" for="data.hp"
+            >{game.i18n.localize("QUEST.HP")}</label
+        >
         <input
             type="number"
             class="hp {editclass}"
@@ -388,7 +394,9 @@
         >
     </div>
     <div class="actionpoints">
-        <label class="character-label" for="data.actionpoints">AP: </label>
+        <label class="character-label" for="data.actionpoints"
+            >{game.i18n.localize("QUEST.AP")}
+        </label>
         <input
             type="number"
             class="hp {editclass}"

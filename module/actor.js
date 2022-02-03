@@ -97,7 +97,10 @@ export class QuestActor extends Actor {
     getRollData() {
         // Copy the actor's system data
         const data = this.toObject(false).data;
-        const shorthand = game.settings.get("quest", "macroShorthand");
+        const shorthand = game.settings.get(
+            "foundryvtt-quest",
+            "macroShorthand"
+        );
         const formulaAttributes = [];
         const itemAttributes = [];
 

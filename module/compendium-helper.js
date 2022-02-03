@@ -15,13 +15,11 @@ export class CompendiumImportHelper {
 
     static async createCompenium() {
         if ((await this.findCompendium()) == false) {
-            ui.notifications.info(
-                "Importing Role Abiltiies into an editable world compendium. This should only take a moment."
-            );
+            ui.notifications.info(game.i18n.localize("QUEST.ImportMessage"));
 
             let systemCompendium = await this.getSystemCompendium();
             return systemCompendium.duplicateCompendium({
-                label: "Role Abilities"
+                label: game.i18n.localize("QUEST.RoleAbilities")
             });
         }
         return false;

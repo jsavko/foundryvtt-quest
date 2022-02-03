@@ -28,7 +28,15 @@ export class AbilityDialog extends Dialog {
     async _getContent(role) {
         if (!role) role = "Spy";
 
-        const QUESTAbilities = await game.packs.get("world.role-abilities");
+        let sourceCompendium = game.settings.get(
+            "foundryvtt-quest",
+            "abilityCompendium"
+        );
+
+        console.log(sourceCompendium);
+
+        const QUESTAbilities = await game.packs.get(sourceCompendium);
+        console.log(QUESTAbilities);
 
         let AllAbilities = await QUESTAbilities.getDocuments();
         const roleList = [

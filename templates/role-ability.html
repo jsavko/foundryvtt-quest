@@ -10,15 +10,21 @@
         </div>
     </div>
 
-    <h1 style="text-align: center">The {{content.role}}</h1>
-    <p><strong>{{content.role}} quick start</strong></p>
-    <p>Choose these abilities:</p>
+    <h1 style="text-align: center">
+        {{localize "QUEST.Browser.The" }} {{content.role}}
+    </h1>
+    <p>
+        <strong
+            >{{content.role}} {{localize "QUEST.Browser.QuickStart" }}</strong
+        >
+    </p>
+    <p>{{localize "QUEST.Browser.Choose" }}:</p>
     <p>
         {{#each content.quickStart}} {{{abilityLink name "Item" data._id}}}
         {{/each}}
     </p>
     <p>
-        Paths: {{#each content.abilities}}
+        {{localize "QUEST.Browser.Paths" }}: {{#each content.abilities}}
         <a class="paths" data-target="{{slugify name}}">{{name}}</a>{{#unless
         @last}},{{/unless}} {{/each}}
     </p>
