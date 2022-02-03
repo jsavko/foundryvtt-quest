@@ -260,10 +260,10 @@ Hooks.once("ready", async () => {
     let itemPacks = {};
     console.log("getting packs");
     for (let pack of gamePacks) {
-        console.log(pack);
-        let source = pack.metadata.package + "." + pack.metadata.name;
-        console.log(source);
-        itemPacks[source] = pack.title;
+        if (pack.metadata.package != "foundryvtt-quest") {
+            let source = pack.metadata.package + "." + pack.metadata.name;
+            itemPacks[source] = pack.title;
+        }
     }
 
     game.settings.register("foundryvtt-quest", "abilityCompendium", {
