@@ -2,7 +2,7 @@
     "name": "foundryvtt-quest",
     "title": "Quest",
     "description": "A system for playing the Quest RPG in Foundry VTT.",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9",
     "author": "LostPhoenix",
