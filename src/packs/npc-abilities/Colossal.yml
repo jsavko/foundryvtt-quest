@@ -1,0 +1,23 @@
+_id: 3e5q5Rt1ew4wyF8q
+name: Colossal
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>Add 40 HP and 4 attack if the creature is orders of magnitude larger than
+    the players, like a sandworm, a kraken, or a titan</p>
+  cost: 1
+  role: NPC
+  path: NPC
+  order: '0'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

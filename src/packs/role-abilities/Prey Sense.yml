@@ -1,0 +1,23 @@
+_id: lKX0YZFdB5t2MHz5
+name: Prey Sense
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1+] You sharpen your senses and can feel a subtle signal when
+    danger is near.</p>
+  cost: 1
+  role: Naturalist
+  path: Spiritcaller
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

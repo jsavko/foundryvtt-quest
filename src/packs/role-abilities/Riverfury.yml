@@ -1,0 +1,23 @@
+_id: LUngfn8xtbpDNakO
+name: Riverfury
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4]&nbsp; You whisper a magical incantation to a nearby river,
+    calling forth a torrent of water from upstream.</p>
+  cost: 1
+  role: Naturalist
+  path: Stormcaller
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

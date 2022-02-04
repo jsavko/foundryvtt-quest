@@ -1,0 +1,25 @@
+_id: nXOy1VlEceaZylTX
+name: Reflect
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] Produce a counterspell that reflects a spell another creature is
+    casting.</p>
+  cost: 1
+  role: Wizard
+  path: Magecraft
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

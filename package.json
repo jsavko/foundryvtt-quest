@@ -7,7 +7,9 @@
         "css": "gulp css",
         "watch": "gulp",
         "gulp": "gulp",
-        "minfy": "gulp buildMin"
+        "minfy": "gulp buildMin",
+        "buildPack": "gulp buildPacks",
+        "postinstall": "patch-package"
     },
     "browserslist": [
         "last 3 versions"
@@ -23,6 +25,14 @@
         "svelte": "^3.38.2"
     },
     "devDependencies": {
-        "simple-svelte-autocomplete": "^2.2.4"
+        "eslint": "^8.8.0",
+        "eslint-plugin-svelte3": "^3.4.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-rename": "^2.0.0",
+        "gulp-yaml": "^2.0.4",
+        "merge-stream": "^2.0.0",
+        "patch-package": "^6.4.7",
+        "simple-svelte-autocomplete": "^2.2.4",
+        "through2": "^4.0.2"
     }
 }

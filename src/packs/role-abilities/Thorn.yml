@@ -1,0 +1,23 @@
+_id: XROJOnjQCN2fZJ0f
+name: Thorn
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0] You conjure a poisonous thorn and shoot it toward a nearby
+    target.</p>
+  cost: 1
+  role: Naturalist
+  path: Summoner
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

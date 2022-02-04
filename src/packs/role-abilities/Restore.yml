@@ -1,0 +1,23 @@
+_id: xoqz224a8clAOVhX
+name: Restore
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[7] You touch a creature, completely restoring it to its normal
+    state.</p>
+  cost: 1
+  role: Doctor
+  path: Healing
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

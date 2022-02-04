@@ -1,0 +1,23 @@
+_id: QsACMqE76a47xPRd
+name: Enscroll
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[2] Create a Spell Scroll that contains a spell you know.</p>
+  cost: 1
+  role: Wizard
+  path: Magecraft
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

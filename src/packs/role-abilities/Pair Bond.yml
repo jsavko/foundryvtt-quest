@@ -1,0 +1,23 @@
+_id: cUhHENkeMrXQjwVM
+name: Pair Bond
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You develop a telepathic bond with your animal partner, allowing
+    you to enter a trance and take over its body.&nbsp;</p>
+  cost: 1
+  role: Ranger
+  path: Friend
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

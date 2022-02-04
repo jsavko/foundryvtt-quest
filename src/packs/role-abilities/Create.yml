@@ -1,0 +1,25 @@
+_id: kjHEncVdvG0xkYTm
+name: Create
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[5]&nbsp; Tap raw magic, converting its energy into a
+    perfectly-crafted object that is real in every way.</p>
+  cost: 1
+  role: Wizard
+  path: Legendary
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

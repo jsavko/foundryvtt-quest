@@ -1,0 +1,25 @@
+_id: KeAz5PByn5KM03vK
+name: Scintillate
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0]&nbsp; Launch a streaking bolt of sparks to harm an enemy or
+    create a harmless firework.&nbsp;</p>
+  cost: 1
+  role: Magician
+  path: Mayhem
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.H7N4MATTsvZs9MWj

@@ -1,0 +1,23 @@
+_id: PQ7wVaoBCCkeU5ns
+name: Duel
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Compel a nearby creature to fight you in single combat.</p>
+  cost: 1
+  role: Fighter
+  path: Dueling
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+  quantity: null
+  weight: null
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

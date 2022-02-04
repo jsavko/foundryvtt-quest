@@ -1,0 +1,23 @@
+_id: mKgbvdDsgzp7WcAN
+name: Heal
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You embrace a creature, restoring all of its hit points and
+    curing it of short-term impairments.</p>
+  cost: 1
+  role: Doctor
+  path: Healing
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

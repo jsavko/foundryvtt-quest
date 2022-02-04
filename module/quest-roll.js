@@ -38,19 +38,19 @@ const questChatData = async (roll, chatOptions) => {
     let css;
     // Do some calcs
     if (roll.result == "20") {
-        outcome = "Triumph";
+        outcome = game.i18n.localize("Triumph");
         css = "triumph";
     } else if (roll.result > 11) {
-        outcome = "Success";
+        outcome = game.i18n.localize("Success");
         css = "success";
     } else if (roll.result > 6) {
-        outcome = "Tough Choice";
+        outcome = game.i18n.localize("TCHoice");
         css = "touch-choice";
     } else if (roll.result > 1) {
-        outcome = "Failure";
+        outcome = game.i18n.localize("Failure");
         css = "catastrophe";
     } else {
-        outcome = "Catastrophe";
+        outcome = game.i18n.localize("Catastrophe");
         css = "catastrophe";
     }
 

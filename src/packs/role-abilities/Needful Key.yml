@@ -1,0 +1,23 @@
+_id: b3v9PaWuJ1KSUvAp
+name: Needful Key
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[2] A magic key that can morph to fit a lock.</p>
+  cost: 1
+  role: Spy
+  path: Infiltration
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.NLXpzieATCJnPfV5

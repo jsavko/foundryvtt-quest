@@ -1,0 +1,23 @@
+_id: p6v6VlFPYFCrnxMb
+name: Fireball
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[5]&nbsp; You shape an orb of fire and send it streaking toward a
+    target, where it creates a devastating explosion.</p>
+  cost: 1
+  role: Naturalist
+  path: Elementalist
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,23 @@
+_id: YNVxyWc2aOXmqmYm
+name: Friend of the Land
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0] You become the friend of a wilderness region, gaining the
+    control of a natural fortress</p>
+  cost: 1
+  role: Ranger
+  path: Legendary
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

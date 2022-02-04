@@ -1,0 +1,23 @@
+_id: heP823yRl71xYkHq
+name: Speak Myth
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] Appeal to a local myth to gain the favor of a commoner and
+    receive a favor.&nbsp;</p>
+  cost: 1
+  role: Ranger
+  path: Story And Song
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,23 @@
+_id: g3l9PIPf7MqZFrdv
+name: Don't You Know Who I Am?
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] Enlist your party members to establish a fantastical ruse about
+    your identity.&nbsp;</p>
+  cost: 1
+  role: Spy
+  path: Charisma
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

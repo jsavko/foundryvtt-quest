@@ -1,5 +1,10 @@
 # Quest Foundry VTT System
 
+0.1.5
+
+-   Localization for Actor Sheet.
+-   Ability Browser Compendium Selector
+
 0.1.4
 
 -   NPC sheets added

@@ -1,0 +1,23 @@
+_id: v1WwteQRuSoZ8GW7
+name: To Dust
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] You return a crafted object to nature, instantly reducing it to
+    dust.</p>
+  cost: 1
+  role: Naturalist
+  path: Legendary
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,23 @@
+_id: 6bcO5Q96ul0sZAQF
+name: Shift Season
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4]&nbsp; You manipulate the elements to change the current season
+    everywhere within one kilometer of you.</p>
+  cost: 1
+  role: Naturalist
+  path: Ecologist
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

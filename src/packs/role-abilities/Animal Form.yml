@@ -1,0 +1,23 @@
+_id: M5MmHLisGHOxgDtO
+name: Animal Form
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2]&nbsp;You take the form of a&nbsp;wild animal, adopting its
+    shape, senses,&nbsp;and range of motion.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Shapeshifter
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

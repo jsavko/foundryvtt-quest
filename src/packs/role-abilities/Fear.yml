@@ -1,0 +1,25 @@
+_id: xUFkic4Z2QCqzZOd
+name: Fear
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4]&nbsp; Breach the mind of a creature to haunt them with their
+    worst fear.</p>
+  cost: 1
+  role: Magician
+  path: Mind Control
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.H7N4MATTsvZs9MWj

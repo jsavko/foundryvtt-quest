@@ -18,7 +18,10 @@
     let { actor, data, sheet } = $dataStore;
     $: data = $dataStore.data;
 
-    const roles = [
+    //TODO: Get rolls from compendiums
+    //
+
+    let roles = [
         "Fighter",
         "Invoker",
         "Ranger",
@@ -30,238 +33,243 @@
     ];
 
     let featurebody = [
-        "scales",
-        "worn scars",
-        "iridescent skin",
-        "rack of muscles",
-        "towering physique",
-        "speckled complexion",
-        "barrel-sized belly",
-        "head of tentacles",
-        "generous curves",
-        "elongated limbs",
-        "bumpy exterior",
-        "willowy frame",
-        "sculpted hair",
-        "stout stature",
-        "lived-in body",
-        "vestigial tail",
-        "webbed fins",
-        "rough hide"
+        game.i18n.localize("QUEST.Feature.Body.1"),
+        game.i18n.localize("QUEST.Feature.Body.2"),
+        game.i18n.localize("QUEST.Feature.Body.3"),
+        game.i18n.localize("QUEST.Feature.Body.4"),
+        game.i18n.localize("QUEST.Feature.Body.5"),
+        game.i18n.localize("QUEST.Feature.Body.6"),
+        game.i18n.localize("QUEST.Feature.Body.7"),
+        game.i18n.localize("QUEST.Feature.Body.8"),
+        game.i18n.localize("QUEST.Feature.Body.9"),
+        game.i18n.localize("QUEST.Feature.Body.10"),
+        game.i18n.localize("QUEST.Feature.Body.11"),
+        game.i18n.localize("QUEST.Feature.Body.12"),
+        game.i18n.localize("QUEST.Feature.Body.13"),
+        game.i18n.localize("QUEST.Feature.Body.14"),
+        game.i18n.localize("QUEST.Feature.Body.15"),
+        game.i18n.localize("QUEST.Feature.Body.16"),
+        game.i18n.localize("QUEST.Feature.Body.17"),
+        game.i18n.localize("QUEST.Feature.Body.18")
     ];
 
     let featureface = [
-        "gaunt face",
-        "sharp teeth",
-        "fulsome cheeks",
-        "large pointy ears",
-        "vestigial antennae",
-        "knee-length beard",
-        "devastating smile",
-        "windswept face",
-        "manicured fuzz",
-        "ridged forehead",
-        "triangular head",
-        "timeworn face",
-        "romantic eyes",
-        "severe jawline",
-        "skeptical eyes",
-        "radiant smile",
-        "burning eyes",
-        "heavy brows"
+        game.i18n.localize("QUEST.Feature.Face.1"),
+        game.i18n.localize("QUEST.Feature.Face.2"),
+        game.i18n.localize("QUEST.Feature.Face.3"),
+        game.i18n.localize("QUEST.Feature.Face.4"),
+        game.i18n.localize("QUEST.Feature.Face.5"),
+        game.i18n.localize("QUEST.Feature.Face.6"),
+        game.i18n.localize("QUEST.Feature.Face.7"),
+        game.i18n.localize("QUEST.Feature.Face.8"),
+        game.i18n.localize("QUEST.Feature.Face.9"),
+        game.i18n.localize("QUEST.Feature.Face.10"),
+        game.i18n.localize("QUEST.Feature.Face.11"),
+        game.i18n.localize("QUEST.Feature.Face.12"),
+        game.i18n.localize("QUEST.Feature.Face.13"),
+        game.i18n.localize("QUEST.Feature.Face.14"),
+        game.i18n.localize("QUEST.Feature.Face.15"),
+        game.i18n.localize("QUEST.Feature.Face.16"),
+        game.i18n.localize("QUEST.Feature.Face.17"),
+        game.i18n.localize("QUEST.Feature.Face.18")
     ];
 
     let featurevibe = [
-        "long shadow",
-        "sleepy mood",
-        "sparkling gaze",
-        "eternal grimace",
-        "bursting energy",
-        "an air of mystery",
-        "gentle disposition",
-        "androgynous vibes",
-        "thousand-yard stare",
-        "tightly wound energy",
-        "brooding presence",
-        "friendly demeanor",
-        "meandering gaze",
-        "graceful posture",
-        "captivating grin",
-        "raucous laugh",
-        "flawless poise",
-        "fiery temper"
+        game.i18n.localize("QUEST.Feature.Vibe.1"),
+        game.i18n.localize("QUEST.Feature.Vibe.2"),
+        game.i18n.localize("QUEST.Feature.Vibe.3"),
+        game.i18n.localize("QUEST.Feature.Vibe.4"),
+        game.i18n.localize("QUEST.Feature.Vibe.5"),
+        game.i18n.localize("QUEST.Feature.Vibe.6"),
+        game.i18n.localize("QUEST.Feature.Vibe.7"),
+        game.i18n.localize("QUEST.Feature.Vibe.8"),
+        game.i18n.localize("QUEST.Feature.Vibe.9"),
+        game.i18n.localize("QUEST.Feature.Vibe.10"),
+        game.i18n.localize("QUEST.Feature.Vibe.11"),
+        game.i18n.localize("QUEST.Feature.Vibe.12"),
+        game.i18n.localize("QUEST.Feature.Vibe.13"),
+        game.i18n.localize("QUEST.Feature.Vibe.14"),
+        game.i18n.localize("QUEST.Feature.Vibe.15"),
+        game.i18n.localize("QUEST.Feature.Vibe.16"),
+        game.i18n.localize("QUEST.Feature.Vibe.17"),
+        game.i18n.localize("QUEST.Feature.Vibe.18")
     ];
 
     let styleoutfit = [
-        "etched leather armor",
-        "a billowing jumpsuit",
-        "a tightly fitted tunic",
-        "religious vestments",
-        "nicked chainmail",
-        "runes in my hair",
-        "a fluttering cape",
-        "weathered rags",
-        "a layered dress",
-        "a warm cloak",
-        "an owl pin",
-        "a charmed necklace",
-        "a ragged headcover",
-        "antique eyeglasses",
-        "a patterned hijab",
-        "a silken eyepatch",
-        "fingerless gloves",
-        "a quilted jacket",
-        "encrusted cuffs",
-        "a feathered cap",
-        "a boned bodice",
-        "a fancy hat",
-        "a bronze breastplate",
-        "oversized spectacles",
-        "a homemade charm",
-        "hammered earrings",
-        "an ornamented belt",
-        "a shining hauberk",
-        "an animal brooch",
-        "obsidian bracers",
-        "a symbol of god",
-        "a tarnished ring",
-        "a humble tunic"
+        game.i18n.localize("QUEST.Style.Outfit.1"),
+        game.i18n.localize("QUEST.Style.Outfit.2"),
+        game.i18n.localize("QUEST.Style.Outfit.3"),
+        game.i18n.localize("QUEST.Style.Outfit.4"),
+        game.i18n.localize("QUEST.Style.Outfit.5"),
+        game.i18n.localize("QUEST.Style.Outfit.6"),
+        game.i18n.localize("QUEST.Style.Outfit.7"),
+        game.i18n.localize("QUEST.Style.Outfit.8"),
+        game.i18n.localize("QUEST.Style.Outfit.9"),
+        game.i18n.localize("QUEST.Style.Outfit.10"),
+        game.i18n.localize("QUEST.Style.Outfit.11"),
+        game.i18n.localize("QUEST.Style.Outfit.12"),
+        game.i18n.localize("QUEST.Style.Outfit.13"),
+        game.i18n.localize("QUEST.Style.Outfit.14"),
+        game.i18n.localize("QUEST.Style.Outfit.15"),
+        game.i18n.localize("QUEST.Style.Outfit.16"),
+        game.i18n.localize("QUEST.Style.Outfit.17"),
+        game.i18n.localize("QUEST.Style.Outfit.18"),
+        game.i18n.localize("QUEST.Style.Outfit.19"),
+        game.i18n.localize("QUEST.Style.Outfit.20"),
+        game.i18n.localize("QUEST.Style.Outfit.21"),
+        game.i18n.localize("QUEST.Style.Outfit.22"),
+        game.i18n.localize("QUEST.Style.Outfit.23"),
+        game.i18n.localize("QUEST.Style.Outfit.24"),
+        game.i18n.localize("QUEST.Style.Outfit.25"),
+        game.i18n.localize("QUEST.Style.Outfit.26"),
+        game.i18n.localize("QUEST.Style.Outfit.27"),
+        game.i18n.localize("QUEST.Style.Outfit.28"),
+        game.i18n.localize("QUEST.Style.Outfit.29"),
+        game.i18n.localize("QUEST.Style.Outfit.30"),
+        game.i18n.localize("QUEST.Style.Outfit.31"),
+        game.i18n.localize("QUEST.Style.Outfit.32"),
+        game.i18n.localize("QUEST.Style.Outfit.33")
     ];
 
     let stylemovement = [
-        "no sense of urgency",
-        "an effortless glide",
-        "frenzied footwork",
-        "a confident step",
-        "great difficulty",
-        "a reliable pace",
-        "wide-swinging arms",
-        "a spring in my step",
-        "a singularpurpose",
-        "no sense of space",
-        "music in my feet",
-        "an uneven gait",
-        "a joyful whistle",
-        "relentless focus",
-        "casual swagger",
-        "apprehension",
-        "a heavy step",
-        "fearlessness"
+        game.i18n.localize("QUEST.Style.Movement.1"),
+        game.i18n.localize("QUEST.Style.Movement.2"),
+        game.i18n.localize("QUEST.Style.Movement.3"),
+        game.i18n.localize("QUEST.Style.Movement.4"),
+        game.i18n.localize("QUEST.Style.Movement.5"),
+        game.i18n.localize("QUEST.Style.Movement.6"),
+        game.i18n.localize("QUEST.Style.Movement.7"),
+        game.i18n.localize("QUEST.Style.Movement.8"),
+        game.i18n.localize("QUEST.Style.Movement.9"),
+        game.i18n.localize("QUEST.Style.Movement.10"),
+        game.i18n.localize("QUEST.Style.Movement.11"),
+        game.i18n.localize("QUEST.Style.Movement.12"),
+        game.i18n.localize("QUEST.Style.Movement.13"),
+        game.i18n.localize("QUEST.Style.Movement.14"),
+        game.i18n.localize("QUEST.Style.Movement.15"),
+        game.i18n.localize("QUEST.Style.Movement.16"),
+        game.i18n.localize("QUEST.Style.Movement.17"),
+        game.i18n.localize("QUEST.Style.Movement.18")
     ];
 
     let homeland = [
-        "a great metropolis",
-        "a remote village",
-        "a frontier town",
-        "a lonely island",
-        "a capital city",
-        "a seastead",
-        "a remote stronghold",
-        "a traveling caravan",
-        "a hidden warren",
-        "a working farm",
-        "a roadside inn",
-        "a ship at sea",
-        "a place I can't name",
-        "a subterranean city",
-        "a forgotten nation",
-        "a mountain town",
-        "a city in the mist",
-        "a homestead"
+        game.i18n.localize("QUEST.Homeland.1"),
+        game.i18n.localize("QUEST.Homeland.2"),
+        game.i18n.localize("QUEST.Homeland.3"),
+        game.i18n.localize("QUEST.Homeland.4"),
+        game.i18n.localize("QUEST.Homeland.5"),
+        game.i18n.localize("QUEST.Homeland.6"),
+        game.i18n.localize("QUEST.Homeland.7"),
+        game.i18n.localize("QUEST.Homeland.8"),
+        game.i18n.localize("QUEST.Homeland.9"),
+        game.i18n.localize("QUEST.Homeland.10"),
+        game.i18n.localize("QUEST.Homeland.11"),
+        game.i18n.localize("QUEST.Homeland.12"),
+        game.i18n.localize("QUEST.Homeland.13"),
+        game.i18n.localize("QUEST.Homeland.14"),
+        game.i18n.localize("QUEST.Homeland.15"),
+        game.i18n.localize("QUEST.Homeland.16"),
+        game.i18n.localize("QUEST.Homeland.17"),
+        game.i18n.localize("QUEST.Homeland.18")
     ];
 
     let legacy = [
-        "their steady pursuit of pleasure",
-        "their easy going temperament",
-        "their unhurried sense of time",
-        "treating strangers with love",
-        "restoring justice to the land",
-        "onceruling a vast empire",
-        "creating a worldwonder",
-        "enduring a great tragedy",
-        "theirneutral rationality",
-        "their warm hospitality",
-        "a culture of secrecy",
-        "non-hierarchical relationships",
-        "plainly stating their intentions",
-        "their sense of duty to each other ",
-        "resisting a brutal ruling order",
-        "creating historic works of art",
-        "strict adherence to the law",
-        "their commercial success",
-        "setting cultural trends",
-        "their tradition always",
-        "inventing the future",
-        "losing a great war"
+        game.i18n.localize("QUEST.Legacies.1"),
+        game.i18n.localize("QUEST.Legacies.2"),
+        game.i18n.localize("QUEST.Legacies.3"),
+        game.i18n.localize("QUEST.Legacies.4"),
+        game.i18n.localize("QUEST.Legacies.5"),
+        game.i18n.localize("QUEST.Legacies.6"),
+        game.i18n.localize("QUEST.Legacies.7"),
+        game.i18n.localize("QUEST.Legacies.8"),
+        game.i18n.localize("QUEST.Legacies.9"),
+        game.i18n.localize("QUEST.Legacies.10"),
+        game.i18n.localize("QUEST.Legacies.11"),
+        game.i18n.localize("QUEST.Legacies.12"),
+        game.i18n.localize("QUEST.Legacies.13"),
+        game.i18n.localize("QUEST.Legacies.14"),
+        game.i18n.localize("QUEST.Legacies.15"),
+        game.i18n.localize("QUEST.Legacies.16"),
+        game.i18n.localize("QUEST.Legacies.17"),
+        game.i18n.localize("QUEST.Legacies.18"),
+        game.i18n.localize("QUEST.Legacies.19"),
+        game.i18n.localize("QUEST.Legacies.20"),
+        game.i18n.localize("QUEST.Legacies.21"),
+        game.i18n.localize("QUEST.Legacies.22")
     ];
 
     let ideal = [
-        "Order",
-        "Justice",
-        "Heroism",
-        "Compassion",
-        "Generosity",
-        "Pleasure",
-        "Pragmatism",
-        "Honor",
-        "Power",
-        "Salvation",
-        "The Ends"
+        game.i18n.localize("QUEST.Ideals.1"),
+        game.i18n.localize("QUEST.Ideals.2"),
+        game.i18n.localize("QUEST.Ideals.3"),
+        game.i18n.localize("QUEST.Ideals.4"),
+        game.i18n.localize("QUEST.Ideals.5"),
+        game.i18n.localize("QUEST.Ideals.6"),
+        game.i18n.localize("QUEST.Ideals.7"),
+        game.i18n.localize("QUEST.Ideals.8"),
+        game.i18n.localize("QUEST.Ideals.9"),
+        game.i18n.localize("QUEST.Ideals.10"),
+        game.i18n.localize("QUEST.Ideals.11")
     ];
 
     let flaw = [
-        "Fearful",
-        "Megalomaniac",
-        "Idiot",
-        "Impish",
-        "Oblivious",
-        "Thief",
-        "hedonist",
-        "liar",
-        "reckless",
-        "wrathful",
-        "vain"
+        game.i18n.localize("QUEST.Flaws.1"),
+        game.i18n.localize("QUEST.Flaws.2"),
+        game.i18n.localize("QUEST.Flaws.3"),
+        game.i18n.localize("QUEST.Flaws.4"),
+        game.i18n.localize("QUEST.Flaws.5"),
+        game.i18n.localize("QUEST.Flaws.6"),
+        game.i18n.localize("QUEST.Flaws.7"),
+        game.i18n.localize("QUEST.Flaws.8"),
+        game.i18n.localize("QUEST.Flaws.9"),
+        game.i18n.localize("QUEST.Flaws.10"),
+        game.i18n.localize("QUEST.Flaws.11")
     ];
 
     let dream = [
-        "returning to my hometown as a renowned hero",
-        "freeing myself from a gang that wants me dead",
-        "getting revengeon someone who wronged me",
-        "finding a corner of the world to make my own",
-        "publishing a book that's found in every home",
-        "sparking an idea that transforms the world",
-        "becoming the greatest scholarin my field",
-        "recovering a stolen artifact for my people",
-        "stealing from the rich togive to the poor",
-        "having my name spoken by my leader",
-        "meeting my parents for the first time",
-        "spreading my ideal across the land",
-        "overturning a corrupt government",
-        "producing a timeless work of art",
-        "becoming tremendously wealthy",
-        "finding thesource of eternal life",
-        "becoming a leaderof my nation",
-        "becoming a notorious gambler",
-        "making every stranger smile",
-        "becoming a master artisan",
-        "dying an honorable death",
-        "mapping the entire world",
-        "meeting the grim reaper",
-        "pullingoff the big score",
-        "traveling to the stars",
-        "becoming a celebrity",
-        "meeting my god(s)",
-        "killing my past"
+        game.i18n.localize("QUEST.Dreams.1"),
+        game.i18n.localize("QUEST.Dreams.2"),
+        game.i18n.localize("QUEST.Dreams.3"),
+        game.i18n.localize("QUEST.Dreams.4"),
+        game.i18n.localize("QUEST.Dreams.5"),
+        game.i18n.localize("QUEST.Dreams.6"),
+        game.i18n.localize("QUEST.Dreams.7"),
+        game.i18n.localize("QUEST.Dreams.8"),
+        game.i18n.localize("QUEST.Dreams.9"),
+        game.i18n.localize("QUEST.Dreams.10"),
+        game.i18n.localize("QUEST.Dreams.11"),
+        game.i18n.localize("QUEST.Dreams.12"),
+        game.i18n.localize("QUEST.Dreams.13"),
+        game.i18n.localize("QUEST.Dreams.14"),
+        game.i18n.localize("QUEST.Dreams.15"),
+        game.i18n.localize("QUEST.Dreams.16"),
+        game.i18n.localize("QUEST.Dreams.17"),
+        game.i18n.localize("QUEST.Dreams.18"),
+        game.i18n.localize("QUEST.Dreams.19"),
+        game.i18n.localize("QUEST.Dreams.20"),
+        game.i18n.localize("QUEST.Dreams.21"),
+        game.i18n.localize("QUEST.Dreams.22"),
+        game.i18n.localize("QUEST.Dreams.23"),
+        game.i18n.localize("QUEST.Dreams.24"),
+        game.i18n.localize("QUEST.Dreams.25"),
+        game.i18n.localize("QUEST.Dreams.26"),
+        game.i18n.localize("QUEST.Dreams.27"),
+        game.i18n.localize("QUEST.Dreams.28")
     ];
 
     let selectedBody;
     let text = "New";
     let toCreateBody = "";
-    let edit = true;
+    let edit = sheet.isEditable;
+    let editclass = "uneditable";
 
-    if (data.data.dream == "") {
-        edit = true;
+    // Allow sheet to be edited
+    if (sheet.isEditable) {
+        editclass = "";
     }
+
+    //TODO: Need more eligant way to deal with this to remove all the extra functions here
+    //This is just bad
 
     function handleCreate(newItem) {
         toCreateBody = "Creating " + newItem;
@@ -338,9 +346,13 @@
     //Setup Tabs
 
     let items = [
-        { label: "Inventory", value: 1, component: QuestActorSheetInventory },
         {
-            label: "Abilities",
+            label: game.i18n.localize("QUEST.Inventory"),
+            value: 1,
+            component: QuestActorSheetInventory
+        },
+        {
+            label: game.i18n.localize("QUEST.Abilities"),
             value: 2,
             component: QuestActorSheetAbilities
         }
@@ -365,10 +377,12 @@
 
 <div class="header flexrow">
     <div class="hitpoints">
-        <label class="character-label" for="data.hp">HP:</label>
+        <label class="character-label" for="data.hp"
+            >{game.i18n.localize("QUEST.HP")}</label
+        >
         <input
             type="number"
-            class="hp"
+            class="hp {editclass}"
             name="data.hp"
             data-dtype="Number"
             value={data.data.hp}
@@ -380,10 +394,12 @@
         >
     </div>
     <div class="actionpoints">
-        <label class="character-label" for="data.actionpoints">AP: </label>
+        <label class="character-label" for="data.actionpoints"
+            >{game.i18n.localize("QUEST.AP")}
+        </label>
         <input
             type="number"
-            class="hp"
+            class="hp {editclass}"
             name="data.ap"
             data-dtype="Number"
             value={data.data.ap}
@@ -396,312 +412,314 @@
             <p>
                 <img
                     on:click={filePicker}
-                    class="profile"
+                    class="profile {editclass}"
                     src={data.img}
                     alt={data.name}
                     data-edit="img"
                     title={data.name}
                     align="left"
                 />
-                Hi, my name is
+
+                {@html game.i18n.localize("QUEST.Actor.Hello.Before")}
                 <input
-                    class="name"
+                    class="dotted long name quest {editclass}"
                     name="name"
                     type="text"
                     value={data.name}
-                    placeholder="Name"
+                    placeholder={game.i18n.localize("QUEST.Name")}
                 />
+                {@html game.i18n.localize("QUEST.Actor.Hello.After")}
                 <br />(<input
-                    class="medium"
+                    class="dotted medium {editclass}"
                     name="data.pronouns"
                     type="text"
                     value={data.data.pronouns}
-                    placeholder="Pronouns"
+                    placeholder={game.i18n.localize("QUEST.Pronouns")}
                 />).
             </p>
             <p>
-                I'm {#if !!edit}
-                    <input
-                        class="short"
-                        name="data.age"
-                        type="number"
-                        value={data.data.age}
-                        placeholder="Age"
-                    />
-                {:else}<strong>{data.data.age}</strong>{/if}. years old and
-                stand
-                {#if !!edit}
-                    <input
-                        class="medium"
-                        name="data.height"
-                        type="text"
-                        value={data.data.height}
-                        placeholder="Height"
-                    />
-                {:else}<strong>{data.data.height}</strong>{/if}
-                tall.
+                {@html game.i18n.localize("QUEST.Actor.Age.Before")}
+                <input
+                    class="dotted short {editclass}"
+                    name="data.age"
+                    type="number"
+                    value={data.data.age}
+                    placeholder={game.i18n.localize("QUEST.Age")}
+                />
+                {@html game.i18n.localize("QUEST.Actor.Age.After")}
+                {@html game.i18n.localize("QUEST.Actor.Height.Before")}
+                <input
+                    class="dotted medium {editclass}"
+                    name="data.height"
+                    type="text"
+                    value={data.data.height}
+                    placeholder={game.i18n.localize("QUEST.Height")}
+                />
+                {@html game.i18n.localize("QUEST.Actor.Height.After")}
             </p>
             <p>
-                I'm the party's <input
-                    class="long"
-                    name="data.role"
-                    type="hidden"
-                    value={data.data.role}
-                    placeholder="Role"
-                />
-                {#if !!edit}
-                    <AutoComplete
-                        placeholder="Role"
-                        items={roles}
-                        inputClassName="dotted medium"
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateR}
-                        bind:selectedItem={data.data.role}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />
-                {:else}
-                    <strong>{data.data.role}</strong>
-                {/if}.
+                {@html game.i18n.localize("QUEST.Actor.Role.Before")}
+                <AutoComplete
+                    placeholder={game.i18n.localize("QUEST.Role")}
+                    items={roles}
+                    inputClassName="dotted medium {editclass}"
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateR}
+                    bind:selectedItem={data.data.role}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Role.After")}
             </p>
             <p>
-                When people see me, they first notice my <input
-                    class="long"
-                    name="data.featurebody"
-                    type="hidden"
-                    value={data.data.featurebody}
-                    placeholder="Body"
+                {@html game.i18n.localize("QUEST.Actor.Body.Before")}
+                <AutoComplete
+                    items={featurebody}
+                    placeholder={game.i18n.localize("QUEST.Body")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.featurebody}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreate}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Body.After")}
+                {@html game.i18n.localize("QUEST.Actor.Face.Before")}
+                <AutoComplete
+                    items={featureface}
+                    placeholder={game.i18n.localize("QUEST.Face")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.featureface}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreatef2}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}
-                    <AutoComplete
-                        items={featurebody}
-                        placeholder="Body"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.featurebody}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreate}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />
-                {:else}
-                    <strong>{data.data.featurebody}</strong>
-                {/if},
-                <input
-                    class="long"
-                    name="data.featureface"
-                    type="hidden"
-                    value={data.data.featureface}
-                    placeholder="Face"
-                />
-                {#if !!edit}
-                    <AutoComplete
-                        items={featureface}
-                        placeholder="Face"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.featureface}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreatef2}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}
-                    <strong>{data.data.featureface}</strong>{/if}, and
-                <input
-                    class="long"
-                    name="data.featurevibe"
-                    type="hidden"
-                    value={data.data.featurevibe}
-                    placeholder="Vibe"
-                />
-                {#if !!edit}<AutoComplete
-                        items={featurevibe}
-                        inputClassName="dotted long"
-                        placeholder="Vibe"
-                        bind:selectedItem={data.data.featurevibe}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreatef3}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}
-                    <strong>{data.data.featurevibe}</strong>{/if}.
+                {@html game.i18n.localize("QUEST.Actor.Face.After")}
+                {@html game.i18n.localize("QUEST.Actor.Vibe.Before")}
+                <AutoComplete
+                    items={featurevibe}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Vibe")}
+                    bind:selectedItem={data.data.featurevibe}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreatef3}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Vibe.After")}
             </p>
             <p>
-                I wear <input
-                    class="long"
-                    name="data.style1"
-                    type="hidden"
-                    value={data.data.style1}
-                    placeholder="Outfit"
+                {@html game.i18n.localize("QUEST.Actor.Style.One.Before")}
+                <AutoComplete
+                    items={styleoutfit}
+                    placeholder={game.i18n.localize("QUEST.Outfit")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.style1}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreates1}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={styleoutfit}
-                        placeholder="Outfit"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.style1}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreates1}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.style1}</strong>{/if}
-                ,
-                <input
-                    class="long"
-                    name="data.style2"
-                    type="hidden"
-                    value={data.data.style2}
-                    placeholder="Outfit"
+                {@html game.i18n.localize(
+                    "QUEST.Actor.Style.One.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Style.Two.Before")}
+                <AutoComplete
+                    items={styleoutfit}
+                    placeholder={game.i18n.localize("QUEST.Outfit")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.style2}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreates1}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize(
+                    "QUEST.Actor.Style.Two.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Style.Three.Before")}
+                <AutoComplete
+                    items={stylemovement}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Movement")}
+                    bind:selectedItem={data.data.style3}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreates2}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={styleoutfit}
-                        placeholder="Outfit"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.style2}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreates1}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.style2}</strong>{/if}
-                , and move with
-                <input
-                    class="long"
-                    name="data.style3"
-                    type="hidden"
-                    value={data.data.style3}
-                    placeholder="Movement"
-                />
-                {#if !!edit}<AutoComplete
-                        items={stylemovement}
-                        inputClassName="dotted long"
-                        placeholder="Movement"
-                        bind:selectedItem={data.data.style3}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreates2}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.style3}</strong>{/if}
-                .
+                {@html game.i18n.localize("QUEST.Actor.Style.Three.After")}
             </p>
             <p>
-                I'm from <input
-                    class="long"
-                    name="data.home"
-                    type="hidden"
-                    value={data.data.home}
-                    placeholder="My Home"
-                />
-                {#if !!edit}<AutoComplete
-                        items={homeland}
-                        inputClassName="dotted long"
-                        placeholder="My Home"
-                        bind:selectedItem={data.data.home}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateh1}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}
-                    <strong>{data.data.home}</strong>{/if}
-                where my people are known for
-                <input
-                    class="long"
-                    name="data.community"
-                    type="hidden"
-                    value={data.data.community}
-                    placeholder=""
-                />
-                {#if !!edit}<AutoComplete
-                        items={legacy}
-                        className="verylong"
-                        inputClassName="dotted"
-                        placeholder="Legacy"
-                        bind:selectedItem={data.data.community}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateD}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.community}</strong>{/if}.
+                {@html game.i18n.localize("QUEST.Actor.Home.Before")}
+                <AutoComplete
+                    items={homeland}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Home")}
+                    bind:selectedItem={data.data.home}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateh1}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize(
+                    "QUEST.Actor.Home.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Legacy.Before")}
+                <AutoComplete
+                    items={legacy}
+                    className="verylong {editclass}"
+                    inputClassName="dotted"
+                    placeholder={game.i18n.localize("QUEST.Legacy")}
+                    bind:selectedItem={data.data.community}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateh2}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Legacy.After")}
             </p>
             <p>
-                I believe in <input
-                    class="long"
-                    name="data.ideal"
-                    type="hidden"
-                    value={data.data.ideal}
-                    placeholder="my ideal"
+                {@html game.i18n.localize("QUEST.Actor.Ideal.Before")}
+                <AutoComplete
+                    items={ideal}
+                    placeholder={game.i18n.localize("QUEST.Ideal")}
+                    inputClassName="dotted long {editclass}"
+                    bind:selectedItem={data.data.ideal}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateI}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={ideal}
-                        placeholder="Ideal"
-                        inputClassName="dotted long"
-                        bind:selectedItem={data.data.ideal}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateI}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.ideal}</strong>{/if}
-                , but my
-                <input
-                    class="long"
-                    name="data.flaw"
-                    type="hidden"
-                    value={data.data.flaw}
-                    placeholder="flaw"
+                {@html game.i18n.localize(
+                    "QUEST.Actor.Ideal.After"
+                )}{@html game.i18n.localize("QUEST.Actor.Flaw.Before")}
+                <AutoComplete
+                    items={flaw}
+                    inputClassName="dotted long {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Flaw")}
+                    bind:selectedItem={data.data.flaw}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateF}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
                 />
-                {#if !!edit}<AutoComplete
-                        items={flaw}
-                        inputClassName="dotted long"
-                        placeholder="Flaw"
-                        bind:selectedItem={data.data.flaw}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateF}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.flaw}</strong>{/if}
-                side can get in the way.
+                {@html game.i18n.localize("QUEST.Actor.Flaw.After")}
             </p>
             <p>
-                I dream of <input
-                    class="long"
-                    name="data.dream"
-                    type="hidden"
-                    value={data.data.dream}
-                    placeholder="my dream"
-                />
-                {#if !!edit}<AutoComplete
-                        items={dream}
-                        className="verylong"
-                        inputClassName="dotted"
-                        placeholder="My Dream"
-                        bind:selectedItem={data.data.dream}
-                        create={true}
-                        createText={"Item doesn't exist, create one?"}
-                        onCreate={handleCreateD}
-                        onChange={(e) => {
-                            sheet?._onSubmit(new Event("submit"));
-                        }}
-                    />{:else}<strong>{data.data.dream}</strong>{/if}
-                .
+                {@html game.i18n.localize("QUEST.Actor.Dream.Before")}
+                <AutoComplete
+                    items={dream}
+                    className="verylong"
+                    inputClassName="dotted {editclass}"
+                    placeholder={game.i18n.localize("QUEST.Dream")}
+                    bind:selectedItem={data.data.dream}
+                    create={true}
+                    createText={"Item doesn't exist, create one?"}
+                    onCreate={handleCreateD}
+                    onChange={(e) => {
+                        sheet?._onSubmit(new Event("submit"));
+                    }}
+                />{@html game.i18n.localize("QUEST.Actor.Dream.After")}
             </p>
+            <input
+                class="long"
+                name="data.role"
+                type="hidden"
+                value={data.data.role}
+                placeholder="Role"
+            />
+            <input
+                class="long"
+                name="data.featurebody"
+                type="hidden"
+                value={data.data.featurebody}
+                placeholder="Body"
+            />
+            <input
+                class="long"
+                name="data.featureface"
+                type="hidden"
+                value={data.data.featureface}
+                placeholder="Face"
+            />
+            <input
+                class="long"
+                name="data.featurevibe"
+                type="hidden"
+                value={data.data.featurevibe}
+                placeholder="Vibe"
+            />
+            <input
+                class="long"
+                name="data.style1"
+                type="hidden"
+                value={data.data.style1}
+                placeholder="Outfit"
+            />
+            <input
+                class="long"
+                name="data.style2"
+                type="hidden"
+                value={data.data.style2}
+                placeholder="Outfit"
+            />
+            <input
+                class="long"
+                name="data.style3"
+                type="hidden"
+                value={data.data.style3}
+                placeholder="Movement"
+            />
+            <input
+                class="long"
+                name="data.home"
+                type="hidden"
+                value={data.data.home}
+                placeholder="My Home"
+            />
+            <input
+                class="long"
+                name="data.community"
+                type="hidden"
+                value={data.data.community}
+                placeholder=""
+            />
+            <input
+                class="long"
+                name="data.ideal"
+                type="hidden"
+                value={data.data.ideal}
+                placeholder="my ideal"
+            />
+            <input
+                class="long"
+                name="data.flaw"
+                type="hidden"
+                value={data.data.flaw}
+                placeholder="flaw"
+            />
+            <input
+                class="long"
+                name="data.dream"
+                type="hidden"
+                value={data.data.dream}
+                placeholder="my dream"
+            />
         </content>
     </div>
     <div class="inventory-abilities flexcol flex1">
@@ -710,7 +728,7 @@
 </div>
 
 <style>
-    input {
+    input :global(.quest) {
         border-top: none;
         border-left: none;
         border-right: none;
@@ -825,5 +843,10 @@
     .header {
         padding-bottom: 5px;
         border-bottom: 2px groove #eeeeee;
+    }
+
+    .uneditable {
+        pointer-events: none;
+        font-weight: bold;
     }
 </style>

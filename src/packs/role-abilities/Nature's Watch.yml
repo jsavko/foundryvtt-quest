@@ -1,0 +1,23 @@
+_id: crMgP5RFlXSsu2eO
+name: Nature's Watch
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3] You extend your senses far beyond your normal capabilities,
+    allowing you to detect the hidden and unreal.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Spiritcaller
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

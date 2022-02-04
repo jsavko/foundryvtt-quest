@@ -1,0 +1,23 @@
+_id: R1LIUmsA4IRM11wU
+name: Thunderous Word
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You speak a word of power that releases a thunderous
+    shockwave.</p>
+  cost: 1
+  role: Invoker
+  path: Wrath
+  order: '2'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

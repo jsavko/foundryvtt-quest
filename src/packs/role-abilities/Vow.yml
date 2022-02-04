@@ -1,0 +1,21 @@
+_id: 0vUK0QJHMmFF1Pzg
+name: Vow
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[0] Permanently bind yourself in service of an ideal.</p>
+  cost: 1
+  role: Invoker
+  path: Invocation
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

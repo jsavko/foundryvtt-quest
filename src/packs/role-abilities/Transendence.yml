@@ -1,0 +1,25 @@
+_id: tm20InZjg7Oc5u4z
+name: Transendence
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[5]&nbsp; Embark on an incredible quest for knowledge that expands
+    your consciousness far beyond yourself.</p>
+  cost: 1
+  role: Wizard
+  path: Legendary
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

@@ -1,0 +1,23 @@
+_id: oiHo7gBSs35yybub
+name: Sleep
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You whisper a brief lullaby, putting any number of nearby
+    commoners to sleep for an hour</p>
+  cost: 1
+  role: Doctor
+  path: Alteration
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

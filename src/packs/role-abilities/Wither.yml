@@ -1,0 +1,25 @@
+_id: VWfQvn8K70yff5yV
+name: Wither
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4] You cause a creature's body to wither, giving them the
+    experience of advanced age without changing their lifespan.</p>
+  cost: 1
+  role: Doctor
+  path: Harm
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

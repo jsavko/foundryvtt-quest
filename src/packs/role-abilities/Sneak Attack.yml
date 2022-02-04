@@ -1,0 +1,21 @@
+_id: NLXpzieATCJnPfV5
+name: Sneak Attack
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1+] Make a quick attack on a foe who is distracted.</p>
+  cost: 1
+  role: Spy
+  path: Termination
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

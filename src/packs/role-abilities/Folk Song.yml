@@ -1,0 +1,23 @@
+_id: rn2KTMfjM1FPySvP
+name: Folk Song
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] Sing a song that kindles bright, somber, or proud feelings in
+    NPCs nearby</p>
+  cost: 1
+  role: Ranger
+  path: Story And Song
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

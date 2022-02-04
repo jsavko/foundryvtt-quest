@@ -1,0 +1,23 @@
+_id: TRH6SSQo1mahZdqe
+name: Speak With Trees
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] You touch a tree trunk, connecting yourself to the forest. The
+    trees come to your aid.</p>
+  cost: 1
+  role: Ranger
+  path: Pathfinder
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

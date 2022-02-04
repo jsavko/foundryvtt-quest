@@ -90,7 +90,7 @@ h3.svelte-17i6vo1.svelte-17i6vo1 {
 }
 
 /* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
-input.svelte-bzv5hr.svelte-bzv5hr {
+input.svelte-115e1jk .quest {
   border-top: none;
   border-left: none;
   border-right: none;
@@ -106,42 +106,42 @@ input.svelte-bzv5hr.svelte-bzv5hr {
   border-radius: 0em !important;
   background: rgba(0, 0, 0, 0.03) !important;
 }
-content.svelte-bzv5hr.svelte-bzv5hr {
+content.svelte-115e1jk.svelte-115e1jk {
   font-size: 16px;
 }
-content.svelte-bzv5hr p.svelte-bzv5hr {
+content.svelte-115e1jk p.svelte-115e1jk {
   padding: 5px 11px;
   line-height: 2;
 }
-content.svelte-bzv5hr input.svelte-bzv5hr {
+content.svelte-115e1jk input.svelte-115e1jk {
   width: 60px;
 }
-.biography.svelte-bzv5hr.svelte-bzv5hr {
+.biography.svelte-115e1jk.svelte-115e1jk {
   flex: 1.75 1 0;
   order: 1;
   padding-right: 0.2rem;
   max-width: 580px;
 }
-.inventory-abilities.svelte-bzv5hr.svelte-bzv5hr {
+.inventory-abilities.svelte-115e1jk.svelte-115e1jk {
   flex: 1 1 0;
   order: 2;
   margin-left: 0.3rem;
 }
-input.long.svelte-bzv5hr.svelte-bzv5hr {
+input.long.svelte-115e1jk.svelte-115e1jk {
   width: 300px;
 }
-input.name.svelte-bzv5hr.svelte-bzv5hr {
+input.name.svelte-115e1jk.svelte-115e1jk {
   width: 200px;
 }
-input.medium.svelte-bzv5hr.svelte-bzv5hr {
+input.medium.svelte-115e1jk.svelte-115e1jk {
   width: 100px;
   text-align: center;
 }
-input.short.svelte-bzv5hr.svelte-bzv5hr {
+input.short.svelte-115e1jk.svelte-115e1jk {
   width: 50px;
   text-align: center;
 }
-.profile.svelte-bzv5hr.svelte-bzv5hr {
+.profile.svelte-115e1jk.svelte-115e1jk {
   flex: 0 1 150px;
   max-width: 150px;
   height: 150px;
@@ -149,13 +149,13 @@ input.short.svelte-bzv5hr.svelte-bzv5hr {
   border: 1px solid #adb5bd;
   margin-right: 0.5rem;
 }
-.inventory-abilities.svelte-bzv5hr.svelte-bzv5hr {
+.inventory-abilities.svelte-115e1jk.svelte-115e1jk {
   flex: 1 1 0;
   order: 2;
   border-left: 2px groove #eeeeee;
   margin-left: 0.3rem;
 }
-.hitpoints.svelte-bzv5hr.svelte-bzv5hr {
+.hitpoints.svelte-115e1jk.svelte-115e1jk {
   font-family: "Alegreya Sans", sans-serif;
   font-weight: 700;
   font-size: 1rem;
@@ -163,21 +163,22 @@ input.short.svelte-bzv5hr.svelte-bzv5hr {
   color: #000;
   text-align: left;
 }
-.roll-generic.svelte-bzv5hr.svelte-bzv5hr {
+.roll-generic.svelte-115e1jk.svelte-115e1jk {
   color: #000;
   text-align: center;
 }
-.roll-generic.svelte-bzv5hr .svelte-bzv5hr:hover {
+.roll-generic.svelte-115e1jk .svelte-115e1jk:hover {
   color: #f04828;
 }
-.actionpoints.svelte-bzv5hr.svelte-bzv5hr {
+.actionpoints.svelte-115e1jk.svelte-115e1jk {
   font-family: "Alegreya Sans", sans-serif;
   font-weight: 700;
   font-size: 1rem;
   color: #000;
   text-align: right;
 }
-.hp.svelte-bzv5hr.svelte-bzv5hr {
+.hp.svelte-115e1jk.svelte-115e1jk,
+.ap.svelte-115e1jk.svelte-115e1jk {
   min-width: 20px;
   max-width: 60px;
   border: 1px solid #7a7971;
@@ -185,9 +186,13 @@ input.short.svelte-bzv5hr.svelte-bzv5hr {
   font-size: 1.1rem;
   padding-left: 0.3rem;
 }
-.header.svelte-bzv5hr.svelte-bzv5hr {
+.header.svelte-115e1jk.svelte-115e1jk {
   padding-bottom: 5px;
   border-bottom: 2px groove #eeeeee;
+}
+.uneditable.svelte-115e1jk.svelte-115e1jk {
+  pointer-events: none;
+  font-weight: bold;
 }
 
 /* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css */

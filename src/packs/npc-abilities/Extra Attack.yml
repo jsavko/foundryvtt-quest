@@ -1,0 +1,21 @@
+_id: WTElNmnEoel8hB98
+name: Extra Attack
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>The creature can attack twice during its turn instead of once.</p>
+  cost: 1
+  role: NPC
+  path: NPC
+  order: '0'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

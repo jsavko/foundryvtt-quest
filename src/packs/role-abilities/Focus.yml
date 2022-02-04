@@ -1,0 +1,25 @@
+_id: 0yYBvFLkAERIcSwf
+name: Focus
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3+] You clear your mind, allowing you to surpass your normal
+    limits.</p>
+  cost: 1
+  role: Fighter
+  path: Body
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+  quantity: null
+  weight: null
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

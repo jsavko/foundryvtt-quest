@@ -1,0 +1,25 @@
+_id: i7ZfKeqyyTzn15t2
+name: Forget
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4+] You touch a creature, erasing its memory for the previous
+    month&hellip; or beyond</p>
+  cost: 1
+  role: Doctor
+  path: Perception
+  order: '4'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

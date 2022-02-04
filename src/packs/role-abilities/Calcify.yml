@@ -1,0 +1,25 @@
+_id: hjgEIMNj3HzKTyu8
+name: Calcify
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1] You touch a creature, causing its surface to harden and resist
+    damage.</p>
+  cost: 1
+  role: Doctor
+  path: Alteration
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub

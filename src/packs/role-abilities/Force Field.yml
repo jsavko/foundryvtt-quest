@@ -1,0 +1,25 @@
+_id: Fv943UB8SBWHTJjp
+name: Force Field
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3]&nbsp; Create a paper-thin wall of force that can stop objects
+    from passing through.</p>
+  cost: 1
+  role: Wizard
+  path: Conjuration
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

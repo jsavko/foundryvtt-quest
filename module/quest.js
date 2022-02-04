@@ -57,26 +57,26 @@ Hooks.once("init", async function () {
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
 
-    Actors.registerSheet("quest", QuestActorSheet, {
+    Actors.registerSheet("foundryvtt-quest", QuestActorSheet, {
         makeDefault: true,
         types: ["character"]
     });
 
-    Actors.registerSheet("quest", QuestNPCActorSheet, {
+    Actors.registerSheet("foundryvtt-quest", QuestNPCActorSheet, {
         types: ["npc"]
     });
 
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("quest", QuestItemSheet, {
+    Items.registerSheet("foundryvtt-quest", QuestItemSheet, {
         makeDefault: true
     });
-    Items.registerSheet("quest", QuestAbilitySheet, {
+    Items.registerSheet("foundryvtt-quest", QuestAbilitySheet, {
         types: ["ability", "detail"],
         makeDefault: true
     });
 
     // Register system settings
-    game.settings.register("quest", "macroShorthand", {
+    game.settings.register("foundryvtt-quest", "macroShorthand", {
         name: "SETTINGS.QuestMacroShorthandN",
         hint: "SETTINGS.QuestMacroShorthandL",
         scope: "world",
@@ -86,7 +86,7 @@ Hooks.once("init", async function () {
     });
 
     // Register initiative setting.
-    game.settings.register("quest", "initFormula", {
+    game.settings.register("foundryvtt-quest", "initFormula", {
         name: "SETTINGS.QuestInitFormulaN",
         hint: "SETTINGS.QuestInitFormulaL",
         scope: "world",
@@ -97,7 +97,7 @@ Hooks.once("init", async function () {
     });
 
     // Retrieve and assign the initiative formula setting.
-    const initFormula = game.settings.get("quest", "initFormula");
+    const initFormula = game.settings.get("foundryvtt-quest", "initFormula");
     _simpleUpdateInit(initFormula);
 
     /**
@@ -255,6 +255,26 @@ Hooks.once("ready", async () => {
     if (!!compendium != false) {
         ui.notifications.info("Importing Complete.");
     }
+
+    let gamePacks = game.packs.filter((entry) => entry.documentName === "Item");
+    let itemPacks = {};
+    console.log("getting packs");
+    for (let pack of gamePacks) {
+        if (pack.metadata.package != "foundryvtt-quest") {
+            let source = pack.metadata.package + "." + pack.metadata.name;
+            itemPacks[source] = pack.title;
+        }
+    }
+
+    game.settings.register("foundryvtt-quest", "abilityCompendium", {
+        name: "SETTINGS.AbilityCompendium",
+        hint: "SETTINGS.AbilityCompendiumHint",
+        scope: "world",
+        config: true,
+        type: String,
+        default: "world.role-abilities",
+        choices: itemPacks
+    });
 });
 
 Handlebars.registerHelper("times", function (n, block) {

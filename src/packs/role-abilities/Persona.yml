@@ -1,0 +1,26 @@
+_id: fTzf7fvhnwb3M4b4
+name: Persona
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2+]&nbsp;&nbsp;You can carefully prepare a convincing alternate
+    identity. You can create the persona of a commoner, an officer, or an
+    aristocrat.</p>
+  cost: 1
+  role: Spy
+  path: Impersonation
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.NLXpzieATCJnPfV5

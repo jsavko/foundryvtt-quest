@@ -1,0 +1,25 @@
+_id: KiaNU8D6FhXxGCVb
+name: Rift
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[5]&nbsp; Summon a magnificent gateway that contains a portal to The
+    Rift.</p>
+  cost: 1
+  role: Wizard
+  path: Legendary
+  order: '1'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

@@ -1,0 +1,21 @@
+_id: eZGkh2UwACMIglAz
+name: Yawp
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Make a show of bravado to frighten nearby creatures</p>
+  cost: 1
+  role: Fighter
+  path: Body
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

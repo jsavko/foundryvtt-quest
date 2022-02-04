@@ -1,0 +1,25 @@
+_id: csd5mpnDGNIWdvt2
+name: Bedazzle
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4]&nbsp; Summon prismatic bolts that can impale and dazzle
+    enemies.</p>
+  cost: 1
+  role: Magician
+  path: Mayhem
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.H7N4MATTsvZs9MWj

@@ -1,0 +1,23 @@
+_id: c8yvv18kVQ7N6uXm
+name: Blink
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1]&nbsp; Vanish and reappear somewhere nearby.</p>
+  cost: 1
+  role: Wizard
+  path: Planeshifting
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

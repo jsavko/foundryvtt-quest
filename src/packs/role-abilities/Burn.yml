@@ -1,0 +1,23 @@
+_id: pv3Q4UmlAocngSld
+name: Burn
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0+] You blow hot air, creating scorching winds that can ignite a
+    target in flame nearby.&nbsp;</p>
+  cost: 1
+  role: Naturalist
+  path: Elementalist
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

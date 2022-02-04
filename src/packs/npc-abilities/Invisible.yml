@@ -1,0 +1,21 @@
+_id: Zedfw6hkh8qhztIK
+name: Invisible
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>The creature cannot be seen with natural vision</p>
+  cost: 1
+  role: NPC
+  path: NPC
+  order: '0'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

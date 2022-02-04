@@ -1,0 +1,27 @@
+_id: EBbH6bIeCQaF6rld
+name: Defy Death
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4 ]If you would die from an enemy&rsquo;s attack, you overcome fate
+    to make a last stand.&nbsp;</p>
+  cost: 1
+  role: Fighter
+  path: Body
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+  quantity: null
+  weight: null
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.0yYBvFLkAERIcSwf

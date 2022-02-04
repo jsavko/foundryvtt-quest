@@ -1,0 +1,23 @@
+_id: AKXPSuZxkOA6V9iT
+name: Lawbringer
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3]&nbsp; You raise your hand into the sky and summon a deadly
+    spectral warhammer.</p>
+  cost: 1
+  role: Invoker
+  path: Wrath
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

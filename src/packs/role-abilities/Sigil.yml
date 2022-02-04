@@ -1,0 +1,23 @@
+_id: zP8Wq6f1mUw9i0xp
+name: Sigil
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[2] Draw a magic sigil that affects nearby creatures in various
+    ways</p>
+  cost: 1
+  role: Invoker
+  path: Wards
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

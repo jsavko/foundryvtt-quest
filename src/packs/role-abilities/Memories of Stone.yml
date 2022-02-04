@@ -1,0 +1,23 @@
+_id: rO7rdW0QXzgIBYR0
+name: Memories of Stone
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3]&nbsp; You channel the ancient wisdom of a stone monument,
+    learning important information about your world</p>
+  cost: 1
+  role: Naturalist
+  path: Ecologist
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

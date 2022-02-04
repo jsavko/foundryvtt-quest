@@ -1,0 +1,23 @@
+_id: dQYhvrNBHY3QcJMl
+name: Whisper on the Wind
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[4] You whisper a message carried by the wind, summoning a flying
+    animal to come to your aid.</p>
+  cost: 1
+  role: Ranger
+  path: Friend
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

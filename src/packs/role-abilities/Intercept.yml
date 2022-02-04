@@ -1,0 +1,21 @@
+_id: gYeQBQLnMD8I9dye
+name: Intercept
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: <p>@cost[1] Rush in to interrupt an attack on someone else.</p>
+  cost: 1
+  role: Fighter
+  path: Tactics
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

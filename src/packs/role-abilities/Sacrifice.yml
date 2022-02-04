@@ -1,0 +1,23 @@
+_id: SQGtqQrAEH53Z1NT
+name: Sacrifice
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0] You bring a creature back from the dead, at a cost to your own
+    soul&hellip;</p>
+  cost: 1
+  role: Invoker
+  path: Legendary
+  order: '2'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

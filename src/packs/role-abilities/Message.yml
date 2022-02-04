@@ -1,0 +1,25 @@
+_id: j1uFZJVO1MEefiAZ
+name: Message
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[1+]&nbsp; You open a telepathic communication link with a creature,
+    even if you don&rsquo;t know where they are.</p>
+  cost: 1
+  role: Magician
+  path: Clairvoyance
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.H7N4MATTsvZs9MWj

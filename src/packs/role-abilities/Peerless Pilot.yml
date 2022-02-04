@@ -1,0 +1,25 @@
+_id: fbYH0TV9xTu5Srxg
+name: Peerless Pilot
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[5]&nbsp; Conjure a fantastic hot air balloon from another
+    dimension.&nbsp;</p>
+  cost: 1
+  role: Magician
+  path: Legendary
+  order: '1'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.H7N4MATTsvZs9MWj

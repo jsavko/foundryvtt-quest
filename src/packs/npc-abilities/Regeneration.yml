@@ -1,0 +1,23 @@
+_id: wPAITnyDezObQ3iZ
+name: Regeneration
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>At the beginning of each of its turns, the creature recovers half of its
+    hit point maximum</p>
+  cost: 1
+  role: NPC
+  path: NPC
+  order: '0'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

@@ -1,0 +1,21 @@
+_id: Pl1z1VzZfGJpqYG6
+name: Steel Pact
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: "<p>@cost[0] Form a permanent, extraor\x02dinary bond with one of your weapons.</p>"
+  cost: 1
+  role: Fighter
+  path: Legendary
+  order: '3'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags: {}

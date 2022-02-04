@@ -1,0 +1,25 @@
+_id: oysW5itI12gG72y0
+name: Last Light
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[3+] last light: Channel a blinding beam of light at a target that
+    ignites flammable objects and can melt steel.</p>
+  cost: 1
+  role: Wizard
+  path: Evocation
+  order: '5'
+  quickstart: false
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.KRVfhEWj5MxPSeNs

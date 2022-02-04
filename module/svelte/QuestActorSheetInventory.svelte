@@ -20,28 +20,22 @@
                         >{items[i].data.name}</span
                     >
                     <div class="right">
-                        <a
-                            on:click={(e) =>
-                                // sheet.delete.id
-                                {
+                        {#if sheet.isEditable}<a
+                                on:click={(e) => {
                                     sheet?._chatAbility(items[i].data._id);
                                 }}><i class="fas fa-bullhorn" /></a
-                        >
-                        <a
-                            on:click={(e) =>
-                                // sheet.delete.id
-                                {
+                            >
+                            <a
+                                on:click={(e) => {
                                     sheet?._onItemEdit(items[i].data._id);
                                 }}><i class="fas fa-pen" /></a
-                        >
+                            >
 
-                        <a
-                            on:click={(e) =>
-                                // sheet.delete.id
-                                {
+                            <a
+                                on:click={(e) => {
                                     sheet?._onItemDelete(items[i].data._id);
                                 }}><i class="fas fa-trash" /></a
-                        >
+                            >{/if}
                     </div>
                 </div>
             </li>

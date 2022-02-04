@@ -1,0 +1,25 @@
+_id: SHit9G3rMLYI01xY
+name: Corrupt
+type: ability
+img: icons/svg/item-bag.svg
+data:
+  description: >-
+    <p>@cost[0]&nbsp; You grip a creature and create a necrotizing wound in its
+    flesh.</p>
+  cost: 1
+  role: Doctor
+  path: Harm
+  order: '1'
+  quickstart: true
+  long_description: ''
+  groups: {}
+  attributes: {}
+effects: []
+folder: null
+sort: 0
+permission:
+  default: 0
+  3xQNWWZ2AzER9ewd: 3
+flags:
+  core:
+    sourceId: Item.oiHo7gBSs35yybub
