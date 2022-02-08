@@ -34,13 +34,14 @@ Hooks.once("init", async function () {
      */
 
     let RollCount = 0;
-
+    let RoleList = [];
     game.quest = {
         QuestActor,
         createQuestMacro,
         QuestRoll,
         AbilityDialog,
-        CompendiumImportHelper
+        CompendiumImportHelper,
+        RoleList
     };
 
     // Define custom Entity classes
@@ -275,7 +276,24 @@ Hooks.once("ready", async () => {
         default: "world.role-abilities",
         choices: itemPacks
     });
+
+    //Generate RoleList
+    game.quest.roleList = await getRoleList();
 });
+
+async function getRoleList() {
+    let sourceCompendium = game.settings.get(
+        "foundryvtt-quest",
+        "abilityCompendium"
+    );
+
+    const QUESTAbilities = await game.packs.get(sourceCompendium);
+    let AllAbilities = await QUESTAbilities.getDocuments();
+    const roleList = [
+        ...new Set(AllAbilities.map((data) => data.data.data.role))
+    ];
+    return roleList;
+}
 
 Handlebars.registerHelper("times", function (n, block) {
     var accum = "";

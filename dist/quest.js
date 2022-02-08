@@ -748,6 +748,11 @@ var QuestAbilitySheet = class extends ItemSheet {
 // node_modules/svelte/internal/index.mjs
 function noop() {
 }
+function assign(tar, src) {
+  for (const k in src)
+    tar[k] = src[k];
+  return tar;
+}
 function run(fn) {
   return fn();
 }
@@ -775,6 +780,40 @@ function subscribe(store, ...callbacks) {
 }
 function component_subscribe(component, store, callback) {
   component.$$.on_destroy.push(subscribe(store, callback));
+}
+function create_slot(definition, ctx, $$scope, fn) {
+  if (definition) {
+    const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+    return definition[0](slot_ctx);
+  }
+}
+function get_slot_context(definition, ctx, $$scope, fn) {
+  return definition[1] && fn ? assign($$scope.ctx.slice(), definition[1](fn(ctx))) : $$scope.ctx;
+}
+function get_slot_changes(definition, $$scope, dirty, fn) {
+  if (definition[2] && fn) {
+    const lets = definition[2](fn(dirty));
+    if ($$scope.dirty === void 0) {
+      return lets;
+    }
+    if (typeof lets === "object") {
+      const merged = [];
+      const len = Math.max($$scope.dirty.length, lets.length);
+      for (let i = 0; i < len; i += 1) {
+        merged[i] = $$scope.dirty[i] | lets[i];
+      }
+      return merged;
+    }
+    return $$scope.dirty | lets;
+  }
+  return $$scope.dirty;
+}
+function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+  const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+  if (slot_changes) {
+    const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+    slot.p(slot_context, slot_changes);
+  }
 }
 function null_to_empty(value) {
   return value == null ? "" : value;
@@ -904,41 +943,6 @@ function set_data(text3, data) {
 function set_style(node, key, value, important) {
   node.style.setProperty(key, value, important ? "important" : "");
 }
-var HtmlTag = class {
-  constructor(claimed_nodes) {
-    this.e = this.n = null;
-    this.l = claimed_nodes;
-  }
-  m(html, target, anchor = null) {
-    if (!this.e) {
-      this.e = element(target.nodeName);
-      this.t = target;
-      if (this.l) {
-        this.n = this.l;
-      } else {
-        this.h(html);
-      }
-    }
-    this.i(anchor);
-  }
-  h(html) {
-    this.e.innerHTML = html;
-    this.n = Array.from(this.e.childNodes);
-  }
-  i(anchor) {
-    for (let i = 0; i < this.n.length; i += 1) {
-      insert(this.t, this.n[i], anchor);
-    }
-  }
-  p(html) {
-    this.d();
-    this.h(html);
-    this.i(this.a);
-  }
-  d() {
-    this.n.forEach(detach);
-  }
-};
 var active_docs = new Set();
 var current_component;
 function set_current_component(component) {
@@ -1122,7 +1126,7 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance7, create_fragment7, not_equal, props, dirty = [-1]) {
+function init(component, options, instance8, create_fragment8, not_equal, props, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
@@ -1143,7 +1147,7 @@ function init(component, options, instance7, create_fragment7, not_equal, props,
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance7 ? instance7(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance8 ? instance8(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -1156,7 +1160,7 @@ function init(component, options, instance7, create_fragment7, not_equal, props,
   $$.update();
   ready = true;
   run_all($$.before_update);
-  $$.fragment = create_fragment7 ? create_fragment7($$.ctx) : false;
+  $$.fragment = create_fragment8 ? create_fragment8($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       start_hydrating();
@@ -1313,16 +1317,16 @@ function safe_not_equal2(a, b) {
 function is_empty2(obj) {
   return Object.keys(obj).length === 0;
 }
-function create_slot(definition, ctx, $$scope, fn) {
+function create_slot2(definition, ctx, $$scope, fn) {
   if (definition) {
-    const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+    const slot_ctx = get_slot_context2(definition, ctx, $$scope, fn);
     return definition[0](slot_ctx);
   }
 }
-function get_slot_context(definition, ctx, $$scope, fn) {
+function get_slot_context2(definition, ctx, $$scope, fn) {
   return definition[1] && fn ? assign2($$scope.ctx.slice(), definition[1](fn(ctx))) : $$scope.ctx;
 }
-function get_slot_changes(definition, $$scope, dirty, fn) {
+function get_slot_changes2(definition, $$scope, dirty, fn) {
   if (definition[2] && fn) {
     const lets = definition[2](fn(dirty));
     if ($$scope.dirty === void 0) {
@@ -1340,10 +1344,10 @@ function get_slot_changes(definition, $$scope, dirty, fn) {
   }
   return $$scope.dirty;
 }
-function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
-  const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+function update_slot2(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+  const slot_changes = get_slot_changes2(slot_definition, $$scope, dirty, get_slot_changes_fn);
   if (slot_changes) {
-    const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+    const slot_context = get_slot_context2(slot_definition, ctx, $$scope, get_slot_context_fn);
     slot.p(slot_context, slot_changes);
   }
 }
@@ -1404,7 +1408,7 @@ function set_input_value(input, value) {
 function toggle_class(element3, name, toggle) {
   element3.classList[toggle ? "add" : "remove"](name);
 }
-var HtmlTag2 = class {
+var HtmlTag = class {
   constructor(anchor = null) {
     this.a = anchor;
     this.e = this.n = null;
@@ -1566,7 +1570,7 @@ function make_dirty2(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init2(component, options, instance7, create_fragment7, not_equal, props, dirty = [-1]) {
+function init2(component, options, instance8, create_fragment8, not_equal, props, dirty = [-1]) {
   const parent_component = current_component2;
   set_current_component2(component);
   const $$ = component.$$ = {
@@ -1587,7 +1591,7 @@ function init2(component, options, instance7, create_fragment7, not_equal, props
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance7 ? instance7(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance8 ? instance8(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -1600,7 +1604,7 @@ function init2(component, options, instance7, create_fragment7, not_equal, props
   $$.update();
   ready = true;
   run_all2($$.before_update);
-  $$.fragment = create_fragment7 ? create_fragment7($$.ctx) : false;
+  $$.fragment = create_fragment8 ? create_fragment8($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       const nodes = children2(options.target);
@@ -1926,7 +1930,7 @@ function fallback_block_4(ctx) {
 function create_each_block_1(ctx) {
   let current;
   const tag_slot_template = ctx[76].tag;
-  const tag_slot = create_slot(tag_slot_template, ctx, ctx[75], get_tag_slot_context);
+  const tag_slot = create_slot2(tag_slot_template, ctx, ctx[75], get_tag_slot_context);
   const tag_slot_or_fallback = tag_slot || fallback_block_4(ctx);
   return {
     c() {
@@ -1942,7 +1946,7 @@ function create_each_block_1(ctx) {
     p(ctx2, dirty) {
       if (tag_slot) {
         if (tag_slot.p && dirty[0] & 2 | dirty[2] & 8192) {
-          update_slot(tag_slot, tag_slot_template, ctx2, ctx2[75], dirty, get_tag_slot_changes, get_tag_slot_context);
+          update_slot2(tag_slot, tag_slot_template, ctx2, ctx2[75], dirty, get_tag_slot_changes, get_tag_slot_context);
         }
       } else {
         if (tag_slot_or_fallback && tag_slot_or_fallback.p && dirty[0] & 2) {
@@ -1996,7 +2000,7 @@ function create_if_block_7(ctx) {
   let div;
   let current;
   const no_results_slot_template = ctx[76]["no-results"];
-  const no_results_slot = create_slot(no_results_slot_template, ctx, ctx[75], get_no_results_slot_context);
+  const no_results_slot = create_slot2(no_results_slot_template, ctx, ctx[75], get_no_results_slot_context);
   const no_results_slot_or_fallback = no_results_slot || fallback_block_3(ctx);
   return {
     c() {
@@ -2015,7 +2019,7 @@ function create_if_block_7(ctx) {
     p(ctx2, dirty) {
       if (no_results_slot) {
         if (no_results_slot.p && dirty[0] & 2048 | dirty[2] & 8192) {
-          update_slot(no_results_slot, no_results_slot_template, ctx2, ctx2[75], dirty, get_no_results_slot_changes, get_no_results_slot_context);
+          update_slot2(no_results_slot, no_results_slot_template, ctx2, ctx2[75], dirty, get_no_results_slot_changes, get_no_results_slot_context);
         }
       } else {
         if (no_results_slot_or_fallback && no_results_slot_or_fallback.p && dirty[0] & 2048) {
@@ -2047,7 +2051,7 @@ function create_if_block_6(ctx) {
   let mounted;
   let dispose;
   const create_slot_template = ctx[76].create;
-  const create_slot_1 = create_slot(create_slot_template, ctx, ctx[75], get_create_slot_context);
+  const create_slot_1 = create_slot2(create_slot_template, ctx, ctx[75], get_create_slot_context);
   const create_slot_or_fallback = create_slot_1 || fallback_block_2(ctx);
   return {
     c() {
@@ -2070,7 +2074,7 @@ function create_if_block_6(ctx) {
     p(ctx2, dirty) {
       if (create_slot_1) {
         if (create_slot_1.p && dirty[0] & 8192 | dirty[2] & 8192) {
-          update_slot(create_slot_1, create_slot_template, ctx2, ctx2[75], dirty, get_create_slot_changes, get_create_slot_context);
+          update_slot2(create_slot_1, create_slot_template, ctx2, ctx2[75], dirty, get_create_slot_changes, get_create_slot_context);
         }
       } else {
         if (create_slot_or_fallback && create_slot_or_fallback.p && dirty[0] & 8192) {
@@ -2102,7 +2106,7 @@ function create_if_block_5(ctx) {
   let div;
   let current;
   const loading_slot_template = ctx[76].loading;
-  const loading_slot = create_slot(loading_slot_template, ctx, ctx[75], get_loading_slot_context);
+  const loading_slot = create_slot2(loading_slot_template, ctx, ctx[75], get_loading_slot_context);
   const loading_slot_or_fallback = loading_slot || fallback_block_1(ctx);
   return {
     c() {
@@ -2121,7 +2125,7 @@ function create_if_block_5(ctx) {
     p(ctx2, dirty) {
       if (loading_slot) {
         if (loading_slot.p && dirty[0] & 4096 | dirty[2] & 8192) {
-          update_slot(loading_slot, loading_slot_template, ctx2, ctx2[75], dirty, get_loading_slot_changes, get_loading_slot_context);
+          update_slot2(loading_slot, loading_slot_template, ctx2, ctx2[75], dirty, get_loading_slot_changes, get_loading_slot_context);
         }
       } else {
         if (loading_slot_or_fallback && loading_slot_or_fallback.p && dirty[0] & 4096) {
@@ -2360,7 +2364,7 @@ function create_if_block_3(ctx) {
   let mounted;
   let dispose;
   const item_slot_template = ctx[76].item;
-  const item_slot = create_slot(item_slot_template, ctx, ctx[75], get_item_slot_context);
+  const item_slot = create_slot2(item_slot_template, ctx, ctx[75], get_item_slot_context);
   const item_slot_or_fallback = item_slot || fallback_block(ctx);
   function click_handler() {
     return ctx[79](ctx[108]);
@@ -2394,7 +2398,7 @@ function create_if_block_3(ctx) {
       ctx = new_ctx;
       if (item_slot) {
         if (item_slot.p && dirty[0] & 134217728 | dirty[2] & 8192) {
-          update_slot(item_slot, item_slot_template, ctx, ctx[75], dirty, get_item_slot_changes, get_item_slot_context);
+          update_slot2(item_slot, item_slot_template, ctx, ctx[75], dirty, get_item_slot_changes, get_item_slot_context);
         }
       } else {
         if (item_slot_or_fallback && item_slot_or_fallback.p && dirty[0] & 134217728) {
@@ -2435,7 +2439,7 @@ function create_else_block(ctx) {
   return {
     c() {
       html_anchor = empty2();
-      html_tag = new HtmlTag2(html_anchor);
+      html_tag = new HtmlTag(html_anchor);
     },
     m(target, anchor) {
       html_tag.m(raw_value, target, anchor);
@@ -2460,7 +2464,7 @@ function create_if_block_4(ctx) {
   return {
     c() {
       html_anchor = empty2();
-      html_tag = new HtmlTag2(html_anchor);
+      html_tag = new HtmlTag(html_anchor);
     },
     m(target, anchor) {
       html_tag.m(raw_value, target, anchor);
@@ -4778,8 +4782,1183 @@ var QuestActorSheetAbilities = class extends SvelteComponent {
 var QuestActorSheetAbilities_default = QuestActorSheetAbilities;
 require_3();
 
-// module/svelte/QuestActorSheetBase.svelte
+// module/svelte/Translation.svelte
+function get_each_context5(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[4] = list[i];
+  child_ctx[6] = i;
+  return child_ctx;
+}
+var get__3_slot_changes = (dirty) => ({});
+var get__3_slot_context = (ctx) => ({});
+var get__2_slot_changes = (dirty) => ({});
+var get__2_slot_context = (ctx) => ({});
+var get__1_slot_changes = (dirty) => ({});
+var get__1_slot_context = (ctx) => ({});
+function create_else_block3(ctx) {
+  let t_value = ctx[4] + "";
+  let t;
+  return {
+    c() {
+      t = text(t_value);
+    },
+    m(target, anchor) {
+      insert(target, t, anchor);
+    },
+    p(ctx2, dirty) {
+      if (dirty & 1 && t_value !== (t_value = ctx2[4] + ""))
+        set_data(t, t_value);
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(t);
+    }
+  };
+}
+function create_if_block_22(ctx) {
+  let current;
+  const _3_slot_template = ctx[3]["3"];
+  const _3_slot = create_slot(_3_slot_template, ctx, ctx[2], get__3_slot_context);
+  return {
+    c() {
+      if (_3_slot)
+        _3_slot.c();
+    },
+    m(target, anchor) {
+      if (_3_slot) {
+        _3_slot.m(target, anchor);
+      }
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (_3_slot) {
+        if (_3_slot.p && (!current || dirty & 4)) {
+          update_slot(_3_slot, _3_slot_template, ctx2, ctx2[2], !current ? -1 : dirty, get__3_slot_changes, get__3_slot_context);
+        }
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(_3_slot, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(_3_slot, local);
+      current = false;
+    },
+    d(detaching) {
+      if (_3_slot)
+        _3_slot.d(detaching);
+    }
+  };
+}
+function create_if_block_13(ctx) {
+  let current;
+  const _2_slot_template = ctx[3]["2"];
+  const _2_slot = create_slot(_2_slot_template, ctx, ctx[2], get__2_slot_context);
+  return {
+    c() {
+      if (_2_slot)
+        _2_slot.c();
+    },
+    m(target, anchor) {
+      if (_2_slot) {
+        _2_slot.m(target, anchor);
+      }
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (_2_slot) {
+        if (_2_slot.p && (!current || dirty & 4)) {
+          update_slot(_2_slot, _2_slot_template, ctx2, ctx2[2], !current ? -1 : dirty, get__2_slot_changes, get__2_slot_context);
+        }
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(_2_slot, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(_2_slot, local);
+      current = false;
+    },
+    d(detaching) {
+      if (_2_slot)
+        _2_slot.d(detaching);
+    }
+  };
+}
+function create_if_block5(ctx) {
+  let current;
+  const _1_slot_template = ctx[3]["1"];
+  const _1_slot = create_slot(_1_slot_template, ctx, ctx[2], get__1_slot_context);
+  return {
+    c() {
+      if (_1_slot)
+        _1_slot.c();
+    },
+    m(target, anchor) {
+      if (_1_slot) {
+        _1_slot.m(target, anchor);
+      }
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (_1_slot) {
+        if (_1_slot.p && (!current || dirty & 4)) {
+          update_slot(_1_slot, _1_slot_template, ctx2, ctx2[2], !current ? -1 : dirty, get__1_slot_changes, get__1_slot_context);
+        }
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(_1_slot, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(_1_slot, local);
+      current = false;
+    },
+    d(detaching) {
+      if (_1_slot)
+        _1_slot.d(detaching);
+    }
+  };
+}
+function create_each_block5(ctx) {
+  let current_block_type_index;
+  let if_block;
+  let if_block_anchor;
+  let current;
+  const if_block_creators = [create_if_block5, create_if_block_13, create_if_block_22, create_else_block3];
+  const if_blocks = [];
+  function select_block_type(ctx2, dirty) {
+    if (ctx2[6] != 0 && ctx2[4] === "1")
+      return 0;
+    if (ctx2[6] != 0 && ctx2[4] === "2")
+      return 1;
+    if (ctx2[6] != 0 && ctx2[4] === "3")
+      return 2;
+    return 3;
+  }
+  current_block_type_index = select_block_type(ctx, -1);
+  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  return {
+    c() {
+      if_block.c();
+      if_block_anchor = empty();
+    },
+    m(target, anchor) {
+      if_blocks[current_block_type_index].m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block = if_blocks[current_block_type_index];
+        if (!if_block) {
+          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block.c();
+        } else {
+          if_block.p(ctx2, dirty);
+        }
+        transition_in(if_block, 1);
+        if_block.m(if_block_anchor.parentNode, if_block_anchor);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if_blocks[current_block_type_index].d(detaching);
+      if (detaching)
+        detach(if_block_anchor);
+    }
+  };
+}
 function create_fragment5(ctx) {
+  let each_1_anchor;
+  let current;
+  let each_value = ctx[0];
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block5(get_each_context5(ctx, each_value, i));
+  }
+  const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
+    each_blocks[i] = null;
+  });
+  return {
+    c() {
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      each_1_anchor = empty();
+    },
+    m(target, anchor) {
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(target, anchor);
+      }
+      insert(target, each_1_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 5) {
+        each_value = ctx2[0];
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context5(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+            transition_in(each_blocks[i], 1);
+          } else {
+            each_blocks[i] = create_each_block5(child_ctx);
+            each_blocks[i].c();
+            transition_in(each_blocks[i], 1);
+            each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+          }
+        }
+        group_outros();
+        for (i = each_value.length; i < each_blocks.length; i += 1) {
+          out(i);
+        }
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      for (let i = 0; i < each_value.length; i += 1) {
+        transition_in(each_blocks[i]);
+      }
+      current = true;
+    },
+    o(local) {
+      each_blocks = each_blocks.filter(Boolean);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        transition_out(each_blocks[i]);
+      }
+      current = false;
+    },
+    d(detaching) {
+      destroy_each(each_blocks, detaching);
+      if (detaching)
+        detach(each_1_anchor);
+    }
+  };
+}
+function instance5($$self, $$props, $$invalidate) {
+  let { $$slots: slots = {}, $$scope } = $$props;
+  let { str } = $$props;
+  let dump;
+  $$self.$$set = ($$props2) => {
+    if ("str" in $$props2)
+      $$invalidate(1, str = $$props2.str);
+    if ("$$scope" in $$props2)
+      $$invalidate(2, $$scope = $$props2.$$scope);
+  };
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 2) {
+      $:
+        $$invalidate(0, dump = str.split(/\{(.*?)\}/));
+    }
+  };
+  return [dump, str, $$scope, slots];
+}
+var Translation = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance5, create_fragment5, safe_not_equal, { str: 1 });
+  }
+};
+var Translation_default = Translation;
+
+// module/svelte/QuestActorSheetBase.svelte
+function create__1_slot_7(ctx) {
+  let span;
+  let input;
+  let input_class_value;
+  let input_value_value;
+  let input_placeholder_value;
+  return {
+    c() {
+      span = element("span");
+      input = element("input");
+      attr(input, "class", input_class_value = "dotted long name quest " + ctx[13] + " svelte-115e1jk");
+      attr(input, "name", "name");
+      attr(input, "type", "text");
+      input.value = input_value_value = ctx[1].name;
+      attr(input, "placeholder", input_placeholder_value = game.i18n.localize("QUEST.Name"));
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      append(span, input);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted long name quest " + ctx2[13] + " svelte-115e1jk")) {
+        attr(input, "class", input_class_value);
+      }
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].name) && input.value !== input_value_value) {
+        input.value = input_value_value;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create__1_slot_6(ctx) {
+  let span;
+  let input;
+  let input_class_value;
+  let input_value_value;
+  let input_placeholder_value;
+  return {
+    c() {
+      span = element("span");
+      input = element("input");
+      attr(input, "class", input_class_value = "dotted short " + ctx[13] + " svelte-115e1jk");
+      attr(input, "name", "data.age");
+      attr(input, "type", "number");
+      input.value = input_value_value = ctx[1].data.age;
+      attr(input, "placeholder", input_placeholder_value = game.i18n.localize("QUEST.Age"));
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      append(span, input);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted short " + ctx2[13] + " svelte-115e1jk")) {
+        attr(input, "class", input_class_value);
+      }
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.age)) {
+        input.value = input_value_value;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create__2_slot_4(ctx) {
+  let span;
+  let input;
+  let input_class_value;
+  let input_value_value;
+  let input_placeholder_value;
+  return {
+    c() {
+      span = element("span");
+      input = element("input");
+      attr(input, "class", input_class_value = "dotted medium " + ctx[13] + " svelte-115e1jk");
+      attr(input, "name", "data.height");
+      attr(input, "type", "text");
+      input.value = input_value_value = ctx[1].data.height;
+      attr(input, "placeholder", input_placeholder_value = game.i18n.localize("QUEST.Height"));
+      attr(span, "slot", "2");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      append(span, input);
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted medium " + ctx2[13] + " svelte-115e1jk")) {
+        attr(input, "class", input_class_value);
+      }
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.height) && input.value !== input_value_value) {
+        input.value = input_value_value;
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+    }
+  };
+}
+function create__1_slot_5(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding(value) {
+    ctx[30](value);
+  }
+  let autocomplete_props = {
+    placeholder: game.i18n.localize("QUEST.Role"),
+    items: ctx[2],
+    inputClassName: "dotted medium " + ctx[13],
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[16],
+    onChange: ctx[29]
+  };
+  if (ctx[1].data.role !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.role;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 4)
+        autocomplete_changes.items = ctx2[2];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted medium " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.role;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__1_slot_4(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_3(value) {
+    ctx[36](value);
+  }
+  let autocomplete_props = {
+    items: ctx[3],
+    placeholder: game.i18n.localize("QUEST.Body"),
+    inputClassName: "dotted long " + ctx[13],
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[15],
+    onChange: ctx[35]
+  };
+  if (ctx[1].data.featurebody !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.featurebody;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_3));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 8)
+        autocomplete_changes.items = ctx2[3];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.featurebody;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__2_slot_3(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_2(value) {
+    ctx[34](value);
+  }
+  let autocomplete_props = {
+    items: ctx[4],
+    placeholder: game.i18n.localize("QUEST.Face"),
+    inputClassName: "dotted long " + ctx[13],
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[17],
+    onChange: ctx[33]
+  };
+  if (ctx[1].data.featureface !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.featureface;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_2));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "2");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 16)
+        autocomplete_changes.items = ctx2[4];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.featureface;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__3_slot_1(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_1(value) {
+    ctx[32](value);
+  }
+  let autocomplete_props = {
+    items: ctx[5],
+    inputClassName: "dotted long " + ctx[13],
+    placeholder: game.i18n.localize("QUEST.Vibe"),
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[18],
+    onChange: ctx[31]
+  };
+  if (ctx[1].data.featurevibe !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.featurevibe;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_1));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "3");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 32)
+        autocomplete_changes.items = ctx2[5];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.featurevibe;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__1_slot_3(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_6(value) {
+    ctx[42](value);
+  }
+  let autocomplete_props = {
+    items: ctx[6],
+    placeholder: game.i18n.localize("QUEST.Outfit"),
+    inputClassName: "dotted long " + ctx[13],
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[19],
+    onChange: ctx[41]
+  };
+  if (ctx[1].data.style1 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.style1;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_6));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 64)
+        autocomplete_changes.items = ctx2[6];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.style1;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__2_slot_2(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_5(value) {
+    ctx[40](value);
+  }
+  let autocomplete_props = {
+    items: ctx[6],
+    placeholder: game.i18n.localize("QUEST.Outfit"),
+    inputClassName: "dotted long " + ctx[13],
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[19],
+    onChange: ctx[39]
+  };
+  if (ctx[1].data.style2 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.style2;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_5));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "2");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 64)
+        autocomplete_changes.items = ctx2[6];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.style2;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__3_slot(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_4(value) {
+    ctx[38](value);
+  }
+  let autocomplete_props = {
+    items: ctx[7],
+    inputClassName: "dotted long " + ctx[13],
+    placeholder: game.i18n.localize("QUEST.Movement"),
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[20],
+    onChange: ctx[37]
+  };
+  if (ctx[1].data.style3 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.style3;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_4));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "3");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 128)
+        autocomplete_changes.items = ctx2[7];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.style3;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__1_slot_2(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_8(value) {
+    ctx[46](value);
+  }
+  let autocomplete_props = {
+    items: ctx[8],
+    inputClassName: "dotted long " + ctx[13],
+    placeholder: game.i18n.localize("QUEST.Home"),
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[21],
+    onChange: ctx[45]
+  };
+  if (ctx[1].data.home !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.home;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_8));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 256)
+        autocomplete_changes.items = ctx2[8];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.home;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__2_slot_1(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_7(value) {
+    ctx[44](value);
+  }
+  let autocomplete_props = {
+    items: ctx[9],
+    className: "verylong " + ctx[13],
+    inputClassName: "dotted",
+    placeholder: game.i18n.localize("QUEST.Legacy"),
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[22],
+    onChange: ctx[43]
+  };
+  if (ctx[1].data.community !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.community;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_7));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "2");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 512)
+        autocomplete_changes.items = ctx2[9];
+      if (dirty[0] & 8192)
+        autocomplete_changes.className = "verylong " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.community;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__1_slot_1(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_10(value) {
+    ctx[50](value);
+  }
+  let autocomplete_props = {
+    items: ctx[10],
+    placeholder: game.i18n.localize("QUEST.Ideal"),
+    inputClassName: "dotted long " + ctx[13],
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[23],
+    onChange: ctx[49]
+  };
+  if (ctx[1].data.ideal !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.ideal;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_10));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 1024)
+        autocomplete_changes.items = ctx2[10];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.ideal;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__2_slot(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_9(value) {
+    ctx[48](value);
+  }
+  let autocomplete_props = {
+    items: ctx[11],
+    inputClassName: "dotted long " + ctx[13],
+    placeholder: game.i18n.localize("QUEST.Flaw"),
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[24],
+    onChange: ctx[47]
+  };
+  if (ctx[1].data.flaw !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.flaw;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_9));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "2");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 2048)
+        autocomplete_changes.items = ctx2[11];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.flaw;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create__1_slot(ctx) {
+  let span;
+  let autocomplete;
+  let updating_selectedItem;
+  let current;
+  function autocomplete_selectedItem_binding_11(value) {
+    ctx[52](value);
+  }
+  let autocomplete_props = {
+    items: ctx[12],
+    className: "verylong",
+    inputClassName: "dotted " + ctx[13],
+    placeholder: game.i18n.localize("QUEST.Dream"),
+    create: true,
+    createText: "Item doesn't exist, create one?",
+    onCreate: ctx[25],
+    onChange: ctx[51]
+  };
+  if (ctx[1].data.dream !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].data.dream;
+  }
+  autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
+  binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_11));
+  return {
+    c() {
+      span = element("span");
+      create_component(autocomplete.$$.fragment);
+      attr(span, "slot", "1");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      mount_component(autocomplete, span, null);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const autocomplete_changes = {};
+      if (dirty[0] & 4096)
+        autocomplete_changes.items = ctx2[12];
+      if (dirty[0] & 8192)
+        autocomplete_changes.inputClassName = "dotted " + ctx2[13];
+      if (!updating_selectedItem && dirty[0] & 2) {
+        updating_selectedItem = true;
+        autocomplete_changes.selectedItem = ctx2[1].data.dream;
+        add_flush_callback(() => updating_selectedItem = false);
+      }
+      autocomplete.$set(autocomplete_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(autocomplete.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(autocomplete.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(span);
+      destroy_component(autocomplete);
+    }
+  };
+}
+function create_fragment6(ctx) {
   let div3;
   let div0;
   let label0;
@@ -4809,403 +5988,152 @@ function create_fragment5(ctx) {
   let img_alt_value;
   let img_title_value;
   let t8;
-  let html_tag;
-  let raw0_value = game.i18n.localize("QUEST.Actor.Hello.Before") + "";
+  let translation0;
   let t9;
+  let br;
+  let t10;
   let input2;
   let input2_class_value;
   let input2_value_value;
   let input2_placeholder_value;
-  let t10;
-  let html_tag_1;
-  let raw1_value = game.i18n.localize("QUEST.Actor.Hello.After") + "";
   let t11;
-  let br;
   let t12;
-  let input3;
-  let input3_class_value;
-  let input3_value_value;
-  let input3_placeholder_value;
-  let t13;
-  let t14;
   let p1;
-  let html_tag_2;
-  let raw2_value = game.i18n.localize("QUEST.Actor.Age.Before") + "";
-  let t15;
-  let input4;
-  let input4_class_value;
-  let input4_value_value;
-  let input4_placeholder_value;
-  let t16;
-  let html_tag_3;
-  let raw3_value = game.i18n.localize("QUEST.Actor.Age.After") + "";
-  let t17;
-  let html_tag_4;
-  let raw4_value = game.i18n.localize("QUEST.Actor.Height.Before") + "";
-  let t18;
-  let input5;
-  let input5_class_value;
-  let input5_value_value;
-  let input5_placeholder_value;
-  let t19;
-  let html_tag_5;
-  let raw5_value = game.i18n.localize("QUEST.Actor.Height.After") + "";
-  let t20;
+  let translation1;
+  let t13;
   let p2;
-  let html_tag_6;
-  let raw6_value = game.i18n.localize("QUEST.Actor.Role.Before") + "";
-  let t21;
-  let autocomplete0;
-  let updating_selectedItem;
-  let html_tag_7;
-  let raw7_value = game.i18n.localize("QUEST.Actor.Role.After") + "";
-  let t22;
+  let translation2;
+  let t14;
   let p3;
-  let html_tag_8;
-  let raw8_value = game.i18n.localize("QUEST.Actor.Body.Before") + "";
-  let t23;
-  let autocomplete1;
-  let updating_selectedItem_1;
-  let html_tag_9;
-  let raw9_value = game.i18n.localize("QUEST.Actor.Body.After") + "";
-  let t24;
-  let html_tag_10;
-  let raw10_value = game.i18n.localize("QUEST.Actor.Face.Before") + "";
-  let t25;
-  let autocomplete2;
-  let updating_selectedItem_2;
-  let t26;
-  let html_tag_11;
-  let raw11_value = game.i18n.localize("QUEST.Actor.Face.After") + "";
-  let t27;
-  let html_tag_12;
-  let raw12_value = game.i18n.localize("QUEST.Actor.Vibe.Before") + "";
-  let t28;
-  let autocomplete3;
-  let updating_selectedItem_3;
-  let html_tag_13;
-  let raw13_value = game.i18n.localize("QUEST.Actor.Vibe.After") + "";
-  let t29;
+  let translation3;
+  let t15;
   let p4;
-  let html_tag_14;
-  let raw14_value = game.i18n.localize("QUEST.Actor.Style.One.Before") + "";
-  let t30;
-  let autocomplete4;
-  let updating_selectedItem_4;
-  let t31;
-  let html_tag_15;
-  let raw15_value = game.i18n.localize("QUEST.Actor.Style.One.After") + "";
-  let html_anchor;
-  let html_tag_16;
-  let raw16_value = game.i18n.localize("QUEST.Actor.Style.Two.Before") + "";
-  let t32;
-  let autocomplete5;
-  let updating_selectedItem_5;
-  let html_tag_17;
-  let raw17_value = game.i18n.localize("QUEST.Actor.Style.Two.After") + "";
-  let html_anchor_1;
-  let html_tag_18;
-  let raw18_value = game.i18n.localize("QUEST.Actor.Style.Three.Before") + "";
-  let t33;
-  let autocomplete6;
-  let updating_selectedItem_6;
-  let t34;
-  let html_tag_19;
-  let raw19_value = game.i18n.localize("QUEST.Actor.Style.Three.After") + "";
-  let t35;
+  let translation4;
+  let t16;
   let p5;
-  let html_tag_20;
-  let raw20_value = game.i18n.localize("QUEST.Actor.Home.Before") + "";
-  let t36;
-  let autocomplete7;
-  let updating_selectedItem_7;
-  let html_tag_21;
-  let raw21_value = game.i18n.localize("QUEST.Actor.Home.After") + "";
-  let html_anchor_2;
-  let html_tag_22;
-  let raw22_value = game.i18n.localize("QUEST.Actor.Legacy.Before") + "";
-  let t37;
-  let autocomplete8;
-  let updating_selectedItem_8;
-  let html_tag_23;
-  let raw23_value = game.i18n.localize("QUEST.Actor.Legacy.After") + "";
-  let t38;
+  let translation5;
+  let t17;
   let p6;
-  let html_tag_24;
-  let raw24_value = game.i18n.localize("QUEST.Actor.Ideal.Before") + "";
-  let t39;
-  let autocomplete9;
-  let updating_selectedItem_9;
-  let t40;
-  let html_tag_25;
-  let raw25_value = game.i18n.localize("QUEST.Actor.Ideal.After") + "";
-  let html_anchor_3;
-  let html_tag_26;
-  let raw26_value = game.i18n.localize("QUEST.Actor.Flaw.Before") + "";
-  let t41;
-  let autocomplete10;
-  let updating_selectedItem_10;
-  let t42;
-  let html_tag_27;
-  let raw27_value = game.i18n.localize("QUEST.Actor.Flaw.After") + "";
-  let t43;
+  let translation6;
+  let t18;
   let p7;
-  let html_tag_28;
-  let raw28_value = game.i18n.localize("QUEST.Actor.Dream.Before") + "";
-  let t44;
-  let autocomplete11;
-  let updating_selectedItem_11;
-  let html_tag_29;
-  let raw29_value = game.i18n.localize("QUEST.Actor.Dream.After") + "";
-  let t45;
+  let translation7;
+  let t19;
+  let input3;
+  let input3_value_value;
+  let t20;
+  let input4;
+  let input4_value_value;
+  let t21;
+  let input5;
+  let input5_value_value;
+  let t22;
   let input6;
   let input6_value_value;
-  let t46;
+  let t23;
   let input7;
   let input7_value_value;
-  let t47;
+  let t24;
   let input8;
   let input8_value_value;
-  let t48;
+  let t25;
   let input9;
   let input9_value_value;
-  let t49;
+  let t26;
   let input10;
   let input10_value_value;
-  let t50;
+  let t27;
   let input11;
   let input11_value_value;
-  let t51;
+  let t28;
   let input12;
   let input12_value_value;
-  let t52;
+  let t29;
   let input13;
   let input13_value_value;
-  let t53;
+  let t30;
   let input14;
   let input14_value_value;
-  let t54;
-  let input15;
-  let input15_value_value;
-  let t55;
-  let input16;
-  let input16_value_value;
-  let t56;
-  let input17;
-  let input17_value_value;
-  let t57;
+  let t31;
   let div5;
   let content1;
   let tabs;
   let current;
   let mounted;
   let dispose;
-  function autocomplete0_selectedItem_binding(value) {
-    ctx[30](value);
-  }
-  let autocomplete0_props = {
-    placeholder: game.i18n.localize("QUEST.Role"),
-    items: ctx[2],
-    inputClassName: "dotted medium " + ctx[13],
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[16],
-    onChange: ctx[29]
-  };
-  if (ctx[1].data.role !== void 0) {
-    autocomplete0_props.selectedItem = ctx[1].data.role;
-  }
-  autocomplete0 = new simple_svelte_autocomplete_default({ props: autocomplete0_props });
-  binding_callbacks.push(() => bind(autocomplete0, "selectedItem", autocomplete0_selectedItem_binding));
-  function autocomplete1_selectedItem_binding(value) {
-    ctx[32](value);
-  }
-  let autocomplete1_props = {
-    items: ctx[3],
-    placeholder: game.i18n.localize("QUEST.Body"),
-    inputClassName: "dotted long " + ctx[13],
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[15],
-    onChange: ctx[31]
-  };
-  if (ctx[1].data.featurebody !== void 0) {
-    autocomplete1_props.selectedItem = ctx[1].data.featurebody;
-  }
-  autocomplete1 = new simple_svelte_autocomplete_default({ props: autocomplete1_props });
-  binding_callbacks.push(() => bind(autocomplete1, "selectedItem", autocomplete1_selectedItem_binding));
-  function autocomplete2_selectedItem_binding(value) {
-    ctx[34](value);
-  }
-  let autocomplete2_props = {
-    items: ctx[4],
-    placeholder: game.i18n.localize("QUEST.Face"),
-    inputClassName: "dotted long " + ctx[13],
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[17],
-    onChange: ctx[33]
-  };
-  if (ctx[1].data.featureface !== void 0) {
-    autocomplete2_props.selectedItem = ctx[1].data.featureface;
-  }
-  autocomplete2 = new simple_svelte_autocomplete_default({ props: autocomplete2_props });
-  binding_callbacks.push(() => bind(autocomplete2, "selectedItem", autocomplete2_selectedItem_binding));
-  function autocomplete3_selectedItem_binding(value) {
-    ctx[36](value);
-  }
-  let autocomplete3_props = {
-    items: ctx[5],
-    inputClassName: "dotted long " + ctx[13],
-    placeholder: game.i18n.localize("QUEST.Vibe"),
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[18],
-    onChange: ctx[35]
-  };
-  if (ctx[1].data.featurevibe !== void 0) {
-    autocomplete3_props.selectedItem = ctx[1].data.featurevibe;
-  }
-  autocomplete3 = new simple_svelte_autocomplete_default({ props: autocomplete3_props });
-  binding_callbacks.push(() => bind(autocomplete3, "selectedItem", autocomplete3_selectedItem_binding));
-  function autocomplete4_selectedItem_binding(value) {
-    ctx[38](value);
-  }
-  let autocomplete4_props = {
-    items: ctx[6],
-    placeholder: game.i18n.localize("QUEST.Outfit"),
-    inputClassName: "dotted long " + ctx[13],
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[19],
-    onChange: ctx[37]
-  };
-  if (ctx[1].data.style1 !== void 0) {
-    autocomplete4_props.selectedItem = ctx[1].data.style1;
-  }
-  autocomplete4 = new simple_svelte_autocomplete_default({ props: autocomplete4_props });
-  binding_callbacks.push(() => bind(autocomplete4, "selectedItem", autocomplete4_selectedItem_binding));
-  function autocomplete5_selectedItem_binding(value) {
-    ctx[40](value);
-  }
-  let autocomplete5_props = {
-    items: ctx[6],
-    placeholder: game.i18n.localize("QUEST.Outfit"),
-    inputClassName: "dotted long " + ctx[13],
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[19],
-    onChange: ctx[39]
-  };
-  if (ctx[1].data.style2 !== void 0) {
-    autocomplete5_props.selectedItem = ctx[1].data.style2;
-  }
-  autocomplete5 = new simple_svelte_autocomplete_default({ props: autocomplete5_props });
-  binding_callbacks.push(() => bind(autocomplete5, "selectedItem", autocomplete5_selectedItem_binding));
-  function autocomplete6_selectedItem_binding(value) {
-    ctx[42](value);
-  }
-  let autocomplete6_props = {
-    items: ctx[7],
-    inputClassName: "dotted long " + ctx[13],
-    placeholder: game.i18n.localize("QUEST.Movement"),
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[20],
-    onChange: ctx[41]
-  };
-  if (ctx[1].data.style3 !== void 0) {
-    autocomplete6_props.selectedItem = ctx[1].data.style3;
-  }
-  autocomplete6 = new simple_svelte_autocomplete_default({ props: autocomplete6_props });
-  binding_callbacks.push(() => bind(autocomplete6, "selectedItem", autocomplete6_selectedItem_binding));
-  function autocomplete7_selectedItem_binding(value) {
-    ctx[44](value);
-  }
-  let autocomplete7_props = {
-    items: ctx[8],
-    inputClassName: "dotted long " + ctx[13],
-    placeholder: game.i18n.localize("QUEST.Home"),
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[21],
-    onChange: ctx[43]
-  };
-  if (ctx[1].data.home !== void 0) {
-    autocomplete7_props.selectedItem = ctx[1].data.home;
-  }
-  autocomplete7 = new simple_svelte_autocomplete_default({ props: autocomplete7_props });
-  binding_callbacks.push(() => bind(autocomplete7, "selectedItem", autocomplete7_selectedItem_binding));
-  function autocomplete8_selectedItem_binding(value) {
-    ctx[46](value);
-  }
-  let autocomplete8_props = {
-    items: ctx[9],
-    className: "verylong " + ctx[13],
-    inputClassName: "dotted",
-    placeholder: game.i18n.localize("QUEST.Legacy"),
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[22],
-    onChange: ctx[45]
-  };
-  if (ctx[1].data.community !== void 0) {
-    autocomplete8_props.selectedItem = ctx[1].data.community;
-  }
-  autocomplete8 = new simple_svelte_autocomplete_default({ props: autocomplete8_props });
-  binding_callbacks.push(() => bind(autocomplete8, "selectedItem", autocomplete8_selectedItem_binding));
-  function autocomplete9_selectedItem_binding(value) {
-    ctx[48](value);
-  }
-  let autocomplete9_props = {
-    items: ctx[10],
-    placeholder: game.i18n.localize("QUEST.Ideal"),
-    inputClassName: "dotted long " + ctx[13],
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[23],
-    onChange: ctx[47]
-  };
-  if (ctx[1].data.ideal !== void 0) {
-    autocomplete9_props.selectedItem = ctx[1].data.ideal;
-  }
-  autocomplete9 = new simple_svelte_autocomplete_default({ props: autocomplete9_props });
-  binding_callbacks.push(() => bind(autocomplete9, "selectedItem", autocomplete9_selectedItem_binding));
-  function autocomplete10_selectedItem_binding(value) {
-    ctx[50](value);
-  }
-  let autocomplete10_props = {
-    items: ctx[11],
-    inputClassName: "dotted long " + ctx[13],
-    placeholder: game.i18n.localize("QUEST.Flaw"),
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[24],
-    onChange: ctx[49]
-  };
-  if (ctx[1].data.flaw !== void 0) {
-    autocomplete10_props.selectedItem = ctx[1].data.flaw;
-  }
-  autocomplete10 = new simple_svelte_autocomplete_default({ props: autocomplete10_props });
-  binding_callbacks.push(() => bind(autocomplete10, "selectedItem", autocomplete10_selectedItem_binding));
-  function autocomplete11_selectedItem_binding(value) {
-    ctx[52](value);
-  }
-  let autocomplete11_props = {
-    items: ctx[12],
-    className: "verylong",
-    inputClassName: "dotted " + ctx[13],
-    placeholder: game.i18n.localize("QUEST.Dream"),
-    create: true,
-    createText: "Item doesn't exist, create one?",
-    onCreate: ctx[25],
-    onChange: ctx[51]
-  };
-  if (ctx[1].data.dream !== void 0) {
-    autocomplete11_props.selectedItem = ctx[1].data.dream;
-  }
-  autocomplete11 = new simple_svelte_autocomplete_default({ props: autocomplete11_props });
-  binding_callbacks.push(() => bind(autocomplete11, "selectedItem", autocomplete11_selectedItem_binding));
+  translation0 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.Hello"),
+      $$slots: { "1": [create__1_slot_7] },
+      $$scope: { ctx }
+    }
+  });
+  translation1 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.AgeHeight"),
+      $$slots: {
+        "2": [create__2_slot_4],
+        "1": [create__1_slot_6]
+      },
+      $$scope: { ctx }
+    }
+  });
+  translation2 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.IAm"),
+      $$slots: { "1": [create__1_slot_5] },
+      $$scope: { ctx }
+    }
+  });
+  translation3 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.BodyFaceVibe"),
+      $$slots: {
+        "3": [create__3_slot_1],
+        "2": [create__2_slot_3],
+        "1": [create__1_slot_4]
+      },
+      $$scope: { ctx }
+    }
+  });
+  translation4 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.Style"),
+      $$slots: {
+        "3": [create__3_slot],
+        "2": [create__2_slot_2],
+        "1": [create__1_slot_3]
+      },
+      $$scope: { ctx }
+    }
+  });
+  translation5 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.Home"),
+      $$slots: {
+        "2": [create__2_slot_1],
+        "1": [create__1_slot_2]
+      },
+      $$scope: { ctx }
+    }
+  });
+  translation6 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.Ideal"),
+      $$slots: {
+        "2": [create__2_slot],
+        "1": [create__1_slot_1]
+      },
+      $$scope: { ctx }
+    }
+  });
+  translation7 = new Translation_default({
+    props: {
+      str: game.i18n.localize("QUEST.Actor.Dream"),
+      $$slots: { "1": [create__1_slot] },
+      $$scope: { ctx }
+    }
+  });
   tabs = new Tabs_default({ props: { items: ctx[26] } });
   return {
     c() {
@@ -5233,125 +6161,58 @@ function create_fragment5(ctx) {
       p0 = element("p");
       img = element("img");
       t8 = space();
-      html_tag = new HtmlTag();
+      create_component(translation0.$$.fragment);
       t9 = space();
-      input2 = element("input");
-      t10 = space();
-      html_tag_1 = new HtmlTag();
-      t11 = space();
       br = element("br");
-      t12 = text("(");
-      input3 = element("input");
-      t13 = text(").");
-      t14 = space();
+      t10 = text("(");
+      input2 = element("input");
+      t11 = text(").");
+      t12 = space();
       p1 = element("p");
-      html_tag_2 = new HtmlTag();
-      t15 = space();
-      input4 = element("input");
-      t16 = space();
-      html_tag_3 = new HtmlTag();
-      t17 = space();
-      html_tag_4 = new HtmlTag();
-      t18 = space();
-      input5 = element("input");
-      t19 = space();
-      html_tag_5 = new HtmlTag();
-      t20 = space();
+      create_component(translation1.$$.fragment);
+      t13 = space();
       p2 = element("p");
-      html_tag_6 = new HtmlTag();
-      t21 = space();
-      create_component(autocomplete0.$$.fragment);
-      html_tag_7 = new HtmlTag();
-      t22 = space();
+      create_component(translation2.$$.fragment);
+      t14 = space();
       p3 = element("p");
-      html_tag_8 = new HtmlTag();
-      t23 = space();
-      create_component(autocomplete1.$$.fragment);
-      html_tag_9 = new HtmlTag();
-      t24 = space();
-      html_tag_10 = new HtmlTag();
-      t25 = space();
-      create_component(autocomplete2.$$.fragment);
-      t26 = space();
-      html_tag_11 = new HtmlTag();
-      t27 = space();
-      html_tag_12 = new HtmlTag();
-      t28 = space();
-      create_component(autocomplete3.$$.fragment);
-      html_tag_13 = new HtmlTag();
-      t29 = space();
+      create_component(translation3.$$.fragment);
+      t15 = space();
       p4 = element("p");
-      html_tag_14 = new HtmlTag();
-      t30 = space();
-      create_component(autocomplete4.$$.fragment);
-      t31 = space();
-      html_tag_15 = new HtmlTag();
-      html_anchor = empty();
-      html_tag_16 = new HtmlTag();
-      t32 = space();
-      create_component(autocomplete5.$$.fragment);
-      html_tag_17 = new HtmlTag();
-      html_anchor_1 = empty();
-      html_tag_18 = new HtmlTag();
-      t33 = space();
-      create_component(autocomplete6.$$.fragment);
-      t34 = space();
-      html_tag_19 = new HtmlTag();
-      t35 = space();
+      create_component(translation4.$$.fragment);
+      t16 = space();
       p5 = element("p");
-      html_tag_20 = new HtmlTag();
-      t36 = space();
-      create_component(autocomplete7.$$.fragment);
-      html_tag_21 = new HtmlTag();
-      html_anchor_2 = empty();
-      html_tag_22 = new HtmlTag();
-      t37 = space();
-      create_component(autocomplete8.$$.fragment);
-      html_tag_23 = new HtmlTag();
-      t38 = space();
+      create_component(translation5.$$.fragment);
+      t17 = space();
       p6 = element("p");
-      html_tag_24 = new HtmlTag();
-      t39 = space();
-      create_component(autocomplete9.$$.fragment);
-      t40 = space();
-      html_tag_25 = new HtmlTag();
-      html_anchor_3 = empty();
-      html_tag_26 = new HtmlTag();
-      t41 = space();
-      create_component(autocomplete10.$$.fragment);
-      t42 = space();
-      html_tag_27 = new HtmlTag();
-      t43 = space();
+      create_component(translation6.$$.fragment);
+      t18 = space();
       p7 = element("p");
-      html_tag_28 = new HtmlTag();
-      t44 = space();
-      create_component(autocomplete11.$$.fragment);
-      html_tag_29 = new HtmlTag();
-      t45 = space();
+      create_component(translation7.$$.fragment);
+      t19 = space();
+      input3 = element("input");
+      t20 = space();
+      input4 = element("input");
+      t21 = space();
+      input5 = element("input");
+      t22 = space();
       input6 = element("input");
-      t46 = space();
+      t23 = space();
       input7 = element("input");
-      t47 = space();
+      t24 = space();
       input8 = element("input");
-      t48 = space();
+      t25 = space();
       input9 = element("input");
-      t49 = space();
+      t26 = space();
       input10 = element("input");
-      t50 = space();
+      t27 = space();
       input11 = element("input");
-      t51 = space();
+      t28 = space();
       input12 = element("input");
-      t52 = space();
+      t29 = space();
       input13 = element("input");
-      t53 = space();
+      t30 = space();
       input14 = element("input");
-      t54 = space();
-      input15 = element("input");
-      t55 = space();
-      input16 = element("input");
-      t56 = space();
-      input17 = element("input");
-      t57 = space();
+      t31 = space();
       div5 = element("div");
       content1 = element("content");
       create_component(tabs.$$.fragment);
@@ -5381,124 +6242,79 @@ function create_fragment5(ctx) {
       attr(img, "data-edit", "img");
       attr(img, "title", img_title_value = ctx[1].name);
       attr(img, "align", "left");
-      html_tag.a = t9;
-      attr(input2, "class", input2_class_value = "dotted long name quest " + ctx[13] + " svelte-115e1jk");
-      attr(input2, "name", "name");
+      attr(input2, "class", input2_class_value = "dotted medium " + ctx[13] + " svelte-115e1jk");
+      attr(input2, "name", "data.pronouns");
       attr(input2, "type", "text");
-      input2.value = input2_value_value = ctx[1].name;
-      attr(input2, "placeholder", input2_placeholder_value = game.i18n.localize("QUEST.Name"));
-      html_tag_1.a = t11;
-      attr(input3, "class", input3_class_value = "dotted medium " + ctx[13] + " svelte-115e1jk");
-      attr(input3, "name", "data.pronouns");
-      attr(input3, "type", "text");
-      input3.value = input3_value_value = ctx[1].data.pronouns;
-      attr(input3, "placeholder", input3_placeholder_value = game.i18n.localize("QUEST.Pronouns"));
+      input2.value = input2_value_value = ctx[1].data.pronouns;
+      attr(input2, "placeholder", input2_placeholder_value = game.i18n.localize("QUEST.Pronouns"));
       attr(p0, "class", "svelte-115e1jk");
-      html_tag_2.a = t15;
-      attr(input4, "class", input4_class_value = "dotted short " + ctx[13] + " svelte-115e1jk");
-      attr(input4, "name", "data.age");
-      attr(input4, "type", "number");
-      input4.value = input4_value_value = ctx[1].data.age;
-      attr(input4, "placeholder", input4_placeholder_value = game.i18n.localize("QUEST.Age"));
-      html_tag_3.a = t17;
-      html_tag_4.a = t18;
-      attr(input5, "class", input5_class_value = "dotted medium " + ctx[13] + " svelte-115e1jk");
-      attr(input5, "name", "data.height");
-      attr(input5, "type", "text");
-      input5.value = input5_value_value = ctx[1].data.height;
-      attr(input5, "placeholder", input5_placeholder_value = game.i18n.localize("QUEST.Height"));
-      html_tag_5.a = null;
       attr(p1, "class", "svelte-115e1jk");
-      html_tag_6.a = t21;
-      html_tag_7.a = null;
       attr(p2, "class", "svelte-115e1jk");
-      html_tag_8.a = t23;
-      html_tag_9.a = t24;
-      html_tag_10.a = t25;
-      html_tag_11.a = t27;
-      html_tag_12.a = t28;
-      html_tag_13.a = null;
       attr(p3, "class", "svelte-115e1jk");
-      html_tag_14.a = t30;
-      html_tag_15.a = html_anchor;
-      html_tag_16.a = t32;
-      html_tag_17.a = html_anchor_1;
-      html_tag_18.a = t33;
-      html_tag_19.a = null;
       attr(p4, "class", "svelte-115e1jk");
-      html_tag_20.a = t36;
-      html_tag_21.a = html_anchor_2;
-      html_tag_22.a = t37;
-      html_tag_23.a = null;
       attr(p5, "class", "svelte-115e1jk");
-      html_tag_24.a = t39;
-      html_tag_25.a = html_anchor_3;
-      html_tag_26.a = t41;
-      html_tag_27.a = null;
       attr(p6, "class", "svelte-115e1jk");
-      html_tag_28.a = t44;
-      html_tag_29.a = null;
       attr(p7, "class", "svelte-115e1jk");
+      attr(input3, "class", "long svelte-115e1jk");
+      attr(input3, "name", "data.role");
+      attr(input3, "type", "hidden");
+      input3.value = input3_value_value = ctx[1].data.role;
+      attr(input3, "placeholder", "Role");
+      attr(input4, "class", "long svelte-115e1jk");
+      attr(input4, "name", "data.featurebody");
+      attr(input4, "type", "hidden");
+      input4.value = input4_value_value = ctx[1].data.featurebody;
+      attr(input4, "placeholder", "Body");
+      attr(input5, "class", "long svelte-115e1jk");
+      attr(input5, "name", "data.featureface");
+      attr(input5, "type", "hidden");
+      input5.value = input5_value_value = ctx[1].data.featureface;
+      attr(input5, "placeholder", "Face");
       attr(input6, "class", "long svelte-115e1jk");
-      attr(input6, "name", "data.role");
+      attr(input6, "name", "data.featurevibe");
       attr(input6, "type", "hidden");
-      input6.value = input6_value_value = ctx[1].data.role;
-      attr(input6, "placeholder", "Role");
+      input6.value = input6_value_value = ctx[1].data.featurevibe;
+      attr(input6, "placeholder", "Vibe");
       attr(input7, "class", "long svelte-115e1jk");
-      attr(input7, "name", "data.featurebody");
+      attr(input7, "name", "data.style1");
       attr(input7, "type", "hidden");
-      input7.value = input7_value_value = ctx[1].data.featurebody;
-      attr(input7, "placeholder", "Body");
+      input7.value = input7_value_value = ctx[1].data.style1;
+      attr(input7, "placeholder", "Outfit");
       attr(input8, "class", "long svelte-115e1jk");
-      attr(input8, "name", "data.featureface");
+      attr(input8, "name", "data.style2");
       attr(input8, "type", "hidden");
-      input8.value = input8_value_value = ctx[1].data.featureface;
-      attr(input8, "placeholder", "Face");
+      input8.value = input8_value_value = ctx[1].data.style2;
+      attr(input8, "placeholder", "Outfit");
       attr(input9, "class", "long svelte-115e1jk");
-      attr(input9, "name", "data.featurevibe");
+      attr(input9, "name", "data.style3");
       attr(input9, "type", "hidden");
-      input9.value = input9_value_value = ctx[1].data.featurevibe;
-      attr(input9, "placeholder", "Vibe");
+      input9.value = input9_value_value = ctx[1].data.style3;
+      attr(input9, "placeholder", "Movement");
       attr(input10, "class", "long svelte-115e1jk");
-      attr(input10, "name", "data.style1");
+      attr(input10, "name", "data.home");
       attr(input10, "type", "hidden");
-      input10.value = input10_value_value = ctx[1].data.style1;
-      attr(input10, "placeholder", "Outfit");
+      input10.value = input10_value_value = ctx[1].data.home;
+      attr(input10, "placeholder", "My Home");
       attr(input11, "class", "long svelte-115e1jk");
-      attr(input11, "name", "data.style2");
+      attr(input11, "name", "data.community");
       attr(input11, "type", "hidden");
-      input11.value = input11_value_value = ctx[1].data.style2;
-      attr(input11, "placeholder", "Outfit");
+      input11.value = input11_value_value = ctx[1].data.community;
+      attr(input11, "placeholder", "");
       attr(input12, "class", "long svelte-115e1jk");
-      attr(input12, "name", "data.style3");
+      attr(input12, "name", "data.ideal");
       attr(input12, "type", "hidden");
-      input12.value = input12_value_value = ctx[1].data.style3;
-      attr(input12, "placeholder", "Movement");
+      input12.value = input12_value_value = ctx[1].data.ideal;
+      attr(input12, "placeholder", "my ideal");
       attr(input13, "class", "long svelte-115e1jk");
-      attr(input13, "name", "data.home");
+      attr(input13, "name", "data.flaw");
       attr(input13, "type", "hidden");
-      input13.value = input13_value_value = ctx[1].data.home;
-      attr(input13, "placeholder", "My Home");
+      input13.value = input13_value_value = ctx[1].data.flaw;
+      attr(input13, "placeholder", "flaw");
       attr(input14, "class", "long svelte-115e1jk");
-      attr(input14, "name", "data.community");
+      attr(input14, "name", "data.dream");
       attr(input14, "type", "hidden");
-      input14.value = input14_value_value = ctx[1].data.community;
-      attr(input14, "placeholder", "");
-      attr(input15, "class", "long svelte-115e1jk");
-      attr(input15, "name", "data.ideal");
-      attr(input15, "type", "hidden");
-      input15.value = input15_value_value = ctx[1].data.ideal;
-      attr(input15, "placeholder", "my ideal");
-      attr(input16, "class", "long svelte-115e1jk");
-      attr(input16, "name", "data.flaw");
-      attr(input16, "type", "hidden");
-      input16.value = input16_value_value = ctx[1].data.flaw;
-      attr(input16, "placeholder", "flaw");
-      attr(input17, "class", "long svelte-115e1jk");
-      attr(input17, "name", "data.dream");
-      attr(input17, "type", "hidden");
-      input17.value = input17_value_value = ctx[1].data.dream;
-      attr(input17, "placeholder", "my dream");
+      input14.value = input14_value_value = ctx[1].data.dream;
+      attr(input14, "placeholder", "my dream");
       attr(content0, "class", "svelte-115e1jk");
       attr(div4, "class", "biography flexcol flex1 svelte-115e1jk");
       attr(content1, "class", "svelte-115e1jk");
@@ -5527,125 +6343,58 @@ function create_fragment5(ctx) {
       append(content0, p0);
       append(p0, img);
       append(p0, t8);
-      html_tag.m(raw0_value, p0);
+      mount_component(translation0, p0, null);
       append(p0, t9);
-      append(p0, input2);
-      append(p0, t10);
-      html_tag_1.m(raw1_value, p0);
-      append(p0, t11);
       append(p0, br);
-      append(p0, t12);
-      append(p0, input3);
-      append(p0, t13);
-      append(content0, t14);
+      append(p0, t10);
+      append(p0, input2);
+      append(p0, t11);
+      append(content0, t12);
       append(content0, p1);
-      html_tag_2.m(raw2_value, p1);
-      append(p1, t15);
-      append(p1, input4);
-      append(p1, t16);
-      html_tag_3.m(raw3_value, p1);
-      append(p1, t17);
-      html_tag_4.m(raw4_value, p1);
-      append(p1, t18);
-      append(p1, input5);
-      append(p1, t19);
-      html_tag_5.m(raw5_value, p1);
-      append(content0, t20);
+      mount_component(translation1, p1, null);
+      append(content0, t13);
       append(content0, p2);
-      html_tag_6.m(raw6_value, p2);
-      append(p2, t21);
-      mount_component(autocomplete0, p2, null);
-      html_tag_7.m(raw7_value, p2);
-      append(content0, t22);
+      mount_component(translation2, p2, null);
+      append(content0, t14);
       append(content0, p3);
-      html_tag_8.m(raw8_value, p3);
-      append(p3, t23);
-      mount_component(autocomplete1, p3, null);
-      html_tag_9.m(raw9_value, p3);
-      append(p3, t24);
-      html_tag_10.m(raw10_value, p3);
-      append(p3, t25);
-      mount_component(autocomplete2, p3, null);
-      append(p3, t26);
-      html_tag_11.m(raw11_value, p3);
-      append(p3, t27);
-      html_tag_12.m(raw12_value, p3);
-      append(p3, t28);
-      mount_component(autocomplete3, p3, null);
-      html_tag_13.m(raw13_value, p3);
-      append(content0, t29);
+      mount_component(translation3, p3, null);
+      append(content0, t15);
       append(content0, p4);
-      html_tag_14.m(raw14_value, p4);
-      append(p4, t30);
-      mount_component(autocomplete4, p4, null);
-      append(p4, t31);
-      html_tag_15.m(raw15_value, p4);
-      append(p4, html_anchor);
-      html_tag_16.m(raw16_value, p4);
-      append(p4, t32);
-      mount_component(autocomplete5, p4, null);
-      html_tag_17.m(raw17_value, p4);
-      append(p4, html_anchor_1);
-      html_tag_18.m(raw18_value, p4);
-      append(p4, t33);
-      mount_component(autocomplete6, p4, null);
-      append(p4, t34);
-      html_tag_19.m(raw19_value, p4);
-      append(content0, t35);
+      mount_component(translation4, p4, null);
+      append(content0, t16);
       append(content0, p5);
-      html_tag_20.m(raw20_value, p5);
-      append(p5, t36);
-      mount_component(autocomplete7, p5, null);
-      html_tag_21.m(raw21_value, p5);
-      append(p5, html_anchor_2);
-      html_tag_22.m(raw22_value, p5);
-      append(p5, t37);
-      mount_component(autocomplete8, p5, null);
-      html_tag_23.m(raw23_value, p5);
-      append(content0, t38);
+      mount_component(translation5, p5, null);
+      append(content0, t17);
       append(content0, p6);
-      html_tag_24.m(raw24_value, p6);
-      append(p6, t39);
-      mount_component(autocomplete9, p6, null);
-      append(p6, t40);
-      html_tag_25.m(raw25_value, p6);
-      append(p6, html_anchor_3);
-      html_tag_26.m(raw26_value, p6);
-      append(p6, t41);
-      mount_component(autocomplete10, p6, null);
-      append(p6, t42);
-      html_tag_27.m(raw27_value, p6);
-      append(content0, t43);
+      mount_component(translation6, p6, null);
+      append(content0, t18);
       append(content0, p7);
-      html_tag_28.m(raw28_value, p7);
-      append(p7, t44);
-      mount_component(autocomplete11, p7, null);
-      html_tag_29.m(raw29_value, p7);
-      append(content0, t45);
+      mount_component(translation7, p7, null);
+      append(content0, t19);
+      append(content0, input3);
+      append(content0, t20);
+      append(content0, input4);
+      append(content0, t21);
+      append(content0, input5);
+      append(content0, t22);
       append(content0, input6);
-      append(content0, t46);
+      append(content0, t23);
       append(content0, input7);
-      append(content0, t47);
+      append(content0, t24);
       append(content0, input8);
-      append(content0, t48);
+      append(content0, t25);
       append(content0, input9);
-      append(content0, t49);
+      append(content0, t26);
       append(content0, input10);
-      append(content0, t50);
+      append(content0, t27);
       append(content0, input11);
-      append(content0, t51);
+      append(content0, t28);
       append(content0, input12);
-      append(content0, t52);
+      append(content0, t29);
       append(content0, input13);
-      append(content0, t53);
+      append(content0, t30);
       append(content0, input14);
-      append(content0, t54);
-      append(content0, input15);
-      append(content0, t55);
-      append(content0, input16);
-      append(content0, t56);
-      append(content0, input17);
-      append(div6, t57);
+      append(div6, t31);
       append(div6, div5);
       append(div5, content1);
       mount_component(tabs, content1, null);
@@ -5683,230 +6432,112 @@ function create_fragment5(ctx) {
       if (!current || dirty[0] & 2 && img_title_value !== (img_title_value = ctx2[1].name)) {
         attr(img, "title", img_title_value);
       }
-      if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "dotted long name quest " + ctx2[13] + " svelte-115e1jk")) {
+      const translation0_changes = {};
+      if (dirty[0] & 8194 | dirty[1] & 67108864) {
+        translation0_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation0.$set(translation0_changes);
+      if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "dotted medium " + ctx2[13] + " svelte-115e1jk")) {
         attr(input2, "class", input2_class_value);
       }
-      if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].name) && input2.value !== input2_value_value) {
+      if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].data.pronouns) && input2.value !== input2_value_value) {
         input2.value = input2_value_value;
       }
-      if (!current || dirty[0] & 8192 && input3_class_value !== (input3_class_value = "dotted medium " + ctx2[13] + " svelte-115e1jk")) {
-        attr(input3, "class", input3_class_value);
+      const translation1_changes = {};
+      if (dirty[0] & 8194 | dirty[1] & 67108864) {
+        translation1_changes.$$scope = { dirty, ctx: ctx2 };
       }
-      if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].data.pronouns) && input3.value !== input3_value_value) {
+      translation1.$set(translation1_changes);
+      const translation2_changes = {};
+      if (dirty[0] & 8198 | dirty[1] & 67108864) {
+        translation2_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation2.$set(translation2_changes);
+      const translation3_changes = {};
+      if (dirty[0] & 8250 | dirty[1] & 67108864) {
+        translation3_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation3.$set(translation3_changes);
+      const translation4_changes = {};
+      if (dirty[0] & 8386 | dirty[1] & 67108864) {
+        translation4_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation4.$set(translation4_changes);
+      const translation5_changes = {};
+      if (dirty[0] & 8962 | dirty[1] & 67108864) {
+        translation5_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation5.$set(translation5_changes);
+      const translation6_changes = {};
+      if (dirty[0] & 11266 | dirty[1] & 67108864) {
+        translation6_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation6.$set(translation6_changes);
+      const translation7_changes = {};
+      if (dirty[0] & 12290 | dirty[1] & 67108864) {
+        translation7_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      translation7.$set(translation7_changes);
+      if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].data.role)) {
         input3.value = input3_value_value;
       }
-      if (!current || dirty[0] & 8192 && input4_class_value !== (input4_class_value = "dotted short " + ctx2[13] + " svelte-115e1jk")) {
-        attr(input4, "class", input4_class_value);
-      }
-      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.age)) {
+      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.featurebody)) {
         input4.value = input4_value_value;
       }
-      if (!current || dirty[0] & 8192 && input5_class_value !== (input5_class_value = "dotted medium " + ctx2[13] + " svelte-115e1jk")) {
-        attr(input5, "class", input5_class_value);
-      }
-      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.height) && input5.value !== input5_value_value) {
+      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.featureface)) {
         input5.value = input5_value_value;
       }
-      const autocomplete0_changes = {};
-      if (dirty[0] & 4)
-        autocomplete0_changes.items = ctx2[2];
-      if (dirty[0] & 8192)
-        autocomplete0_changes.inputClassName = "dotted medium " + ctx2[13];
-      if (!updating_selectedItem && dirty[0] & 2) {
-        updating_selectedItem = true;
-        autocomplete0_changes.selectedItem = ctx2[1].data.role;
-        add_flush_callback(() => updating_selectedItem = false);
-      }
-      autocomplete0.$set(autocomplete0_changes);
-      const autocomplete1_changes = {};
-      if (dirty[0] & 8)
-        autocomplete1_changes.items = ctx2[3];
-      if (dirty[0] & 8192)
-        autocomplete1_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_1 && dirty[0] & 2) {
-        updating_selectedItem_1 = true;
-        autocomplete1_changes.selectedItem = ctx2[1].data.featurebody;
-        add_flush_callback(() => updating_selectedItem_1 = false);
-      }
-      autocomplete1.$set(autocomplete1_changes);
-      const autocomplete2_changes = {};
-      if (dirty[0] & 16)
-        autocomplete2_changes.items = ctx2[4];
-      if (dirty[0] & 8192)
-        autocomplete2_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_2 && dirty[0] & 2) {
-        updating_selectedItem_2 = true;
-        autocomplete2_changes.selectedItem = ctx2[1].data.featureface;
-        add_flush_callback(() => updating_selectedItem_2 = false);
-      }
-      autocomplete2.$set(autocomplete2_changes);
-      const autocomplete3_changes = {};
-      if (dirty[0] & 32)
-        autocomplete3_changes.items = ctx2[5];
-      if (dirty[0] & 8192)
-        autocomplete3_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_3 && dirty[0] & 2) {
-        updating_selectedItem_3 = true;
-        autocomplete3_changes.selectedItem = ctx2[1].data.featurevibe;
-        add_flush_callback(() => updating_selectedItem_3 = false);
-      }
-      autocomplete3.$set(autocomplete3_changes);
-      const autocomplete4_changes = {};
-      if (dirty[0] & 64)
-        autocomplete4_changes.items = ctx2[6];
-      if (dirty[0] & 8192)
-        autocomplete4_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_4 && dirty[0] & 2) {
-        updating_selectedItem_4 = true;
-        autocomplete4_changes.selectedItem = ctx2[1].data.style1;
-        add_flush_callback(() => updating_selectedItem_4 = false);
-      }
-      autocomplete4.$set(autocomplete4_changes);
-      const autocomplete5_changes = {};
-      if (dirty[0] & 64)
-        autocomplete5_changes.items = ctx2[6];
-      if (dirty[0] & 8192)
-        autocomplete5_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_5 && dirty[0] & 2) {
-        updating_selectedItem_5 = true;
-        autocomplete5_changes.selectedItem = ctx2[1].data.style2;
-        add_flush_callback(() => updating_selectedItem_5 = false);
-      }
-      autocomplete5.$set(autocomplete5_changes);
-      const autocomplete6_changes = {};
-      if (dirty[0] & 128)
-        autocomplete6_changes.items = ctx2[7];
-      if (dirty[0] & 8192)
-        autocomplete6_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_6 && dirty[0] & 2) {
-        updating_selectedItem_6 = true;
-        autocomplete6_changes.selectedItem = ctx2[1].data.style3;
-        add_flush_callback(() => updating_selectedItem_6 = false);
-      }
-      autocomplete6.$set(autocomplete6_changes);
-      const autocomplete7_changes = {};
-      if (dirty[0] & 256)
-        autocomplete7_changes.items = ctx2[8];
-      if (dirty[0] & 8192)
-        autocomplete7_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_7 && dirty[0] & 2) {
-        updating_selectedItem_7 = true;
-        autocomplete7_changes.selectedItem = ctx2[1].data.home;
-        add_flush_callback(() => updating_selectedItem_7 = false);
-      }
-      autocomplete7.$set(autocomplete7_changes);
-      const autocomplete8_changes = {};
-      if (dirty[0] & 512)
-        autocomplete8_changes.items = ctx2[9];
-      if (dirty[0] & 8192)
-        autocomplete8_changes.className = "verylong " + ctx2[13];
-      if (!updating_selectedItem_8 && dirty[0] & 2) {
-        updating_selectedItem_8 = true;
-        autocomplete8_changes.selectedItem = ctx2[1].data.community;
-        add_flush_callback(() => updating_selectedItem_8 = false);
-      }
-      autocomplete8.$set(autocomplete8_changes);
-      const autocomplete9_changes = {};
-      if (dirty[0] & 1024)
-        autocomplete9_changes.items = ctx2[10];
-      if (dirty[0] & 8192)
-        autocomplete9_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_9 && dirty[0] & 2) {
-        updating_selectedItem_9 = true;
-        autocomplete9_changes.selectedItem = ctx2[1].data.ideal;
-        add_flush_callback(() => updating_selectedItem_9 = false);
-      }
-      autocomplete9.$set(autocomplete9_changes);
-      const autocomplete10_changes = {};
-      if (dirty[0] & 2048)
-        autocomplete10_changes.items = ctx2[11];
-      if (dirty[0] & 8192)
-        autocomplete10_changes.inputClassName = "dotted long " + ctx2[13];
-      if (!updating_selectedItem_10 && dirty[0] & 2) {
-        updating_selectedItem_10 = true;
-        autocomplete10_changes.selectedItem = ctx2[1].data.flaw;
-        add_flush_callback(() => updating_selectedItem_10 = false);
-      }
-      autocomplete10.$set(autocomplete10_changes);
-      const autocomplete11_changes = {};
-      if (dirty[0] & 4096)
-        autocomplete11_changes.items = ctx2[12];
-      if (dirty[0] & 8192)
-        autocomplete11_changes.inputClassName = "dotted " + ctx2[13];
-      if (!updating_selectedItem_11 && dirty[0] & 2) {
-        updating_selectedItem_11 = true;
-        autocomplete11_changes.selectedItem = ctx2[1].data.dream;
-        add_flush_callback(() => updating_selectedItem_11 = false);
-      }
-      autocomplete11.$set(autocomplete11_changes);
-      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.role)) {
+      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.featurevibe)) {
         input6.value = input6_value_value;
       }
-      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.featurebody)) {
+      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.style1)) {
         input7.value = input7_value_value;
       }
-      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.featureface)) {
+      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.style2)) {
         input8.value = input8_value_value;
       }
-      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.featurevibe)) {
+      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.style3)) {
         input9.value = input9_value_value;
       }
-      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.style1)) {
+      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.home)) {
         input10.value = input10_value_value;
       }
-      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.style2)) {
+      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.community)) {
         input11.value = input11_value_value;
       }
-      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.style3)) {
+      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.ideal)) {
         input12.value = input12_value_value;
       }
-      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.home)) {
+      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.flaw)) {
         input13.value = input13_value_value;
       }
-      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.community)) {
+      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.dream)) {
         input14.value = input14_value_value;
-      }
-      if (!current || dirty[0] & 2 && input15_value_value !== (input15_value_value = ctx2[1].data.ideal)) {
-        input15.value = input15_value_value;
-      }
-      if (!current || dirty[0] & 2 && input16_value_value !== (input16_value_value = ctx2[1].data.flaw)) {
-        input16.value = input16_value_value;
-      }
-      if (!current || dirty[0] & 2 && input17_value_value !== (input17_value_value = ctx2[1].data.dream)) {
-        input17.value = input17_value_value;
       }
     },
     i(local) {
       if (current)
         return;
-      transition_in(autocomplete0.$$.fragment, local);
-      transition_in(autocomplete1.$$.fragment, local);
-      transition_in(autocomplete2.$$.fragment, local);
-      transition_in(autocomplete3.$$.fragment, local);
-      transition_in(autocomplete4.$$.fragment, local);
-      transition_in(autocomplete5.$$.fragment, local);
-      transition_in(autocomplete6.$$.fragment, local);
-      transition_in(autocomplete7.$$.fragment, local);
-      transition_in(autocomplete8.$$.fragment, local);
-      transition_in(autocomplete9.$$.fragment, local);
-      transition_in(autocomplete10.$$.fragment, local);
-      transition_in(autocomplete11.$$.fragment, local);
+      transition_in(translation0.$$.fragment, local);
+      transition_in(translation1.$$.fragment, local);
+      transition_in(translation2.$$.fragment, local);
+      transition_in(translation3.$$.fragment, local);
+      transition_in(translation4.$$.fragment, local);
+      transition_in(translation5.$$.fragment, local);
+      transition_in(translation6.$$.fragment, local);
+      transition_in(translation7.$$.fragment, local);
       transition_in(tabs.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(autocomplete0.$$.fragment, local);
-      transition_out(autocomplete1.$$.fragment, local);
-      transition_out(autocomplete2.$$.fragment, local);
-      transition_out(autocomplete3.$$.fragment, local);
-      transition_out(autocomplete4.$$.fragment, local);
-      transition_out(autocomplete5.$$.fragment, local);
-      transition_out(autocomplete6.$$.fragment, local);
-      transition_out(autocomplete7.$$.fragment, local);
-      transition_out(autocomplete8.$$.fragment, local);
-      transition_out(autocomplete9.$$.fragment, local);
-      transition_out(autocomplete10.$$.fragment, local);
-      transition_out(autocomplete11.$$.fragment, local);
+      transition_out(translation0.$$.fragment, local);
+      transition_out(translation1.$$.fragment, local);
+      transition_out(translation2.$$.fragment, local);
+      transition_out(translation3.$$.fragment, local);
+      transition_out(translation4.$$.fragment, local);
+      transition_out(translation5.$$.fragment, local);
+      transition_out(translation6.$$.fragment, local);
+      transition_out(translation7.$$.fragment, local);
       transition_out(tabs.$$.fragment, local);
       current = false;
     },
@@ -5917,41 +6548,28 @@ function create_fragment5(ctx) {
         detach(t7);
       if (detaching)
         detach(div6);
-      destroy_component(autocomplete0);
-      destroy_component(autocomplete1);
-      destroy_component(autocomplete2);
-      destroy_component(autocomplete3);
-      destroy_component(autocomplete4);
-      destroy_component(autocomplete5);
-      destroy_component(autocomplete6);
-      destroy_component(autocomplete7);
-      destroy_component(autocomplete8);
-      destroy_component(autocomplete9);
-      destroy_component(autocomplete10);
-      destroy_component(autocomplete11);
+      destroy_component(translation0);
+      destroy_component(translation1);
+      destroy_component(translation2);
+      destroy_component(translation3);
+      destroy_component(translation4);
+      destroy_component(translation5);
+      destroy_component(translation6);
+      destroy_component(translation7);
       destroy_component(tabs);
       mounted = false;
       run_all(dispose);
     }
   };
 }
-function instance5($$self, $$props, $$invalidate) {
+function instance6($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(28, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
   $$subscribe_dataStore();
   setContext("sheetStore", dataStore);
   let { actor, data, sheet } = $dataStore;
-  let roles = [
-    "Fighter",
-    "Invoker",
-    "Ranger",
-    "Naturalist",
-    "Doctor",
-    "Spy",
-    "Magician",
-    "Wizard"
-  ];
+  let roles = game.quest.roleList;
   let featurebody = [
     game.i18n.localize("QUEST.Feature.Body.1"),
     game.i18n.localize("QUEST.Feature.Body.2"),
@@ -6269,7 +6887,7 @@ function instance5($$self, $$props, $$invalidate) {
   const func = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete0_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding(value) {
     if ($$self.$$.not_equal(data.data.role, value)) {
       data.data.role = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
@@ -6278,16 +6896,16 @@ function instance5($$self, $$props, $$invalidate) {
   const func_1 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete1_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.featurebody, value)) {
-      data.data.featurebody = value;
+  function autocomplete_selectedItem_binding_1(value) {
+    if ($$self.$$.not_equal(data.data.featurevibe, value)) {
+      data.data.featurevibe = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_2 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete2_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_2(value) {
     if ($$self.$$.not_equal(data.data.featureface, value)) {
       data.data.featureface = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
@@ -6296,25 +6914,25 @@ function instance5($$self, $$props, $$invalidate) {
   const func_3 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete3_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.featurevibe, value)) {
-      data.data.featurevibe = value;
+  function autocomplete_selectedItem_binding_3(value) {
+    if ($$self.$$.not_equal(data.data.featurebody, value)) {
+      data.data.featurebody = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_4 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete4_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.style1, value)) {
-      data.data.style1 = value;
+  function autocomplete_selectedItem_binding_4(value) {
+    if ($$self.$$.not_equal(data.data.style3, value)) {
+      data.data.style3 = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_5 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete5_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_5(value) {
     if ($$self.$$.not_equal(data.data.style2, value)) {
       data.data.style2 = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
@@ -6323,52 +6941,52 @@ function instance5($$self, $$props, $$invalidate) {
   const func_6 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete6_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.style3, value)) {
-      data.data.style3 = value;
+  function autocomplete_selectedItem_binding_6(value) {
+    if ($$self.$$.not_equal(data.data.style1, value)) {
+      data.data.style1 = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_7 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete7_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.home, value)) {
-      data.data.home = value;
+  function autocomplete_selectedItem_binding_7(value) {
+    if ($$self.$$.not_equal(data.data.community, value)) {
+      data.data.community = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_8 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete8_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.community, value)) {
-      data.data.community = value;
+  function autocomplete_selectedItem_binding_8(value) {
+    if ($$self.$$.not_equal(data.data.home, value)) {
+      data.data.home = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_9 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete9_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.ideal, value)) {
-      data.data.ideal = value;
+  function autocomplete_selectedItem_binding_9(value) {
+    if ($$self.$$.not_equal(data.data.flaw, value)) {
+      data.data.flaw = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_10 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete10_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.flaw, value)) {
-      data.data.flaw = value;
+  function autocomplete_selectedItem_binding_10(value) {
+    if ($$self.$$.not_equal(data.data.ideal, value)) {
+      data.data.ideal = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
   const func_11 = (e) => {
     sheet?._onSubmit(new Event("submit"));
   };
-  function autocomplete11_selectedItem_binding(value) {
+  function autocomplete_selectedItem_binding_11(value) {
     if ($$self.$$.not_equal(data.data.dream, value)) {
       data.data.dream = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
@@ -6415,35 +7033,35 @@ function instance5($$self, $$props, $$invalidate) {
     filePicker,
     $dataStore,
     func,
-    autocomplete0_selectedItem_binding,
+    autocomplete_selectedItem_binding,
     func_1,
-    autocomplete1_selectedItem_binding,
+    autocomplete_selectedItem_binding_1,
     func_2,
-    autocomplete2_selectedItem_binding,
+    autocomplete_selectedItem_binding_2,
     func_3,
-    autocomplete3_selectedItem_binding,
+    autocomplete_selectedItem_binding_3,
     func_4,
-    autocomplete4_selectedItem_binding,
+    autocomplete_selectedItem_binding_4,
     func_5,
-    autocomplete5_selectedItem_binding,
+    autocomplete_selectedItem_binding_5,
     func_6,
-    autocomplete6_selectedItem_binding,
+    autocomplete_selectedItem_binding_6,
     func_7,
-    autocomplete7_selectedItem_binding,
+    autocomplete_selectedItem_binding_7,
     func_8,
-    autocomplete8_selectedItem_binding,
+    autocomplete_selectedItem_binding_8,
     func_9,
-    autocomplete9_selectedItem_binding,
+    autocomplete_selectedItem_binding_9,
     func_10,
-    autocomplete10_selectedItem_binding,
+    autocomplete_selectedItem_binding_10,
     func_11,
-    autocomplete11_selectedItem_binding
+    autocomplete_selectedItem_binding_11
   ];
 }
 var QuestActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance5, create_fragment5, safe_not_equal, { dataStore: 0 }, [-1, -1]);
+    init(this, options, instance6, create_fragment6, safe_not_equal, { dataStore: 0 }, [-1, -1]);
   }
 };
 var QuestActorSheetBase_default = QuestActorSheetBase;
@@ -6461,6 +7079,16 @@ var QuestActorSheet = class extends ActorSheet {
       height: 740,
       tabs: []
     });
+  }
+  async getRoles() {
+    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
+    const QUESTAbilities = await game.packs.get(sourceCompendium);
+    let AllAbilities = await QUESTAbilities.getDocuments();
+    const roleList = [
+      ...new Set(AllAbilities.map((data) => data.data.data.role))
+    ];
+    console.log(roleList);
+    return roleList;
   }
   getData() {
     const context = super.getData();
@@ -6631,7 +7259,7 @@ var QuestActorSheet = class extends ActorSheet {
 require_5();
 
 // module/svelte/QuestNPCActorSheetBase.svelte
-function get_each_context5(ctx, list, i) {
+function get_each_context6(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[11] = list[i];
   return child_ctx;
@@ -6721,7 +7349,7 @@ function create_each_block_14(ctx) {
     }
   };
 }
-function create_each_block5(ctx) {
+function create_each_block6(ctx) {
   let li;
   let div1;
   let span;
@@ -6804,7 +7432,7 @@ function create_each_block5(ctx) {
     }
   };
 }
-function create_fragment6(ctx) {
+function create_fragment7(ctx) {
   let div3;
   let div0;
   let label0;
@@ -6846,7 +7474,7 @@ function create_fragment6(ctx) {
   let each_value = ctx[1].data.itemTypes.ability;
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block5(get_each_context5(ctx, each_value, i));
+    each_blocks[i] = create_each_block6(get_each_context6(ctx, each_value, i));
   }
   return {
     c() {
@@ -7001,11 +7629,11 @@ function create_fragment6(ctx) {
         each_value = ctx2[1].data.itemTypes.ability;
         let i;
         for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context5(ctx2, each_value, i);
+          const child_ctx = get_each_context6(ctx2, each_value, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
           } else {
-            each_blocks[i] = create_each_block5(child_ctx);
+            each_blocks[i] = create_each_block6(child_ctx);
             each_blocks[i].c();
             each_blocks[i].m(ul1, null);
           }
@@ -7032,7 +7660,7 @@ function create_fragment6(ctx) {
     }
   };
 }
-function instance6($$self, $$props, $$invalidate) {
+function instance7($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(5, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
@@ -7092,7 +7720,7 @@ function instance6($$self, $$props, $$invalidate) {
 var QuestNPCActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance6, create_fragment6, safe_not_equal, { dataStore: 0 });
+    init(this, options, instance7, create_fragment7, safe_not_equal, { dataStore: 0 });
   }
 };
 var QuestNPCActorSheetBase_default = QuestNPCActorSheetBase;
@@ -7351,9 +7979,7 @@ var AbilityDialog = class extends Dialog {
     if (!role)
       role = "Spy";
     let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
-    console.log(sourceCompendium);
     const QUESTAbilities = await game.packs.get(sourceCompendium);
-    console.log(QUESTAbilities);
     let AllAbilities = await QUESTAbilities.getDocuments();
     const roleList = [
       ...new Set(AllAbilities.map((data) => data.data.data.role))
@@ -7453,12 +8079,14 @@ var CompendiumImportHelper = class {
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
   let RollCount = 0;
+  let RoleList = [];
   game.quest = {
     QuestActor,
     createQuestMacro,
     QuestRoll,
     AbilityDialog,
-    CompendiumImportHelper
+    CompendiumImportHelper,
+    RoleList
   };
   CONFIG.Actor.documentClass = QuestActor;
   CONFIG.Item.documentClass = QuestItem;
@@ -7604,7 +8232,17 @@ Hooks.once("ready", async () => {
     default: "world.role-abilities",
     choices: itemPacks
   });
+  game.quest.roleList = await getRoleList();
 });
+async function getRoleList() {
+  let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
+  const QUESTAbilities = await game.packs.get(sourceCompendium);
+  let AllAbilities = await QUESTAbilities.getDocuments();
+  const roleList = [
+    ...new Set(AllAbilities.map((data) => data.data.data.role))
+  ];
+  return roleList;
+}
 Handlebars.registerHelper("times", function(n, block) {
   var accum = "";
   for (var i = 0; i < n; ++i)

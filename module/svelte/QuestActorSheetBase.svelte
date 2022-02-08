@@ -7,6 +7,7 @@
     import Tabs from "./Tabs.svelte";
     import QuestActorSheetInventory from "./QuestActorSheetInventory.svelte";
     import QuestActorSheetAbilities from "./QuestActorSheetAbilities.svelte";
+    import Translation from "./Translation.svelte";
 
     // Component imports
     //TODO: IMPORTS
@@ -20,17 +21,9 @@
 
     //TODO: Get rolls from compendiums
     //
+    //console.log(roleList);
 
-    let roles = [
-        "Fighter",
-        "Invoker",
-        "Ranger",
-        "Naturalist",
-        "Doctor",
-        "Spy",
-        "Magician",
-        "Wizard"
-    ];
+    let roles = game.quest.roleList;
 
     let featurebody = [
         game.i18n.localize("QUEST.Feature.Body.1"),
@@ -420,15 +413,17 @@
                     align="left"
                 />
 
-                {@html game.i18n.localize("QUEST.Actor.Hello.Before")}
-                <input
-                    class="dotted long name quest {editclass}"
-                    name="name"
-                    type="text"
-                    value={data.name}
-                    placeholder={game.i18n.localize("QUEST.Name")}
-                />
-                {@html game.i18n.localize("QUEST.Actor.Hello.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.Hello")}>
+                    <span slot="1">
+                        <input
+                            class="dotted long name quest {editclass}"
+                            name="name"
+                            type="text"
+                            value={data.name}
+                            placeholder={game.i18n.localize("QUEST.Name")}
+                        />
+                    </span>
+                </Translation>
                 <br />(<input
                     class="dotted medium {editclass}"
                     name="data.pronouns"
@@ -438,203 +433,223 @@
                 />).
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Age.Before")}
-                <input
-                    class="dotted short {editclass}"
-                    name="data.age"
-                    type="number"
-                    value={data.data.age}
-                    placeholder={game.i18n.localize("QUEST.Age")}
-                />
-                {@html game.i18n.localize("QUEST.Actor.Age.After")}
-                {@html game.i18n.localize("QUEST.Actor.Height.Before")}
-                <input
-                    class="dotted medium {editclass}"
-                    name="data.height"
-                    type="text"
-                    value={data.data.height}
-                    placeholder={game.i18n.localize("QUEST.Height")}
-                />
-                {@html game.i18n.localize("QUEST.Actor.Height.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.AgeHeight")}>
+                    <span slot="1">
+                        <input
+                            class="dotted short {editclass}"
+                            name="data.age"
+                            type="number"
+                            value={data.data.age}
+                            placeholder={game.i18n.localize("QUEST.Age")}
+                        />
+                    </span>
+                    <span slot="2">
+                        <input
+                            class="dotted medium {editclass}"
+                            name="data.height"
+                            type="text"
+                            value={data.data.height}
+                            placeholder={game.i18n.localize("QUEST.Height")}
+                        />
+                    </span>
+                </Translation>
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Role.Before")}
-                <AutoComplete
-                    placeholder={game.i18n.localize("QUEST.Role")}
-                    items={roles}
-                    inputClassName="dotted medium {editclass}"
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateR}
-                    bind:selectedItem={data.data.role}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize("QUEST.Actor.Role.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.IAm")}>
+                    <span slot="1">
+                        <AutoComplete
+                            placeholder={game.i18n.localize("QUEST.Role")}
+                            items={roles}
+                            inputClassName="dotted medium {editclass}"
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreateR}
+                            bind:selectedItem={data.data.role}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                </Translation>
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Body.Before")}
-                <AutoComplete
-                    items={featurebody}
-                    placeholder={game.i18n.localize("QUEST.Body")}
-                    inputClassName="dotted long {editclass}"
-                    bind:selectedItem={data.data.featurebody}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreate}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize("QUEST.Actor.Body.After")}
-                {@html game.i18n.localize("QUEST.Actor.Face.Before")}
-                <AutoComplete
-                    items={featureface}
-                    placeholder={game.i18n.localize("QUEST.Face")}
-                    inputClassName="dotted long {editclass}"
-                    bind:selectedItem={data.data.featureface}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreatef2}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                {@html game.i18n.localize("QUEST.Actor.Face.After")}
-                {@html game.i18n.localize("QUEST.Actor.Vibe.Before")}
-                <AutoComplete
-                    items={featurevibe}
-                    inputClassName="dotted long {editclass}"
-                    placeholder={game.i18n.localize("QUEST.Vibe")}
-                    bind:selectedItem={data.data.featurevibe}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreatef3}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize("QUEST.Actor.Vibe.After")}
+                <Translation
+                    str={game.i18n.localize("QUEST.Actor.BodyFaceVibe")}
+                >
+                    <span slot="1">
+                        <AutoComplete
+                            items={featurebody}
+                            placeholder={game.i18n.localize("QUEST.Body")}
+                            inputClassName="dotted long {editclass}"
+                            bind:selectedItem={data.data.featurebody}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreate}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                    <span slot="2"
+                        ><AutoComplete
+                            items={featureface}
+                            placeholder={game.i18n.localize("QUEST.Face")}
+                            inputClassName="dotted long {editclass}"
+                            bind:selectedItem={data.data.featureface}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreatef2}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        /></span
+                    >
+
+                    <span slot="3">
+                        <AutoComplete
+                            items={featurevibe}
+                            inputClassName="dotted long {editclass}"
+                            placeholder={game.i18n.localize("QUEST.Vibe")}
+                            bind:selectedItem={data.data.featurevibe}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreatef3}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                </Translation>
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Style.One.Before")}
-                <AutoComplete
-                    items={styleoutfit}
-                    placeholder={game.i18n.localize("QUEST.Outfit")}
-                    inputClassName="dotted long {editclass}"
-                    bind:selectedItem={data.data.style1}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreates1}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                {@html game.i18n.localize(
-                    "QUEST.Actor.Style.One.After"
-                )}{@html game.i18n.localize("QUEST.Actor.Style.Two.Before")}
-                <AutoComplete
-                    items={styleoutfit}
-                    placeholder={game.i18n.localize("QUEST.Outfit")}
-                    inputClassName="dotted long {editclass}"
-                    bind:selectedItem={data.data.style2}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreates1}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize(
-                    "QUEST.Actor.Style.Two.After"
-                )}{@html game.i18n.localize("QUEST.Actor.Style.Three.Before")}
-                <AutoComplete
-                    items={stylemovement}
-                    inputClassName="dotted long {editclass}"
-                    placeholder={game.i18n.localize("QUEST.Movement")}
-                    bind:selectedItem={data.data.style3}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreates2}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                {@html game.i18n.localize("QUEST.Actor.Style.Three.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.Style")}>
+                    <span slot="1">
+                        <AutoComplete
+                            items={styleoutfit}
+                            placeholder={game.i18n.localize("QUEST.Outfit")}
+                            inputClassName="dotted long {editclass}"
+                            bind:selectedItem={data.data.style1}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreates1}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                    <span slot="2">
+                        <AutoComplete
+                            items={styleoutfit}
+                            placeholder={game.i18n.localize("QUEST.Outfit")}
+                            inputClassName="dotted long {editclass}"
+                            bind:selectedItem={data.data.style2}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreates1}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                    <span slot="3">
+                        <AutoComplete
+                            items={stylemovement}
+                            inputClassName="dotted long {editclass}"
+                            placeholder={game.i18n.localize("QUEST.Movement")}
+                            bind:selectedItem={data.data.style3}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreates2}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                </Translation>
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Home.Before")}
-                <AutoComplete
-                    items={homeland}
-                    inputClassName="dotted long {editclass}"
-                    placeholder={game.i18n.localize("QUEST.Home")}
-                    bind:selectedItem={data.data.home}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateh1}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize(
-                    "QUEST.Actor.Home.After"
-                )}{@html game.i18n.localize("QUEST.Actor.Legacy.Before")}
-                <AutoComplete
-                    items={legacy}
-                    className="verylong {editclass}"
-                    inputClassName="dotted"
-                    placeholder={game.i18n.localize("QUEST.Legacy")}
-                    bind:selectedItem={data.data.community}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateh2}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize("QUEST.Actor.Legacy.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.Home")}>
+                    <span slot="1">
+                        <AutoComplete
+                            items={homeland}
+                            inputClassName="dotted long {editclass}"
+                            placeholder={game.i18n.localize("QUEST.Home")}
+                            bind:selectedItem={data.data.home}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreateh1}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                    <span slot="2">
+                        <AutoComplete
+                            items={legacy}
+                            className="verylong {editclass}"
+                            inputClassName="dotted"
+                            placeholder={game.i18n.localize("QUEST.Legacy")}
+                            bind:selectedItem={data.data.community}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreateh2}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                </Translation>
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Ideal.Before")}
-                <AutoComplete
-                    items={ideal}
-                    placeholder={game.i18n.localize("QUEST.Ideal")}
-                    inputClassName="dotted long {editclass}"
-                    bind:selectedItem={data.data.ideal}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateI}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                {@html game.i18n.localize(
-                    "QUEST.Actor.Ideal.After"
-                )}{@html game.i18n.localize("QUEST.Actor.Flaw.Before")}
-                <AutoComplete
-                    items={flaw}
-                    inputClassName="dotted long {editclass}"
-                    placeholder={game.i18n.localize("QUEST.Flaw")}
-                    bind:selectedItem={data.data.flaw}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateF}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />
-                {@html game.i18n.localize("QUEST.Actor.Flaw.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.Ideal")}>
+                    <span slot="1">
+                        <AutoComplete
+                            items={ideal}
+                            placeholder={game.i18n.localize("QUEST.Ideal")}
+                            inputClassName="dotted long {editclass}"
+                            bind:selectedItem={data.data.ideal}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreateI}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                    <span slot="2">
+                        <AutoComplete
+                            items={flaw}
+                            inputClassName="dotted long {editclass}"
+                            placeholder={game.i18n.localize("QUEST.Flaw")}
+                            bind:selectedItem={data.data.flaw}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreateF}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                </Translation>
             </p>
             <p>
-                {@html game.i18n.localize("QUEST.Actor.Dream.Before")}
-                <AutoComplete
-                    items={dream}
-                    className="verylong"
-                    inputClassName="dotted {editclass}"
-                    placeholder={game.i18n.localize("QUEST.Dream")}
-                    bind:selectedItem={data.data.dream}
-                    create={true}
-                    createText={"Item doesn't exist, create one?"}
-                    onCreate={handleCreateD}
-                    onChange={(e) => {
-                        sheet?._onSubmit(new Event("submit"));
-                    }}
-                />{@html game.i18n.localize("QUEST.Actor.Dream.After")}
+                <Translation str={game.i18n.localize("QUEST.Actor.Dream")}>
+                    <span slot="1">
+                        <AutoComplete
+                            items={dream}
+                            className="verylong"
+                            inputClassName="dotted {editclass}"
+                            placeholder={game.i18n.localize("QUEST.Dream")}
+                            bind:selectedItem={data.data.dream}
+                            create={true}
+                            createText={"Item doesn't exist, create one?"}
+                            onCreate={handleCreateD}
+                            onChange={(e) => {
+                                sheet?._onSubmit(new Event("submit"));
+                            }}
+                        />
+                    </span>
+                </Translation>
             </p>
             <input
                 class="long"

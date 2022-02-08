@@ -33,10 +33,10 @@ export class AbilityDialog extends Dialog {
             "abilityCompendium"
         );
 
-        console.log(sourceCompendium);
+        //console.log(sourceCompendium);
 
         const QUESTAbilities = await game.packs.get(sourceCompendium);
-        console.log(QUESTAbilities);
+        //console.log(QUESTAbilities);
 
         let AllAbilities = await QUESTAbilities.getDocuments();
         const roleList = [
