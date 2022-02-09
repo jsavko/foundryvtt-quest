@@ -11,47 +11,51 @@
     $: items = $sheetData.data.data.itemTypes.item;
 </script>
 
-<ol>
-    {#each { length: 12 } as _, i}
-        {#if !!items[i]}
-            <li>
-                <div class="flex">
-                    <span class={items[i].data.data.rarity}
-                        >{items[i].data.name}</span
-                    >
-                    <div class="right">
-                        {#if sheet.isEditable}<a
-                                on:click={(e) => {
-                                    sheet?._chatAbility(items[i].data._id);
-                                }}><i class="fas fa-bullhorn" /></a
-                            >
-                            <a
-                                on:click={(e) => {
-                                    sheet?._onItemEdit(items[i].data._id);
-                                }}><i class="fas fa-pen" /></a
-                            >
+{#if !$sheetData.limited}
+    <ol>
+        {#each { length: 12 } as _, i}
+            {#if !!items[i]}
+                <li>
+                    <div class="flex">
+                        <span class={items[i].data.data.rarity}
+                            >{items[i].data.name}</span
+                        >
+                        <div class="right">
+                            {#if sheet.isEditable}<a
+                                    on:click={(e) => {
+                                        sheet?._chatAbility(items[i].data._id);
+                                    }}><i class="fas fa-bullhorn" /></a
+                                >
+                                <a
+                                    on:click={(e) => {
+                                        sheet?._onItemEdit(items[i].data._id);
+                                    }}><i class="fas fa-pen" /></a
+                                >
 
-                            <a
-                                on:click={(e) => {
-                                    sheet?._onItemDelete(items[i].data._id);
-                                }}><i class="fas fa-trash" /></a
-                            >{/if}
+                                <a
+                                    on:click={(e) => {
+                                        sheet?._onItemDelete(items[i].data._id);
+                                    }}><i class="fas fa-trash" /></a
+                                >{/if}
+                        </div>
                     </div>
-                </div>
+                </li>
+            {:else}
+                <li />
+            {/if}
+        {/each}
+        {#if sheet.isEditable}
+            <li style="list-style-type: none; text-align:right;">
+                <a
+                    on:click={sheet?._onItemCreate.bind(sheet)}
+                    class="item-control item-create"
+                    title="Create item"
+                    data-type="item"><i class="fas fa-plus" /></a
+                >
             </li>
-        {:else}
-            <li />
         {/if}
-    {/each}
-    <li style="list-style-type: none; text-align:right;">
-        <a
-            on:click={sheet?._onItemCreate.bind(sheet)}
-            class="item-control item-create"
-            title="Create item"
-            data-type="item"><i class="fas fa-plus" /></a
-        >
-    </li>
-</ol>
+    </ol>
+{/if}
 
 <style>
     ol {

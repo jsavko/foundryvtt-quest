@@ -90,7 +90,7 @@ h3.svelte-17i6vo1.svelte-17i6vo1 {
 }
 
 /* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
-input.svelte-115e1jk .quest {
+input.svelte-811xhi .quest {
   border-top: none;
   border-left: none;
   border-right: none;
@@ -106,42 +106,42 @@ input.svelte-115e1jk .quest {
   border-radius: 0em !important;
   background: rgba(0, 0, 0, 0.03) !important;
 }
-content.svelte-115e1jk.svelte-115e1jk {
+content.svelte-811xhi.svelte-811xhi {
   font-size: 16px;
 }
-content.svelte-115e1jk p.svelte-115e1jk {
+content.svelte-811xhi p.svelte-811xhi {
   padding: 5px 11px;
   line-height: 2;
 }
-content.svelte-115e1jk input.svelte-115e1jk {
+content.svelte-811xhi input.svelte-811xhi {
   width: 60px;
 }
-.biography.svelte-115e1jk.svelte-115e1jk {
+.biography.svelte-811xhi.svelte-811xhi {
   flex: 1.75 1 0;
   order: 1;
   padding-right: 0.2rem;
   max-width: 580px;
 }
-.inventory-abilities.svelte-115e1jk.svelte-115e1jk {
+.inventory-abilities.svelte-811xhi.svelte-811xhi {
   flex: 1 1 0;
   order: 2;
   margin-left: 0.3rem;
 }
-input.long.svelte-115e1jk.svelte-115e1jk {
+input.long.svelte-811xhi.svelte-811xhi {
   width: 300px;
 }
-input.name.svelte-115e1jk.svelte-115e1jk {
+input.name.svelte-811xhi.svelte-811xhi {
   width: 200px;
 }
-input.medium.svelte-115e1jk.svelte-115e1jk {
+input.medium.svelte-811xhi.svelte-811xhi {
   width: 100px;
   text-align: center;
 }
-input.short.svelte-115e1jk.svelte-115e1jk {
+input.short.svelte-811xhi.svelte-811xhi {
   width: 50px;
   text-align: center;
 }
-.profile.svelte-115e1jk.svelte-115e1jk {
+.profile.svelte-811xhi.svelte-811xhi {
   flex: 0 1 150px;
   max-width: 150px;
   height: 150px;
@@ -149,13 +149,13 @@ input.short.svelte-115e1jk.svelte-115e1jk {
   border: 1px solid #adb5bd;
   margin-right: 0.5rem;
 }
-.inventory-abilities.svelte-115e1jk.svelte-115e1jk {
+.inventory-abilities.svelte-811xhi.svelte-811xhi {
   flex: 1 1 0;
   order: 2;
   border-left: 2px groove #eeeeee;
   margin-left: 0.3rem;
 }
-.hitpoints.svelte-115e1jk.svelte-115e1jk {
+.hitpoints.svelte-811xhi.svelte-811xhi {
   font-family: "Alegreya Sans", sans-serif;
   font-weight: 700;
   font-size: 1rem;
@@ -163,22 +163,22 @@ input.short.svelte-115e1jk.svelte-115e1jk {
   color: #000;
   text-align: left;
 }
-.roll-generic.svelte-115e1jk.svelte-115e1jk {
+.roll-generic.svelte-811xhi.svelte-811xhi {
   color: #000;
   text-align: center;
 }
-.roll-generic.svelte-115e1jk .svelte-115e1jk:hover {
+.roll-generic.svelte-811xhi .svelte-811xhi:hover {
   color: #f04828;
 }
-.actionpoints.svelte-115e1jk.svelte-115e1jk {
+.actionpoints.svelte-811xhi.svelte-811xhi {
   font-family: "Alegreya Sans", sans-serif;
   font-weight: 700;
   font-size: 1rem;
   color: #000;
   text-align: right;
 }
-.hp.svelte-115e1jk.svelte-115e1jk,
-.ap.svelte-115e1jk.svelte-115e1jk {
+.hp.svelte-811xhi.svelte-811xhi,
+.ap.svelte-811xhi.svelte-811xhi {
   min-width: 20px;
   max-width: 60px;
   border: 1px solid #7a7971;
@@ -186,11 +186,11 @@ input.short.svelte-115e1jk.svelte-115e1jk {
   font-size: 1.1rem;
   padding-left: 0.3rem;
 }
-.header.svelte-115e1jk.svelte-115e1jk {
+.header.svelte-811xhi.svelte-811xhi {
   padding-bottom: 5px;
   border-bottom: 2px groove #eeeeee;
 }
-.uneditable.svelte-115e1jk.svelte-115e1jk {
+.uneditable {
   pointer-events: none;
   font-weight: bold;
 }

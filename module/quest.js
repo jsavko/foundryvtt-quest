@@ -15,6 +15,7 @@ import { createQuestMacro } from "./macro.js";
 import { QuestRoll } from "./quest-roll.js";
 import { AbilityDialog } from "./ability-dialog.js";
 import { CompendiumImportHelper } from "./compendium-helper.js";
+//import { InlineTables } from "./inline-tables.js";
 
 //import MouseCombatModal from "./mouse-combat-modal.js";
 
@@ -249,6 +250,11 @@ Hooks.once("init", async function () {
  * Macrobar hook.
  */
 //Hooks.on("hotbarDrop", (bar, data, slot) => createQuestMacro(data, slot));
+
+///Hooks.on("createChatMessage", (a) => {
+///    if (a.data.content.match(/\[\[\~(.*?)\]\]/g))
+///        InlineTables.parseInlineTables(a);
+///});
 
 Hooks.once("ready", async () => {
     //Check if world compendium exisits and if not create it

@@ -21,7 +21,7 @@
 -   Import newly created ability in the world compendium [b]Role Abilities[/b]
 -   The new ability will appear in the ability browser.
 -   Using a new Role and Path will cause a new role/path to be created.
--   Short Descriptions appear in the ability browser. Long descriptions will be sent to chat. When editing abilities will full text please update the Long Description. (If no long description exists the short description is sent to chat)
+-   Short Descriptions appear in the ability browser. Long descriptions will be sent to chat. When editing abilities with full text please update the Long Description. (If no long description exists the short description is sent to chat)
     ![image](https://user-images.githubusercontent.com/192591/146589229-e0fb35e0-c43c-4376-a215-5f4b981b6a26.png)
 
 ## Short Codes

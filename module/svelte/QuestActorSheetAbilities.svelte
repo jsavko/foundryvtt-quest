@@ -11,51 +11,62 @@
     $: abilityTypes = $sheetData.data.data.abilityTypes;
 </script>
 
-<ul>
-    <li style="list-style-type: none; text-align:right;">
-        <a on:click={sheet?._openAbilityDialog.bind(sheet)}
-            ><i class="fas fa-plus" /></a
-        >
-    </li>
-</ul>
-{#each { length: Object.keys(abilityTypes).length } as _, i}
-    <h3>{Object.keys(abilityTypes)[i]}</h3>
-    <ul>
-        {#each abilityTypes[Object.keys(abilityTypes)[i]] as ability}
-            <li>
-                <div class="flex">
-                    <div>
-                        <a
-                            on:click={(e) =>
-                                // sheet.delete.id
-                                {
-                                    sheet?._chatAbility(ability.data._id);
-                                }}
-                            ><i class="cost">{ability.data.data.cost}</i></a
-                        >{ability.name}
-                    </div>
-                    <div class="flex medium">
-                        {#if sheet.isEditable}<a
-                                on:click={(e) =>
-                                    // sheet.delete.id
-                                    {
-                                        sheet?._onItemEdit(ability.data._id);
-                                    }}><i class="fas fa-info-circle" /></a
-                            >
-
+{#if !$sheetData.limited}
+    {#if sheet.isEditable}
+        <ul>
+            <li style="list-style-type: none; text-align:right;">
+                <a on:click={sheet?._openAbilityDialog.bind(sheet)}
+                    ><i class="fas fa-plus" /></a
+                >
+            </li>
+        </ul>
+    {/if}
+    {#each { length: Object.keys(abilityTypes).length } as _, i}
+        <h3>{Object.keys(abilityTypes)[i]}</h3>
+        <ul>
+            {#each abilityTypes[Object.keys(abilityTypes)[i]] as ability}
+                <li>
+                    <div class="flex">
+                        <div>
                             <a
                                 on:click={(e) =>
                                     // sheet.delete.id
                                     {
-                                        sheet?._onItemDelete(ability.data._id);
-                                    }}><i class="fas fa-trash" /></a
-                            >{/if}
+                                        if (sheet.isEditable)
+                                            sheet?._chatAbility(
+                                                ability.data._id
+                                            );
+                                    }}
+                                ><i class="cost">{ability.data.data.cost}</i></a
+                            >{ability.name}
+                        </div>
+                        <div class="flex medium">
+                            {#if sheet.isEditable}<a
+                                    on:click={(e) =>
+                                        // sheet.delete.id
+                                        {
+                                            sheet?._onItemEdit(
+                                                ability.data._id
+                                            );
+                                        }}><i class="fas fa-info-circle" /></a
+                                >
+
+                                <a
+                                    on:click={(e) =>
+                                        // sheet.delete.id
+                                        {
+                                            sheet?._onItemDelete(
+                                                ability.data._id
+                                            );
+                                        }}><i class="fas fa-trash" /></a
+                                >{/if}
+                        </div>
                     </div>
-                </div>
-            </li>
-        {/each}
-    </ul>
-{/each}
+                </li>
+            {/each}
+        </ul>
+    {/each}
+{/if}
 
 <style>
     ul {

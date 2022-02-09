@@ -20,20 +20,6 @@ export class QuestActorSheet extends ActorSheet {
         });
     }
 
-    async getRoles() {
-        let sourceCompendium = game.settings.get(
-            "foundryvtt-quest",
-            "abilityCompendium"
-        );
-        const QUESTAbilities = await game.packs.get(sourceCompendium);
-        let AllAbilities = await QUESTAbilities.getDocuments();
-        const roleList = [
-            ...new Set(AllAbilities.map((data) => data.data.data.role))
-        ];
-        console.log(roleList);
-        return roleList;
-    }
-
     /* -------------------------------------------- */
 
     /** @inheritdoc */

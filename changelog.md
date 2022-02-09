@@ -1,5 +1,17 @@
 # Quest Foundry VTT System
 
+0.1.7
+
+-   Merged pull request for fix to Touch Choice logic
+-   Fixed bug allowing editing of another player's actor sheet
+-   Fixed bug allowing players to use other player's abilities
+-   Players with limited permissions can no longer see inventory or abilities
+
+0.1.6
+
+-   Updated Localization to allow string replacement for actor sheet.
+-   Roles now populate from the ability compendium at world launch.
+
 0.1.5
 
 -   Localization for Actor Sheet.

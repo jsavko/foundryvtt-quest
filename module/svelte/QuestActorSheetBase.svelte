@@ -860,7 +860,7 @@
         border-bottom: 2px groove #eeeeee;
     }
 
-    .uneditable {
+    :global(.uneditable) {
         pointer-events: none;
         font-weight: bold;
     }
