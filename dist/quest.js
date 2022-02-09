@@ -4167,6 +4167,66 @@ function get_each_context3(ctx, list, i) {
   child_ctx[12] = i;
   return child_ctx;
 }
+function create_if_block3(ctx) {
+  let ol;
+  let t;
+  let each_value = { length: 12 };
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block3(get_each_context3(ctx, each_value, i));
+  }
+  let if_block = ctx[3].isEditable && create_if_block_12(ctx);
+  return {
+    c() {
+      ol = element("ol");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      t = space();
+      if (if_block)
+        if_block.c();
+      attr(ol, "class", "svelte-gddmne");
+    },
+    m(target, anchor) {
+      insert(target, ol, anchor);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(ol, null);
+      }
+      append(ol, t);
+      if (if_block)
+        if_block.m(ol, null);
+    },
+    p(ctx2, dirty) {
+      if (dirty & 10) {
+        each_value = { length: 12 };
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context3(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block3(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(ol, t);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+      if (ctx2[3].isEditable)
+        if_block.p(ctx2, dirty);
+    },
+    d(detaching) {
+      if (detaching)
+        detach(ol);
+      destroy_each(each_blocks, detaching);
+      if (if_block)
+        if_block.d();
+    }
+  };
+}
 function create_else_block2(ctx) {
   let li;
   return {
@@ -4184,16 +4244,16 @@ function create_else_block2(ctx) {
     }
   };
 }
-function create_if_block3(ctx) {
+function create_if_block_22(ctx) {
   let li;
   let div1;
   let span;
-  let t0_value = ctx[0][ctx[12]].data.name + "";
+  let t0_value = ctx[1][ctx[12]].data.name + "";
   let t0;
   let span_class_value;
   let t1;
   let div0;
-  let if_block = ctx[2].isEditable && create_if_block_12(ctx);
+  let if_block = ctx[3].isEditable && create_if_block_32(ctx);
   return {
     c() {
       li = element("li");
@@ -4204,7 +4264,7 @@ function create_if_block3(ctx) {
       div0 = element("div");
       if (if_block)
         if_block.c();
-      attr(span, "class", span_class_value = "" + (null_to_empty(ctx[0][ctx[12]].data.data.rarity) + " svelte-gddmne"));
+      attr(span, "class", span_class_value = "" + (null_to_empty(ctx[1][ctx[12]].data.data.rarity) + " svelte-gddmne"));
       attr(div0, "class", "right");
       attr(div1, "class", "flex svelte-gddmne");
       attr(li, "class", "svelte-gddmne");
@@ -4220,12 +4280,12 @@ function create_if_block3(ctx) {
         if_block.m(div0, null);
     },
     p(ctx2, dirty) {
-      if (dirty & 1 && t0_value !== (t0_value = ctx2[0][ctx2[12]].data.name + ""))
+      if (dirty & 2 && t0_value !== (t0_value = ctx2[1][ctx2[12]].data.name + ""))
         set_data(t0, t0_value);
-      if (dirty & 1 && span_class_value !== (span_class_value = "" + (null_to_empty(ctx2[0][ctx2[12]].data.data.rarity) + " svelte-gddmne"))) {
+      if (dirty & 2 && span_class_value !== (span_class_value = "" + (null_to_empty(ctx2[1][ctx2[12]].data.data.rarity) + " svelte-gddmne"))) {
         attr(span, "class", span_class_value);
       }
-      if (ctx2[2].isEditable)
+      if (ctx2[3].isEditable)
         if_block.p(ctx2, dirty);
     },
     d(detaching) {
@@ -4236,7 +4296,7 @@ function create_if_block3(ctx) {
     }
   };
 }
-function create_if_block_12(ctx) {
+function create_if_block_32(ctx) {
   let a0;
   let t0;
   let a1;
@@ -4301,8 +4361,8 @@ function create_if_block_12(ctx) {
 function create_each_block3(ctx) {
   let if_block_anchor;
   function select_block_type(ctx2, dirty) {
-    if (!!ctx2[0][ctx2[12]])
-      return create_if_block3;
+    if (!!ctx2[1][ctx2[12]])
+      return create_if_block_22;
     return create_else_block2;
   }
   let current_block_type = select_block_type(ctx, -1);
@@ -4335,25 +4395,13 @@ function create_each_block3(ctx) {
     }
   };
 }
-function create_fragment3(ctx) {
-  let ol;
-  let t;
+function create_if_block_12(ctx) {
   let li;
   let a;
   let mounted;
   let dispose;
-  let each_value = { length: 12 };
-  let each_blocks = [];
-  for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block3(get_each_context3(ctx, each_value, i));
-  }
   return {
     c() {
-      ol = element("ol");
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].c();
-      }
-      t = space();
       li = element("li");
       a = element("a");
       a.innerHTML = `<i class="fas fa-plus svelte-gddmne"></i>`;
@@ -4363,49 +4411,59 @@ function create_fragment3(ctx) {
       set_style(li, "list-style-type", "none");
       set_style(li, "text-align", "right");
       attr(li, "class", "svelte-gddmne");
-      attr(ol, "class", "svelte-gddmne");
     },
     m(target, anchor) {
-      insert(target, ol, anchor);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].m(ol, null);
-      }
-      append(ol, t);
-      append(ol, li);
+      insert(target, li, anchor);
       append(li, a);
       if (!mounted) {
-        dispose = listen(a, "click", ctx[2]?._onItemCreate.bind(ctx[2]));
+        dispose = listen(a, "click", ctx[3]?._onItemCreate.bind(ctx[3]));
         mounted = true;
       }
     },
+    p: noop,
+    d(detaching) {
+      if (detaching)
+        detach(li);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_fragment3(ctx) {
+  let if_block_anchor;
+  let if_block = !ctx[0].limited && create_if_block3(ctx);
+  return {
+    c() {
+      if (if_block)
+        if_block.c();
+      if_block_anchor = empty();
+    },
+    m(target, anchor) {
+      if (if_block)
+        if_block.m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+    },
     p(ctx2, [dirty]) {
-      if (dirty & 5) {
-        each_value = { length: 12 };
-        let i;
-        for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context3(ctx2, each_value, i);
-          if (each_blocks[i]) {
-            each_blocks[i].p(child_ctx, dirty);
-          } else {
-            each_blocks[i] = create_each_block3(child_ctx);
-            each_blocks[i].c();
-            each_blocks[i].m(ol, t);
-          }
+      if (!ctx2[0].limited) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+        } else {
+          if_block = create_if_block3(ctx2);
+          if_block.c();
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
-        for (; i < each_blocks.length; i += 1) {
-          each_blocks[i].d(1);
-        }
-        each_blocks.length = each_value.length;
+      } else if (if_block) {
+        if_block.d(1);
+        if_block = null;
       }
     },
     i: noop,
     o: noop,
     d(detaching) {
+      if (if_block)
+        if_block.d(detaching);
       if (detaching)
-        detach(ol);
-      destroy_each(each_blocks, detaching);
-      mounted = false;
-      dispose();
+        detach(if_block_anchor);
     }
   };
 }
@@ -4413,7 +4471,7 @@ function instance3($$self, $$props, $$invalidate) {
   let items;
   let $sheetData;
   let sheetData = getContext("sheetStore");
-  component_subscribe($$self, sheetData, (value) => $$invalidate(3, $sheetData = value));
+  component_subscribe($$self, sheetData, (value) => $$invalidate(0, $sheetData = value));
   let { actor, sheet } = $sheetData;
   let data;
   let abilities;
@@ -4427,20 +4485,20 @@ function instance3($$self, $$props, $$invalidate) {
     sheet?._onItemDelete(items[i].data._id);
   };
   $$self.$$.update = () => {
-    if ($$self.$$.dirty & 8) {
+    if ($$self.$$.dirty & 1) {
       $:
         data = $sheetData.data;
     }
-    if ($$self.$$.dirty & 8) {
+    if ($$self.$$.dirty & 1) {
       $:
-        $$invalidate(0, items = $sheetData.data.data.itemTypes.item);
+        $$invalidate(1, items = $sheetData.data.data.itemTypes.item);
     }
   };
   return [
+    $sheetData,
     items,
     sheetData,
     sheet,
-    $sheetData,
     click_handler,
     click_handler_1,
     click_handler_2
@@ -4468,6 +4526,106 @@ function get_each_context_13(ctx, list, i) {
   return child_ctx;
 }
 function create_if_block4(ctx) {
+  let t;
+  let each_1_anchor;
+  let if_block = ctx[3].isEditable && create_if_block_23(ctx);
+  let each_value = {
+    length: Object.keys(ctx[1]).length
+  };
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block4(get_each_context4(ctx, each_value, i));
+  }
+  return {
+    c() {
+      if (if_block)
+        if_block.c();
+      t = space();
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      each_1_anchor = empty();
+    },
+    m(target, anchor) {
+      if (if_block)
+        if_block.m(target, anchor);
+      insert(target, t, anchor);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(target, anchor);
+      }
+      insert(target, each_1_anchor, anchor);
+    },
+    p(ctx2, dirty) {
+      if (ctx2[3].isEditable)
+        if_block.p(ctx2, dirty);
+      if (dirty & 10) {
+        each_value = {
+          length: Object.keys(ctx2[1]).length
+        };
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context4(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block4(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+    },
+    d(detaching) {
+      if (if_block)
+        if_block.d(detaching);
+      if (detaching)
+        detach(t);
+      destroy_each(each_blocks, detaching);
+      if (detaching)
+        detach(each_1_anchor);
+    }
+  };
+}
+function create_if_block_23(ctx) {
+  let ul;
+  let li;
+  let a;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      ul = element("ul");
+      li = element("li");
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-plus svelte-17i6vo1"></i>`;
+      set_style(li, "list-style-type", "none");
+      set_style(li, "text-align", "right");
+      attr(li, "class", "svelte-17i6vo1");
+      attr(ul, "class", "svelte-17i6vo1");
+    },
+    m(target, anchor) {
+      insert(target, ul, anchor);
+      append(ul, li);
+      append(li, a);
+      if (!mounted) {
+        dispose = listen(a, "click", ctx[3]?._openAbilityDialog.bind(ctx[3]));
+        mounted = true;
+      }
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching)
+        detach(ul);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_if_block_13(ctx) {
   let a0;
   let t;
   let a1;
@@ -4531,7 +4689,7 @@ function create_each_block_13(ctx) {
   function click_handler(...args) {
     return ctx[4](ctx[13], ...args);
   }
-  let if_block = ctx[2].isEditable && create_if_block4(ctx);
+  let if_block = ctx[3].isEditable && create_if_block_13(ctx);
   return {
     c() {
       li = element("li");
@@ -4569,11 +4727,11 @@ function create_each_block_13(ctx) {
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      if (dirty & 1 && t0_value !== (t0_value = ctx[13].data.data.cost + ""))
+      if (dirty & 2 && t0_value !== (t0_value = ctx[13].data.data.cost + ""))
         set_data(t0, t0_value);
-      if (dirty & 1 && t1_value !== (t1_value = ctx[13].name + ""))
+      if (dirty & 2 && t1_value !== (t1_value = ctx[13].name + ""))
         set_data(t1, t1_value);
-      if (ctx[2].isEditable)
+      if (ctx[3].isEditable)
         if_block.p(ctx, dirty);
     },
     d(detaching) {
@@ -4588,12 +4746,12 @@ function create_each_block_13(ctx) {
 }
 function create_each_block4(ctx) {
   let h3;
-  let t0_value = Object.keys(ctx[0])[ctx[12]] + "";
+  let t0_value = Object.keys(ctx[1])[ctx[12]] + "";
   let t0;
   let t1;
   let ul;
   let t2;
-  let each_value_1 = ctx[0][Object.keys(ctx[0])[ctx[12]]];
+  let each_value_1 = ctx[1][Object.keys(ctx[1])[ctx[12]]];
   let each_blocks = [];
   for (let i = 0; i < each_value_1.length; i += 1) {
     each_blocks[i] = create_each_block_13(get_each_context_13(ctx, each_value_1, i));
@@ -4622,10 +4780,10 @@ function create_each_block4(ctx) {
       append(ul, t2);
     },
     p(ctx2, dirty) {
-      if (dirty & 1 && t0_value !== (t0_value = Object.keys(ctx2[0])[ctx2[12]] + ""))
+      if (dirty & 2 && t0_value !== (t0_value = Object.keys(ctx2[1])[ctx2[12]] + ""))
         set_data(t0, t0_value);
-      if (dirty & 5) {
-        each_value_1 = ctx2[0][Object.keys(ctx2[0])[ctx2[12]]];
+      if (dirty & 10) {
+        each_value_1 = ctx2[1][Object.keys(ctx2[1])[ctx2[12]]];
         let i;
         for (i = 0; i < each_value_1.length; i += 1) {
           const child_ctx = get_each_context_13(ctx2, each_value_1, i);
@@ -4655,84 +4813,40 @@ function create_each_block4(ctx) {
   };
 }
 function create_fragment4(ctx) {
-  let ul;
-  let li;
-  let a;
-  let t;
-  let each_1_anchor;
-  let mounted;
-  let dispose;
-  let each_value = {
-    length: Object.keys(ctx[0]).length
-  };
-  let each_blocks = [];
-  for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block4(get_each_context4(ctx, each_value, i));
-  }
+  let if_block_anchor;
+  let if_block = !ctx[0].limited && create_if_block4(ctx);
   return {
     c() {
-      ul = element("ul");
-      li = element("li");
-      a = element("a");
-      a.innerHTML = `<i class="fas fa-plus svelte-17i6vo1"></i>`;
-      t = space();
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].c();
-      }
-      each_1_anchor = empty();
-      set_style(li, "list-style-type", "none");
-      set_style(li, "text-align", "right");
-      attr(li, "class", "svelte-17i6vo1");
-      attr(ul, "class", "svelte-17i6vo1");
+      if (if_block)
+        if_block.c();
+      if_block_anchor = empty();
     },
     m(target, anchor) {
-      insert(target, ul, anchor);
-      append(ul, li);
-      append(li, a);
-      insert(target, t, anchor);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].m(target, anchor);
-      }
-      insert(target, each_1_anchor, anchor);
-      if (!mounted) {
-        dispose = listen(a, "click", ctx[2]?._openAbilityDialog.bind(ctx[2]));
-        mounted = true;
-      }
+      if (if_block)
+        if_block.m(target, anchor);
+      insert(target, if_block_anchor, anchor);
     },
     p(ctx2, [dirty]) {
-      if (dirty & 5) {
-        each_value = {
-          length: Object.keys(ctx2[0]).length
-        };
-        let i;
-        for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context4(ctx2, each_value, i);
-          if (each_blocks[i]) {
-            each_blocks[i].p(child_ctx, dirty);
-          } else {
-            each_blocks[i] = create_each_block4(child_ctx);
-            each_blocks[i].c();
-            each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-          }
+      if (!ctx2[0].limited) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+        } else {
+          if_block = create_if_block4(ctx2);
+          if_block.c();
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
-        for (; i < each_blocks.length; i += 1) {
-          each_blocks[i].d(1);
-        }
-        each_blocks.length = each_value.length;
+      } else if (if_block) {
+        if_block.d(1);
+        if_block = null;
       }
     },
     i: noop,
     o: noop,
     d(detaching) {
+      if (if_block)
+        if_block.d(detaching);
       if (detaching)
-        detach(ul);
-      if (detaching)
-        detach(t);
-      destroy_each(each_blocks, detaching);
-      if (detaching)
-        detach(each_1_anchor);
-      mounted = false;
-      dispose();
+        detach(if_block_anchor);
     }
   };
 }
@@ -4740,12 +4854,13 @@ function instance4($$self, $$props, $$invalidate) {
   let abilityTypes;
   let $sheetData;
   let sheetData = getContext("sheetStore");
-  component_subscribe($$self, sheetData, (value) => $$invalidate(3, $sheetData = value));
+  component_subscribe($$self, sheetData, (value) => $$invalidate(0, $sheetData = value));
   let { actor, sheet } = $sheetData;
   let data;
   let abilities;
   const click_handler = (ability, e) => {
-    sheet?._chatAbility(ability.data._id);
+    if (sheet.isEditable)
+      sheet?._chatAbility(ability.data._id);
   };
   const click_handler_1 = (ability, e) => {
     sheet?._onItemEdit(ability.data._id);
@@ -4754,20 +4869,20 @@ function instance4($$self, $$props, $$invalidate) {
     sheet?._onItemDelete(ability.data._id);
   };
   $$self.$$.update = () => {
-    if ($$self.$$.dirty & 8) {
+    if ($$self.$$.dirty & 1) {
       $:
         data = $sheetData.data;
     }
-    if ($$self.$$.dirty & 8) {
+    if ($$self.$$.dirty & 1) {
       $:
-        $$invalidate(0, abilityTypes = $sheetData.data.data.abilityTypes);
+        $$invalidate(1, abilityTypes = $sheetData.data.data.abilityTypes);
     }
   };
   return [
+    $sheetData,
     abilityTypes,
     sheetData,
     sheet,
-    $sheetData,
     click_handler,
     click_handler_1,
     click_handler_2
@@ -4817,7 +4932,7 @@ function create_else_block3(ctx) {
     }
   };
 }
-function create_if_block_22(ctx) {
+function create_if_block_24(ctx) {
   let current;
   const _3_slot_template = ctx[3]["3"];
   const _3_slot = create_slot(_3_slot_template, ctx, ctx[2], get__3_slot_context);
@@ -4855,7 +4970,7 @@ function create_if_block_22(ctx) {
     }
   };
 }
-function create_if_block_13(ctx) {
+function create_if_block_14(ctx) {
   let current;
   const _2_slot_template = ctx[3]["2"];
   const _2_slot = create_slot(_2_slot_template, ctx, ctx[2], get__2_slot_context);
@@ -4936,7 +5051,7 @@ function create_each_block5(ctx) {
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block5, create_if_block_13, create_if_block_22, create_else_block3];
+  const if_block_creators = [create_if_block5, create_if_block_14, create_if_block_24, create_else_block3];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (ctx2[6] != 0 && ctx2[4] === "1")
@@ -5105,7 +5220,7 @@ function create__1_slot_7(ctx) {
     c() {
       span = element("span");
       input = element("input");
-      attr(input, "class", input_class_value = "dotted long name quest " + ctx[13] + " svelte-115e1jk");
+      attr(input, "class", input_class_value = "dotted long name quest " + ctx[13] + " svelte-811xhi");
       attr(input, "name", "name");
       attr(input, "type", "text");
       input.value = input_value_value = ctx[1].name;
@@ -5117,7 +5232,7 @@ function create__1_slot_7(ctx) {
       append(span, input);
     },
     p(ctx2, dirty) {
-      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted long name quest " + ctx2[13] + " svelte-115e1jk")) {
+      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted long name quest " + ctx2[13] + " svelte-811xhi")) {
         attr(input, "class", input_class_value);
       }
       if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].name) && input.value !== input_value_value) {
@@ -5140,7 +5255,7 @@ function create__1_slot_6(ctx) {
     c() {
       span = element("span");
       input = element("input");
-      attr(input, "class", input_class_value = "dotted short " + ctx[13] + " svelte-115e1jk");
+      attr(input, "class", input_class_value = "dotted short " + ctx[13] + " svelte-811xhi");
       attr(input, "name", "data.age");
       attr(input, "type", "number");
       input.value = input_value_value = ctx[1].data.age;
@@ -5152,7 +5267,7 @@ function create__1_slot_6(ctx) {
       append(span, input);
     },
     p(ctx2, dirty) {
-      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted short " + ctx2[13] + " svelte-115e1jk")) {
+      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted short " + ctx2[13] + " svelte-811xhi")) {
         attr(input, "class", input_class_value);
       }
       if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.age)) {
@@ -5175,7 +5290,7 @@ function create__2_slot_4(ctx) {
     c() {
       span = element("span");
       input = element("input");
-      attr(input, "class", input_class_value = "dotted medium " + ctx[13] + " svelte-115e1jk");
+      attr(input, "class", input_class_value = "dotted medium " + ctx[13] + " svelte-811xhi");
       attr(input, "name", "data.height");
       attr(input, "type", "text");
       input.value = input_value_value = ctx[1].data.height;
@@ -5187,7 +5302,7 @@ function create__2_slot_4(ctx) {
       append(span, input);
     },
     p(ctx2, dirty) {
-      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted medium " + ctx2[13] + " svelte-115e1jk")) {
+      if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted medium " + ctx2[13] + " svelte-811xhi")) {
         attr(input, "class", input_class_value);
       }
       if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.height) && input.value !== input_value_value) {
@@ -6147,7 +6262,7 @@ function create_fragment6(ctx) {
       t3 = space();
       div1 = element("div");
       a = element("a");
-      a.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-115e1jk"></i>`;
+      a.innerHTML = `<i class="fas fa-dice-d20 fa-2x svelte-811xhi"></i>`;
       t4 = space();
       div2 = element("div");
       label1 = element("label");
@@ -6219,106 +6334,106 @@ function create_fragment6(ctx) {
       attr(label0, "class", "character-label");
       attr(label0, "for", "data.hp");
       attr(input0, "type", "number");
-      attr(input0, "class", input0_class_value = "hp " + ctx[13] + " svelte-115e1jk");
+      attr(input0, "class", input0_class_value = "hp " + ctx[13] + " svelte-811xhi");
       attr(input0, "name", "data.hp");
       attr(input0, "data-dtype", "Number");
       input0.value = input0_value_value = ctx[1].data.hp;
-      attr(div0, "class", "hitpoints svelte-115e1jk");
-      attr(a, "class", "svelte-115e1jk");
-      attr(div1, "class", "roll-generic svelte-115e1jk");
+      attr(div0, "class", "hitpoints svelte-811xhi");
+      attr(a, "class", "svelte-811xhi");
+      attr(div1, "class", "roll-generic svelte-811xhi");
       attr(label1, "class", "character-label");
       attr(label1, "for", "data.actionpoints");
       attr(input1, "type", "number");
-      attr(input1, "class", input1_class_value = "hp " + ctx[13] + " svelte-115e1jk");
+      attr(input1, "class", input1_class_value = "hp " + ctx[13] + " svelte-811xhi");
       attr(input1, "name", "data.ap");
       attr(input1, "data-dtype", "Number");
       input1.value = input1_value_value = ctx[1].data.ap;
-      attr(div2, "class", "actionpoints svelte-115e1jk");
-      attr(div3, "class", "header flexrow svelte-115e1jk");
-      attr(img, "class", img_class_value = "profile " + ctx[13] + " svelte-115e1jk");
+      attr(div2, "class", "actionpoints svelte-811xhi");
+      attr(div3, "class", "header flexrow svelte-811xhi");
+      attr(img, "class", img_class_value = "profile " + ctx[13] + " svelte-811xhi");
       if (img.src !== (img_src_value = ctx[1].img))
         attr(img, "src", img_src_value);
       attr(img, "alt", img_alt_value = ctx[1].name);
       attr(img, "data-edit", "img");
       attr(img, "title", img_title_value = ctx[1].name);
       attr(img, "align", "left");
-      attr(input2, "class", input2_class_value = "dotted medium " + ctx[13] + " svelte-115e1jk");
+      attr(input2, "class", input2_class_value = "dotted medium " + ctx[13] + " svelte-811xhi");
       attr(input2, "name", "data.pronouns");
       attr(input2, "type", "text");
       input2.value = input2_value_value = ctx[1].data.pronouns;
       attr(input2, "placeholder", input2_placeholder_value = game.i18n.localize("QUEST.Pronouns"));
-      attr(p0, "class", "svelte-115e1jk");
-      attr(p1, "class", "svelte-115e1jk");
-      attr(p2, "class", "svelte-115e1jk");
-      attr(p3, "class", "svelte-115e1jk");
-      attr(p4, "class", "svelte-115e1jk");
-      attr(p5, "class", "svelte-115e1jk");
-      attr(p6, "class", "svelte-115e1jk");
-      attr(p7, "class", "svelte-115e1jk");
-      attr(input3, "class", "long svelte-115e1jk");
+      attr(p0, "class", "svelte-811xhi");
+      attr(p1, "class", "svelte-811xhi");
+      attr(p2, "class", "svelte-811xhi");
+      attr(p3, "class", "svelte-811xhi");
+      attr(p4, "class", "svelte-811xhi");
+      attr(p5, "class", "svelte-811xhi");
+      attr(p6, "class", "svelte-811xhi");
+      attr(p7, "class", "svelte-811xhi");
+      attr(input3, "class", "long svelte-811xhi");
       attr(input3, "name", "data.role");
       attr(input3, "type", "hidden");
       input3.value = input3_value_value = ctx[1].data.role;
       attr(input3, "placeholder", "Role");
-      attr(input4, "class", "long svelte-115e1jk");
+      attr(input4, "class", "long svelte-811xhi");
       attr(input4, "name", "data.featurebody");
       attr(input4, "type", "hidden");
       input4.value = input4_value_value = ctx[1].data.featurebody;
       attr(input4, "placeholder", "Body");
-      attr(input5, "class", "long svelte-115e1jk");
+      attr(input5, "class", "long svelte-811xhi");
       attr(input5, "name", "data.featureface");
       attr(input5, "type", "hidden");
       input5.value = input5_value_value = ctx[1].data.featureface;
       attr(input5, "placeholder", "Face");
-      attr(input6, "class", "long svelte-115e1jk");
+      attr(input6, "class", "long svelte-811xhi");
       attr(input6, "name", "data.featurevibe");
       attr(input6, "type", "hidden");
       input6.value = input6_value_value = ctx[1].data.featurevibe;
       attr(input6, "placeholder", "Vibe");
-      attr(input7, "class", "long svelte-115e1jk");
+      attr(input7, "class", "long svelte-811xhi");
       attr(input7, "name", "data.style1");
       attr(input7, "type", "hidden");
       input7.value = input7_value_value = ctx[1].data.style1;
       attr(input7, "placeholder", "Outfit");
-      attr(input8, "class", "long svelte-115e1jk");
+      attr(input8, "class", "long svelte-811xhi");
       attr(input8, "name", "data.style2");
       attr(input8, "type", "hidden");
       input8.value = input8_value_value = ctx[1].data.style2;
       attr(input8, "placeholder", "Outfit");
-      attr(input9, "class", "long svelte-115e1jk");
+      attr(input9, "class", "long svelte-811xhi");
       attr(input9, "name", "data.style3");
       attr(input9, "type", "hidden");
       input9.value = input9_value_value = ctx[1].data.style3;
       attr(input9, "placeholder", "Movement");
-      attr(input10, "class", "long svelte-115e1jk");
+      attr(input10, "class", "long svelte-811xhi");
       attr(input10, "name", "data.home");
       attr(input10, "type", "hidden");
       input10.value = input10_value_value = ctx[1].data.home;
       attr(input10, "placeholder", "My Home");
-      attr(input11, "class", "long svelte-115e1jk");
+      attr(input11, "class", "long svelte-811xhi");
       attr(input11, "name", "data.community");
       attr(input11, "type", "hidden");
       input11.value = input11_value_value = ctx[1].data.community;
       attr(input11, "placeholder", "");
-      attr(input12, "class", "long svelte-115e1jk");
+      attr(input12, "class", "long svelte-811xhi");
       attr(input12, "name", "data.ideal");
       attr(input12, "type", "hidden");
       input12.value = input12_value_value = ctx[1].data.ideal;
       attr(input12, "placeholder", "my ideal");
-      attr(input13, "class", "long svelte-115e1jk");
+      attr(input13, "class", "long svelte-811xhi");
       attr(input13, "name", "data.flaw");
       attr(input13, "type", "hidden");
       input13.value = input13_value_value = ctx[1].data.flaw;
       attr(input13, "placeholder", "flaw");
-      attr(input14, "class", "long svelte-115e1jk");
+      attr(input14, "class", "long svelte-811xhi");
       attr(input14, "name", "data.dream");
       attr(input14, "type", "hidden");
       input14.value = input14_value_value = ctx[1].data.dream;
       attr(input14, "placeholder", "my dream");
-      attr(content0, "class", "svelte-115e1jk");
-      attr(div4, "class", "biography flexcol flex1 svelte-115e1jk");
-      attr(content1, "class", "svelte-115e1jk");
-      attr(div5, "class", "inventory-abilities flexcol flex1 svelte-115e1jk");
+      attr(content0, "class", "svelte-811xhi");
+      attr(div4, "class", "biography flexcol flex1 svelte-811xhi");
+      attr(content1, "class", "svelte-811xhi");
+      attr(div5, "class", "inventory-abilities flexcol flex1 svelte-811xhi");
       attr(div6, "class", "details flexrow flex2");
     },
     m(target, anchor) {
@@ -6408,19 +6523,19 @@ function create_fragment6(ctx) {
       }
     },
     p(ctx2, dirty) {
-      if (!current || dirty[0] & 8192 && input0_class_value !== (input0_class_value = "hp " + ctx2[13] + " svelte-115e1jk")) {
+      if (!current || dirty[0] & 8192 && input0_class_value !== (input0_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
         attr(input0, "class", input0_class_value);
       }
       if (!current || dirty[0] & 2 && input0_value_value !== (input0_value_value = ctx2[1].data.hp)) {
         input0.value = input0_value_value;
       }
-      if (!current || dirty[0] & 8192 && input1_class_value !== (input1_class_value = "hp " + ctx2[13] + " svelte-115e1jk")) {
+      if (!current || dirty[0] & 8192 && input1_class_value !== (input1_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
         attr(input1, "class", input1_class_value);
       }
       if (!current || dirty[0] & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.ap)) {
         input1.value = input1_value_value;
       }
-      if (!current || dirty[0] & 8192 && img_class_value !== (img_class_value = "profile " + ctx2[13] + " svelte-115e1jk")) {
+      if (!current || dirty[0] & 8192 && img_class_value !== (img_class_value = "profile " + ctx2[13] + " svelte-811xhi")) {
         attr(img, "class", img_class_value);
       }
       if (!current || dirty[0] & 2 && img.src !== (img_src_value = ctx2[1].img)) {
@@ -6437,7 +6552,7 @@ function create_fragment6(ctx) {
         translation0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       translation0.$set(translation0_changes);
-      if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "dotted medium " + ctx2[13] + " svelte-115e1jk")) {
+      if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "dotted medium " + ctx2[13] + " svelte-811xhi")) {
         attr(input2, "class", input2_class_value);
       }
       if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].data.pronouns) && input2.value !== input2_value_value) {
@@ -7079,16 +7194,6 @@ var QuestActorSheet = class extends ActorSheet {
       height: 740,
       tabs: []
     });
-  }
-  async getRoles() {
-    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
-    const QUESTAbilities = await game.packs.get(sourceCompendium);
-    let AllAbilities = await QUESTAbilities.getDocuments();
-    const roleList = [
-      ...new Set(AllAbilities.map((data) => data.data.data.role))
-    ];
-    console.log(roleList);
-    return roleList;
   }
   getData() {
     const context = super.getData();
@@ -7929,7 +8034,7 @@ var questChatData = async (roll, chatOptions) => {
   } else if (roll.result > 11) {
     outcome = game.i18n.localize("Success");
     css = "success";
-  } else if (roll.result > 6) {
+  } else if (roll.result > 5) {
     outcome = game.i18n.localize("TCHoice");
     css = "touch-choice";
   } else if (roll.result > 1) {
