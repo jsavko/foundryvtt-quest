@@ -43,7 +43,7 @@ const questChatData = async (roll, chatOptions) => {
     } else if (roll.result > 11) {
         outcome = game.i18n.localize("Success");
         css = "success";
-    } else if (roll.result > 6) {
+    } else if (roll.result > 5) {
         outcome = game.i18n.localize("TCHoice");
         css = "touch-choice";
     } else if (roll.result > 1) {
