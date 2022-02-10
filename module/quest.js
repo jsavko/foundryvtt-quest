@@ -26,6 +26,12 @@ import { CompendiumImportHelper } from "./compendium-helper.js";
 /**
  * Init hook.
  */
+
+//Hooks.on("createChatMessage", (a) => {
+//    if (a.data.content.match(/\[\[\~(.*?)\]\]/g))
+//        InlineTables.parseInlineTables(a);
+//});
+
 Hooks.once("init", async function () {
     console.log(`Initializing Quest Quest System`);
 
@@ -251,11 +257,6 @@ Hooks.once("init", async function () {
  */
 //Hooks.on("hotbarDrop", (bar, data, slot) => createQuestMacro(data, slot));
 
-///Hooks.on("createChatMessage", (a) => {
-///    if (a.data.content.match(/\[\[\~(.*?)\]\]/g))
-///        InlineTables.parseInlineTables(a);
-///});
-
 Hooks.once("ready", async () => {
     //Check if world compendium exisits and if not create it
     let compendium = await game.quest.CompendiumImportHelper.createCompenium();
@@ -337,8 +338,12 @@ Handlebars.registerHelper("cost", function () {
 });
 
 Handlebars.registerHelper("abilityLink", function (name, type, id) {
+    let sourceCompendium = game.settings.get(
+        "foundryvtt-quest",
+        "abilityCompendium"
+    );
     var outStr = TextEditor.enrichHTML(
-        "@Compendium[world.role-abilities." + id + "]{" + name + "}"
+        "@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}"
     );
     return outStr;
 });

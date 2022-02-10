@@ -1,5 +1,10 @@
 # Quest Foundry VTT System
 
+0.1.8
+
+-   Fixed bug that caused compendium selection to fallback to the world compendium on occassion.
+-   Added Max HP variable to actor sheet to allow for perminate reduction of max HP
+
 0.1.7
 
 -   Merged pull request for fix to Touch Choice logic

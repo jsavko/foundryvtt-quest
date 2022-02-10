@@ -379,7 +379,15 @@
             name="data.hp"
             data-dtype="Number"
             value={data.data.hp}
-        /> / 10
+        />
+        /
+        <input
+            type="number"
+            class="hp {editclass}"
+            name="data.maxhp"
+            data-dtype="Number"
+            value={data.data.maxhp}
+        />
     </div>
     <div class="roll-generic">
         <a on:click={sheet?._rollDice.bind(sheet)}

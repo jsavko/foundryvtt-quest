@@ -5,6 +5,7 @@ export class InlineTables {
         let depth = 0;
         let newContent = await this.handleMatches(content, depth);
         let theMessage = game.messages.get(finalId);
+        console.log(theMessage);
         if (theMessage.data.user === game.userId) {
             await theMessage.update({ content: newContent });
         }
@@ -18,13 +19,12 @@ export class InlineTables {
         }
         let matches = content.match(/\[\[\~(.*?)\]\]/g);
         const lf = new Intl.ListFormat("en", { style: "narrow", type: "unit" });
-        console.log(content);
 
         if (matches != null) {
             for (let match of matches) {
-                let table = match.replace(`[[#`, ``).replace(`]]`, ``);
+                let table = match.replace(`[[~`, ``).replace(`]]`, ``);
                 let roll = await game.tables.getName(table).roll();
-                console.log(roll);
+                //game.dice3d.showForRoll(roll);
                 let resArray = [];
                 resArray.push(
                     `<a class="inline-roll inline-result" title="` +
