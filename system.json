@@ -36,7 +36,7 @@
     "gridUnits": "ft",
     "primaryTokenAttribute": "health",
     "secondaryTokenAttribute": "power",
-    "templateVersion": 5,
+    "templateVersion": 6,
     "url": "https://github.com/jsavko/foundryvtt-quest",
     "manifest": "https://raw.githubusercontent.com/jsavko/foundryvtt-quest/main/system.json",
     "download": "https://github.com/jsavko/foundryvtt-quest/archive/refs/heads/main.zip",

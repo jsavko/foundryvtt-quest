@@ -6082,6 +6082,9 @@ function create_fragment6(ctx) {
   let input0_class_value;
   let input0_value_value;
   let t2;
+  let input1;
+  let input1_class_value;
+  let input1_value_value;
   let t3;
   let div1;
   let a;
@@ -6089,9 +6092,9 @@ function create_fragment6(ctx) {
   let div2;
   let label1;
   let t6;
-  let input1;
-  let input1_class_value;
-  let input1_value_value;
+  let input2;
+  let input2_class_value;
+  let input2_value_value;
   let t7;
   let div6;
   let div4;
@@ -6107,10 +6110,10 @@ function create_fragment6(ctx) {
   let t9;
   let br;
   let t10;
-  let input2;
-  let input2_class_value;
-  let input2_value_value;
-  let input2_placeholder_value;
+  let input3;
+  let input3_class_value;
+  let input3_value_value;
+  let input3_placeholder_value;
   let t11;
   let t12;
   let p1;
@@ -6134,41 +6137,41 @@ function create_fragment6(ctx) {
   let p7;
   let translation7;
   let t19;
-  let input3;
-  let input3_value_value;
-  let t20;
   let input4;
   let input4_value_value;
-  let t21;
+  let t20;
   let input5;
   let input5_value_value;
-  let t22;
+  let t21;
   let input6;
   let input6_value_value;
-  let t23;
+  let t22;
   let input7;
   let input7_value_value;
-  let t24;
+  let t23;
   let input8;
   let input8_value_value;
-  let t25;
+  let t24;
   let input9;
   let input9_value_value;
-  let t26;
+  let t25;
   let input10;
   let input10_value_value;
-  let t27;
+  let t26;
   let input11;
   let input11_value_value;
-  let t28;
+  let t27;
   let input12;
   let input12_value_value;
-  let t29;
+  let t28;
   let input13;
   let input13_value_value;
-  let t30;
+  let t29;
   let input14;
   let input14_value_value;
+  let t30;
+  let input15;
+  let input15_value_value;
   let t31;
   let div5;
   let content1;
@@ -6258,7 +6261,8 @@ function create_fragment6(ctx) {
       label0.textContent = `${game.i18n.localize("QUEST.HP")}`;
       t1 = space();
       input0 = element("input");
-      t2 = text(" / 10");
+      t2 = text("\r\n        /\r\n        ");
+      input1 = element("input");
       t3 = space();
       div1 = element("div");
       a = element("a");
@@ -6268,7 +6272,7 @@ function create_fragment6(ctx) {
       label1 = element("label");
       label1.textContent = `${game.i18n.localize("QUEST.AP")}`;
       t6 = space();
-      input1 = element("input");
+      input2 = element("input");
       t7 = space();
       div6 = element("div");
       div4 = element("div");
@@ -6280,7 +6284,7 @@ function create_fragment6(ctx) {
       t9 = space();
       br = element("br");
       t10 = text("(");
-      input2 = element("input");
+      input3 = element("input");
       t11 = text(").");
       t12 = space();
       p1 = element("p");
@@ -6304,29 +6308,29 @@ function create_fragment6(ctx) {
       p7 = element("p");
       create_component(translation7.$$.fragment);
       t19 = space();
-      input3 = element("input");
-      t20 = space();
       input4 = element("input");
-      t21 = space();
+      t20 = space();
       input5 = element("input");
-      t22 = space();
+      t21 = space();
       input6 = element("input");
-      t23 = space();
+      t22 = space();
       input7 = element("input");
-      t24 = space();
+      t23 = space();
       input8 = element("input");
-      t25 = space();
+      t24 = space();
       input9 = element("input");
-      t26 = space();
+      t25 = space();
       input10 = element("input");
-      t27 = space();
+      t26 = space();
       input11 = element("input");
-      t28 = space();
+      t27 = space();
       input12 = element("input");
-      t29 = space();
+      t28 = space();
       input13 = element("input");
-      t30 = space();
+      t29 = space();
       input14 = element("input");
+      t30 = space();
+      input15 = element("input");
       t31 = space();
       div5 = element("div");
       content1 = element("content");
@@ -6338,16 +6342,21 @@ function create_fragment6(ctx) {
       attr(input0, "name", "data.hp");
       attr(input0, "data-dtype", "Number");
       input0.value = input0_value_value = ctx[1].data.hp;
+      attr(input1, "type", "number");
+      attr(input1, "class", input1_class_value = "hp " + ctx[13] + " svelte-811xhi");
+      attr(input1, "name", "data.maxhp");
+      attr(input1, "data-dtype", "Number");
+      input1.value = input1_value_value = ctx[1].data.maxhp;
       attr(div0, "class", "hitpoints svelte-811xhi");
       attr(a, "class", "svelte-811xhi");
       attr(div1, "class", "roll-generic svelte-811xhi");
       attr(label1, "class", "character-label");
       attr(label1, "for", "data.actionpoints");
-      attr(input1, "type", "number");
-      attr(input1, "class", input1_class_value = "hp " + ctx[13] + " svelte-811xhi");
-      attr(input1, "name", "data.ap");
-      attr(input1, "data-dtype", "Number");
-      input1.value = input1_value_value = ctx[1].data.ap;
+      attr(input2, "type", "number");
+      attr(input2, "class", input2_class_value = "hp " + ctx[13] + " svelte-811xhi");
+      attr(input2, "name", "data.ap");
+      attr(input2, "data-dtype", "Number");
+      input2.value = input2_value_value = ctx[1].data.ap;
       attr(div2, "class", "actionpoints svelte-811xhi");
       attr(div3, "class", "header flexrow svelte-811xhi");
       attr(img, "class", img_class_value = "profile " + ctx[13] + " svelte-811xhi");
@@ -6357,11 +6366,11 @@ function create_fragment6(ctx) {
       attr(img, "data-edit", "img");
       attr(img, "title", img_title_value = ctx[1].name);
       attr(img, "align", "left");
-      attr(input2, "class", input2_class_value = "dotted medium " + ctx[13] + " svelte-811xhi");
-      attr(input2, "name", "data.pronouns");
-      attr(input2, "type", "text");
-      input2.value = input2_value_value = ctx[1].data.pronouns;
-      attr(input2, "placeholder", input2_placeholder_value = game.i18n.localize("QUEST.Pronouns"));
+      attr(input3, "class", input3_class_value = "dotted medium " + ctx[13] + " svelte-811xhi");
+      attr(input3, "name", "data.pronouns");
+      attr(input3, "type", "text");
+      input3.value = input3_value_value = ctx[1].data.pronouns;
+      attr(input3, "placeholder", input3_placeholder_value = game.i18n.localize("QUEST.Pronouns"));
       attr(p0, "class", "svelte-811xhi");
       attr(p1, "class", "svelte-811xhi");
       attr(p2, "class", "svelte-811xhi");
@@ -6370,66 +6379,66 @@ function create_fragment6(ctx) {
       attr(p5, "class", "svelte-811xhi");
       attr(p6, "class", "svelte-811xhi");
       attr(p7, "class", "svelte-811xhi");
-      attr(input3, "class", "long svelte-811xhi");
-      attr(input3, "name", "data.role");
-      attr(input3, "type", "hidden");
-      input3.value = input3_value_value = ctx[1].data.role;
-      attr(input3, "placeholder", "Role");
       attr(input4, "class", "long svelte-811xhi");
-      attr(input4, "name", "data.featurebody");
+      attr(input4, "name", "data.role");
       attr(input4, "type", "hidden");
-      input4.value = input4_value_value = ctx[1].data.featurebody;
-      attr(input4, "placeholder", "Body");
+      input4.value = input4_value_value = ctx[1].data.role;
+      attr(input4, "placeholder", "Role");
       attr(input5, "class", "long svelte-811xhi");
-      attr(input5, "name", "data.featureface");
+      attr(input5, "name", "data.featurebody");
       attr(input5, "type", "hidden");
-      input5.value = input5_value_value = ctx[1].data.featureface;
-      attr(input5, "placeholder", "Face");
+      input5.value = input5_value_value = ctx[1].data.featurebody;
+      attr(input5, "placeholder", "Body");
       attr(input6, "class", "long svelte-811xhi");
-      attr(input6, "name", "data.featurevibe");
+      attr(input6, "name", "data.featureface");
       attr(input6, "type", "hidden");
-      input6.value = input6_value_value = ctx[1].data.featurevibe;
-      attr(input6, "placeholder", "Vibe");
+      input6.value = input6_value_value = ctx[1].data.featureface;
+      attr(input6, "placeholder", "Face");
       attr(input7, "class", "long svelte-811xhi");
-      attr(input7, "name", "data.style1");
+      attr(input7, "name", "data.featurevibe");
       attr(input7, "type", "hidden");
-      input7.value = input7_value_value = ctx[1].data.style1;
-      attr(input7, "placeholder", "Outfit");
+      input7.value = input7_value_value = ctx[1].data.featurevibe;
+      attr(input7, "placeholder", "Vibe");
       attr(input8, "class", "long svelte-811xhi");
-      attr(input8, "name", "data.style2");
+      attr(input8, "name", "data.style1");
       attr(input8, "type", "hidden");
-      input8.value = input8_value_value = ctx[1].data.style2;
+      input8.value = input8_value_value = ctx[1].data.style1;
       attr(input8, "placeholder", "Outfit");
       attr(input9, "class", "long svelte-811xhi");
-      attr(input9, "name", "data.style3");
+      attr(input9, "name", "data.style2");
       attr(input9, "type", "hidden");
-      input9.value = input9_value_value = ctx[1].data.style3;
-      attr(input9, "placeholder", "Movement");
+      input9.value = input9_value_value = ctx[1].data.style2;
+      attr(input9, "placeholder", "Outfit");
       attr(input10, "class", "long svelte-811xhi");
-      attr(input10, "name", "data.home");
+      attr(input10, "name", "data.style3");
       attr(input10, "type", "hidden");
-      input10.value = input10_value_value = ctx[1].data.home;
-      attr(input10, "placeholder", "My Home");
+      input10.value = input10_value_value = ctx[1].data.style3;
+      attr(input10, "placeholder", "Movement");
       attr(input11, "class", "long svelte-811xhi");
-      attr(input11, "name", "data.community");
+      attr(input11, "name", "data.home");
       attr(input11, "type", "hidden");
-      input11.value = input11_value_value = ctx[1].data.community;
-      attr(input11, "placeholder", "");
+      input11.value = input11_value_value = ctx[1].data.home;
+      attr(input11, "placeholder", "My Home");
       attr(input12, "class", "long svelte-811xhi");
-      attr(input12, "name", "data.ideal");
+      attr(input12, "name", "data.community");
       attr(input12, "type", "hidden");
-      input12.value = input12_value_value = ctx[1].data.ideal;
-      attr(input12, "placeholder", "my ideal");
+      input12.value = input12_value_value = ctx[1].data.community;
+      attr(input12, "placeholder", "");
       attr(input13, "class", "long svelte-811xhi");
-      attr(input13, "name", "data.flaw");
+      attr(input13, "name", "data.ideal");
       attr(input13, "type", "hidden");
-      input13.value = input13_value_value = ctx[1].data.flaw;
-      attr(input13, "placeholder", "flaw");
+      input13.value = input13_value_value = ctx[1].data.ideal;
+      attr(input13, "placeholder", "my ideal");
       attr(input14, "class", "long svelte-811xhi");
-      attr(input14, "name", "data.dream");
+      attr(input14, "name", "data.flaw");
       attr(input14, "type", "hidden");
-      input14.value = input14_value_value = ctx[1].data.dream;
-      attr(input14, "placeholder", "my dream");
+      input14.value = input14_value_value = ctx[1].data.flaw;
+      attr(input14, "placeholder", "flaw");
+      attr(input15, "class", "long svelte-811xhi");
+      attr(input15, "name", "data.dream");
+      attr(input15, "type", "hidden");
+      input15.value = input15_value_value = ctx[1].data.dream;
+      attr(input15, "placeholder", "my dream");
       attr(content0, "class", "svelte-811xhi");
       attr(div4, "class", "biography flexcol flex1 svelte-811xhi");
       attr(content1, "class", "svelte-811xhi");
@@ -6443,6 +6452,7 @@ function create_fragment6(ctx) {
       append(div0, t1);
       append(div0, input0);
       append(div0, t2);
+      append(div0, input1);
       append(div3, t3);
       append(div3, div1);
       append(div1, a);
@@ -6450,7 +6460,7 @@ function create_fragment6(ctx) {
       append(div3, div2);
       append(div2, label1);
       append(div2, t6);
-      append(div2, input1);
+      append(div2, input2);
       insert(target, t7, anchor);
       insert(target, div6, anchor);
       append(div6, div4);
@@ -6462,7 +6472,7 @@ function create_fragment6(ctx) {
       append(p0, t9);
       append(p0, br);
       append(p0, t10);
-      append(p0, input2);
+      append(p0, input3);
       append(p0, t11);
       append(content0, t12);
       append(content0, p1);
@@ -6486,29 +6496,29 @@ function create_fragment6(ctx) {
       append(content0, p7);
       mount_component(translation7, p7, null);
       append(content0, t19);
-      append(content0, input3);
-      append(content0, t20);
       append(content0, input4);
-      append(content0, t21);
+      append(content0, t20);
       append(content0, input5);
-      append(content0, t22);
+      append(content0, t21);
       append(content0, input6);
-      append(content0, t23);
+      append(content0, t22);
       append(content0, input7);
-      append(content0, t24);
+      append(content0, t23);
       append(content0, input8);
-      append(content0, t25);
+      append(content0, t24);
       append(content0, input9);
-      append(content0, t26);
+      append(content0, t25);
       append(content0, input10);
-      append(content0, t27);
+      append(content0, t26);
       append(content0, input11);
-      append(content0, t28);
+      append(content0, t27);
       append(content0, input12);
-      append(content0, t29);
+      append(content0, t28);
       append(content0, input13);
-      append(content0, t30);
+      append(content0, t29);
       append(content0, input14);
+      append(content0, t30);
+      append(content0, input15);
       append(div6, t31);
       append(div6, div5);
       append(div5, content1);
@@ -6532,8 +6542,14 @@ function create_fragment6(ctx) {
       if (!current || dirty[0] & 8192 && input1_class_value !== (input1_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
         attr(input1, "class", input1_class_value);
       }
-      if (!current || dirty[0] & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.ap)) {
+      if (!current || dirty[0] & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.maxhp)) {
         input1.value = input1_value_value;
+      }
+      if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
+        attr(input2, "class", input2_class_value);
+      }
+      if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].data.ap)) {
+        input2.value = input2_value_value;
       }
       if (!current || dirty[0] & 8192 && img_class_value !== (img_class_value = "profile " + ctx2[13] + " svelte-811xhi")) {
         attr(img, "class", img_class_value);
@@ -6552,11 +6568,11 @@ function create_fragment6(ctx) {
         translation0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       translation0.$set(translation0_changes);
-      if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "dotted medium " + ctx2[13] + " svelte-811xhi")) {
-        attr(input2, "class", input2_class_value);
+      if (!current || dirty[0] & 8192 && input3_class_value !== (input3_class_value = "dotted medium " + ctx2[13] + " svelte-811xhi")) {
+        attr(input3, "class", input3_class_value);
       }
-      if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].data.pronouns) && input2.value !== input2_value_value) {
-        input2.value = input2_value_value;
+      if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].data.pronouns) && input3.value !== input3_value_value) {
+        input3.value = input3_value_value;
       }
       const translation1_changes = {};
       if (dirty[0] & 8194 | dirty[1] & 67108864) {
@@ -6593,41 +6609,41 @@ function create_fragment6(ctx) {
         translation7_changes.$$scope = { dirty, ctx: ctx2 };
       }
       translation7.$set(translation7_changes);
-      if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].data.role)) {
-        input3.value = input3_value_value;
-      }
-      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.featurebody)) {
+      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.role)) {
         input4.value = input4_value_value;
       }
-      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.featureface)) {
+      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.featurebody)) {
         input5.value = input5_value_value;
       }
-      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.featurevibe)) {
+      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.featureface)) {
         input6.value = input6_value_value;
       }
-      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.style1)) {
+      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.featurevibe)) {
         input7.value = input7_value_value;
       }
-      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.style2)) {
+      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.style1)) {
         input8.value = input8_value_value;
       }
-      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.style3)) {
+      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.style2)) {
         input9.value = input9_value_value;
       }
-      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.home)) {
+      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.style3)) {
         input10.value = input10_value_value;
       }
-      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.community)) {
+      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.home)) {
         input11.value = input11_value_value;
       }
-      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.ideal)) {
+      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.community)) {
         input12.value = input12_value_value;
       }
-      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.flaw)) {
+      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.ideal)) {
         input13.value = input13_value_value;
       }
-      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.dream)) {
+      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.flaw)) {
         input14.value = input14_value_value;
+      }
+      if (!current || dirty[0] & 2 && input15_value_value !== (input15_value_value = ctx2[1].data.dream)) {
+        input15.value = input15_value_value;
       }
     },
     i(local) {
@@ -8380,7 +8396,8 @@ Handlebars.registerHelper("cost", function() {
   return outStr;
 });
 Handlebars.registerHelper("abilityLink", function(name, type, id) {
-  var outStr = TextEditor.enrichHTML("@Compendium[world.role-abilities." + id + "]{" + name + "}");
+  let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
+  var outStr = TextEditor.enrichHTML("@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}");
   return outStr;
 });
 Handlebars.registerHelper("replace", function(value, find, replace) {
