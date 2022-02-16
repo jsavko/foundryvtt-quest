@@ -2,6 +2,10 @@
 
 0.1.8
 
+-   Fixed issue with localization on rolls
+
+0.1.8
+
 -   Fixed bug that caused compendium selection to fallback to the world compendium on occassion.
 -   Added Max HP variable to actor sheet to allow for perminate reduction of max HP
 
