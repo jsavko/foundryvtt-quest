@@ -8359,6 +8359,13 @@ Hooks.once("ready", async () => {
   });
   game.quest.roleList = await getRoleList();
 });
+Hooks.on("renderDialog", (dialog, html) => {
+  Array.from(html.find("#document-create option")).forEach((i) => {
+    if (i.value == "detail") {
+      i.remove();
+    }
+  });
+});
 async function getRoleList() {
   let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
   const QUESTAbilities = await game.packs.get(sourceCompendium);
