@@ -6082,6 +6082,7 @@ function create_fragment6(ctx) {
   let input0_class_value;
   let input0_value_value;
   let t2;
+  let span;
   let input1;
   let input1_class_value;
   let input1_value_value;
@@ -6262,6 +6263,7 @@ function create_fragment6(ctx) {
       t1 = space();
       input0 = element("input");
       t2 = text("\r\n        /\r\n        ");
+      span = element("span");
       input1 = element("input");
       t3 = space();
       div1 = element("div");
@@ -6347,6 +6349,7 @@ function create_fragment6(ctx) {
       attr(input1, "name", "data.maxhp");
       attr(input1, "data-dtype", "Number");
       input1.value = input1_value_value = ctx[1].data.maxhp;
+      attr(span, "id", "maxhp");
       attr(div0, "class", "hitpoints svelte-811xhi");
       attr(a, "class", "svelte-811xhi");
       attr(div1, "class", "roll-generic svelte-811xhi");
@@ -6452,7 +6455,8 @@ function create_fragment6(ctx) {
       append(div0, t1);
       append(div0, input0);
       append(div0, t2);
-      append(div0, input1);
+      append(div0, span);
+      append(span, input1);
       append(div3, t3);
       append(div3, div1);
       append(div1, a);
@@ -8045,19 +8049,19 @@ var questChatData = async (roll, chatOptions) => {
   let outcome;
   let css;
   if (roll.result == "20") {
-    outcome = game.i18n.localize("Triumph");
+    outcome = game.i18n.localize("QUEST.Triumph");
     css = "triumph";
   } else if (roll.result > 11) {
-    outcome = game.i18n.localize("Success");
+    outcome = game.i18n.localize("QUEST.Success");
     css = "success";
   } else if (roll.result > 5) {
-    outcome = game.i18n.localize("TCHoice");
+    outcome = game.i18n.localize("QUEST.TChoice");
     css = "touch-choice";
   } else if (roll.result > 1) {
-    outcome = game.i18n.localize("Failure");
+    outcome = game.i18n.localize("QUEST.Failure");
     css = "catastrophe";
   } else {
-    outcome = game.i18n.localize("Catastrophe");
+    outcome = game.i18n.localize("QUEST.Catastrophe");
     css = "catastrophe";
   }
   return {
@@ -8354,6 +8358,13 @@ Hooks.once("ready", async () => {
     choices: itemPacks
   });
   game.quest.roleList = await getRoleList();
+});
+Hooks.on("renderDialog", (dialog, html) => {
+  Array.from(html.find("#document-create option")).forEach((i) => {
+    if (i.value == "detail") {
+      i.remove();
+    }
+  });
 });
 async function getRoleList() {
   let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");

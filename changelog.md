@@ -1,5 +1,10 @@
 # Quest Foundry VTT System
 
+0.1.9
+
+-   Fixed issue with localization on rolls
+-   Removed `detail` type from item list when creating new item
+
 0.1.8
 
 -   Fixed bug that caused compendium selection to fallback to the world compendium on occassion.

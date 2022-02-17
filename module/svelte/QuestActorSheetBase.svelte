@@ -381,13 +381,13 @@
             value={data.data.hp}
         />
         /
-        <input
+        <span id="maxhp"><input
             type="number"
             class="hp {editclass}"
             name="data.maxhp"
             data-dtype="Number"
             value={data.data.maxhp}
-        />
+        /></span>
     </div>
     <div class="roll-generic">
         <a on:click={sheet?._rollDice.bind(sheet)}
