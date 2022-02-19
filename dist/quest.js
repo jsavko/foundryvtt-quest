@@ -489,139 +489,8 @@ var QuestActor = class extends Actor {
   }
   getRollData() {
     const data = this.toObject(false).data;
-    const shorthand = game.settings.get("foundryvtt-quest", "macroShorthand");
-    const formulaAttributes = [];
-    const itemAttributes = [];
-    this._applyShorthand(data, formulaAttributes, shorthand);
-    this._applyItems(data, itemAttributes, shorthand);
-    this._applyItemsFormulaReplacements(data, itemAttributes, shorthand);
-    this._applyFormulaReplacements(data, formulaAttributes, shorthand);
-    if (!!shorthand) {
-      delete data.attributes;
-      delete data.attr;
-      delete data.abil;
-      delete data.groups;
-    }
+    console.log("roll data?");
     return data;
-  }
-  _applyShorthand(data, formulaAttributes, shorthand) {
-    for (let [k, v] of Object.entries(data.attributes || {})) {
-      if (v.dtype === "Formula")
-        formulaAttributes.push(k);
-      if (!!shorthand) {
-        if (!(k in data)) {
-          if (v.dtype) {
-            data[k] = v.value;
-          } else {
-            data[k] = {};
-            for (let [gk, gv] of Object.entries(v)) {
-              data[k][gk] = gv.value;
-              if (gv.dtype === "Formula")
-                formulaAttributes.push(`${k}.${gk}`);
-            }
-          }
-        }
-      }
-    }
-  }
-  _applyItems(data, itemAttributes, shorthand) {
-    data.items = this.items.reduce((obj, item2) => {
-      const key = item2.name.slugify({ strict: true });
-      const itemData = item2.toObject(false).data;
-      for (let [k, v] of Object.entries(itemData.attributes)) {
-        if (v.dtype === "Formula")
-          itemAttributes.push(`${key}..${k}`);
-        if (!!shorthand) {
-          if (!(k in itemData)) {
-            if (v.dtype) {
-              itemData[k] = v.value;
-            } else {
-              if (!itemData[k])
-                itemData[k] = {};
-              for (let [gk, gv] of Object.entries(v)) {
-                itemData[k][gk] = gv.value;
-                if (gv.dtype === "Formula")
-                  itemAttributes.push(`${key}..${k}.${gk}`);
-              }
-            }
-          }
-        } else {
-          if (!v.dtype) {
-            if (!itemData[k])
-              itemData[k] = {};
-            for (let [gk, gv] of Object.entries(v)) {
-              itemData[k][gk] = gv.value;
-              if (gv.dtype === "Formula")
-                itemAttributes.push(`${key}..${k}.${gk}`);
-            }
-          }
-        }
-      }
-      if (!!shorthand) {
-        delete itemData.attributes;
-      }
-      obj[key] = itemData;
-      return obj;
-    }, {});
-  }
-  _applyItemsFormulaReplacements(data, itemAttributes, shorthand) {
-    for (let k of itemAttributes) {
-      let item2 = null;
-      let itemKey = k.split("..");
-      item2 = itemKey[0];
-      k = itemKey[1];
-      let gk = null;
-      if (k.includes(".")) {
-        let attrKey = k.split(".");
-        k = attrKey[0];
-        gk = attrKey[1];
-      }
-      let formula = "";
-      if (!!shorthand) {
-        if (data.items[item2][k][gk]) {
-          formula = data.items[item2][k][gk].replace("@item.", `@items.${item2}.`);
-          data.items[item2][k][gk] = Roll.replaceFormulaData(formula, data);
-        } else if (data.items[item2][k]) {
-          formula = data.items[item2][k].replace("@item.", `@items.${item2}.`);
-          data.items[item2][k] = Roll.replaceFormulaData(formula, data);
-        }
-      } else {
-        if (data.items[item2]["attributes"][k][gk]) {
-          formula = data.items[item2]["attributes"][k][gk]["value"].replace("@item.", `@items.${item2}.attributes.`);
-          data.items[item2]["attributes"][k][gk]["value"] = Roll.replaceFormulaData(formula, data);
-        } else if (data.items[item2]["attributes"][k]["value"]) {
-          formula = data.items[item2]["attributes"][k]["value"].replace("@item.", `@items.${item2}.attributes.`);
-          data.items[item2]["attributes"][k]["value"] = Roll.replaceFormulaData(formula, data);
-        }
-      }
-    }
-  }
-  _applyFormulaReplacements(data, formulaAttributes, shorthand) {
-    for (let k of formulaAttributes) {
-      let attr3 = null;
-      if (k.includes(".")) {
-        let attrKey = k.split(".");
-        k = attrKey[0];
-        attr3 = attrKey[1];
-      }
-      if (data.attributes[k]?.value) {
-        data.attributes[k].value = Roll.replaceFormulaData(data.attributes[k].value, data);
-      } else if (attr3) {
-        data.attributes[k][attr3].value = Roll.replaceFormulaData(data.attributes[k][attr3].value, data);
-      }
-      if (!!shorthand) {
-        if (data.attributes[k]?.value) {
-          data[k] = data.attributes[k].value;
-        } else {
-          if (attr3) {
-            if (!data[k]) {
-              data[k] = {};
-            }
-            data[k][attr3] = data.attributes[k][attr3].value;
-          }
-        }
-      }
-    }
   }
 };
 
@@ -8005,6 +7874,77 @@ var preloadHandlebarsTemplates = async function() {
     "systems/foundryvtt-quest/templates/parts/sheet-attributes.html",
     "systems/foundryvtt-quest/templates/parts/sheet-groups.html"
   ];
+  Handlebars.registerHelper("ifEquals", function(arg1, arg2, options) {
+    return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+  });
+  Handlebars.registerHelper("times", function(n, block) {
+    var accum = "";
+    for (var i = 0; i < n; ++i)
+      accum += block.fn(i);
+    return accum;
+  });
+  Handlebars.registerHelper("concat", function() {
+    var outStr = "";
+    for (var arg in arguments) {
+      if (typeof arguments[arg] != "object") {
+        outStr += arguments[arg];
+      }
+    }
+    return outStr;
+  });
+  Handlebars.registerHelper("enrich", function() {
+    var outStr = TextEditor.enrichHTML(arguments[0]);
+    return outStr;
+  });
+  Handlebars.registerHelper("enrich_stripcost", function() {
+    var removeCost = arguments[0];
+    const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+    var removeCost = removeCost.replace(rgx, "");
+    removeCost = removeCost.replace(/<p[^>]*>/g, "");
+    var outStr = TextEditor.enrichHTML(removeCost);
+    return outStr;
+  });
+  Handlebars.registerHelper("cost", function() {
+    var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
+    return outStr;
+  });
+  Handlebars.registerHelper("abilityLink", function(name, type, id) {
+    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
+    var outStr = TextEditor.enrichHTML("@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}");
+    return outStr;
+  });
+  Handlebars.registerHelper("replace", function(value, find, replace) {
+    return value.replace(find, replace);
+  });
+  Handlebars.registerHelper("slugify", function(value) {
+    return value.slugify({ strict: true });
+  });
+  Handlebars.registerHelper("ifCond", function(v1, operator, v2, options) {
+    switch (operator) {
+      case "==":
+        return v1 == v2 ? options.fn(this) : options.inverse(this);
+      case "===":
+        return v1 === v2 ? options.fn(this) : options.inverse(this);
+      case "!=":
+        return v1 != v2 ? options.fn(this) : options.inverse(this);
+      case "!==":
+        return v1 !== v2 ? options.fn(this) : options.inverse(this);
+      case "<":
+        return v1 < v2 ? options.fn(this) : options.inverse(this);
+      case "<=":
+        return v1 <= v2 ? options.fn(this) : options.inverse(this);
+      case ">":
+        return v1 > v2 ? options.fn(this) : options.inverse(this);
+      case ">=":
+        return v1 >= v2 ? options.fn(this) : options.inverse(this);
+      case "&&":
+        return v1 && v2 ? options.fn(this) : options.inverse(this);
+      case "||":
+        return v1 || v2 ? options.fn(this) : options.inverse(this);
+      default:
+        return options.inverse(this);
+    }
+  });
   return loadTemplates(templatePaths);
 };
 
@@ -8200,6 +8140,91 @@ var CompendiumImportHelper = class {
   }
 };
 
+// module/combat-tracker.js
+var QuestCombatTracker = class extends CombatTracker {
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      id: "combat",
+      template: "systems/foundryvtt-quest/templates/sidebar/combat-tracker.html",
+      title: "Combat Tracker",
+      scrollY: [".directory-list"]
+    });
+  }
+  activateListeners(html) {
+    super.activateListeners(html);
+  }
+  async _onCombatantControl(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const btn = event.currentTarget;
+    const li = btn.closest(".combatant");
+    const combat = this.viewed;
+    const c = combat.combatants.get(li.dataset.combatantId);
+    switch (btn.dataset.control) {
+      case "rollInitiative":
+        let roll = new game.quest.QuestRoll("1d20");
+        await roll.evaluate({ async: true });
+        roll.toMessage({
+          user: game.user.id,
+          speaker: ChatMessage.getSpeaker({ actor: c.actor })
+        });
+        return true;
+    }
+  }
+  async getData(options) {
+    let context = await super.getData(options);
+    context.groups = { character: [], npc: [] };
+    context.difficulty = {
+      character: 0,
+      npc: 0,
+      score: null,
+      rating: null
+    };
+    for (let [i, combatant] of context.combat.turns.entries()) {
+      let group = combatant.actor.data.type;
+      let turn = context.turns[i];
+      turn.css = turn.css.replace("active", "");
+      turn.combatant = combatant;
+      context.groups[group].push(turn);
+      context.difficulty[group] += combatant.actor.data.data.hp;
+    }
+    context.difficulty.score = parseInt(context.difficulty.npc / context.difficulty.character * 100);
+    if (context.difficulty.score > 80) {
+      context.difficulty.rating = "QUEST.Deadly";
+    } else if (context.difficulty.score > 50) {
+      context.difficulty.rating = "QUEST.DeadlyFair";
+    } else if (context.difficulty.score > 30) {
+      context.difficulty.rating = "QUEST.Fair";
+    } else {
+      context.difficulty.rating = "QUEST.Easy";
+    }
+    return context;
+  }
+  firstOwner(doc) {
+    if (!doc)
+      return false;
+    const gmOwners = Object.entries(doc.data.permission).filter(([id, level]) => game.users.get(id)?.isGM && game.users.get(id)?.active && level === 3).map(([id, level]) => id);
+    const otherOwners = Object.entries(doc.data.permission).filter(([id, level]) => !game.users.get(id)?.isGM && game.users.get(id)?.active && level === 3).map(([id, level]) => id);
+    if (otherOwners.length > 0)
+      return game.users.get(otherOwners[0]);
+    else
+      return game.users.get(gmOwners[0]);
+  }
+  isFirstOwner(doc) {
+    return game.user.id === this.firstOwner(doc).id;
+  }
+  hasPlayerOwner(doc) {
+    if (!doc)
+      return false;
+    const gmOwners = Object.entries(doc.data.permission).filter(([id, level]) => game.users.get(id)?.isGM && game.users.get(id)?.active && level === 3).map(([id, level]) => id);
+    const otherOwners = Object.entries(doc.data.permission).filter(([id, level]) => !game.users.get(id)?.isGM && game.users.get(id)?.active && level === 3).map(([id, level]) => id);
+    if (otherOwners.length > 0)
+      return true;
+    else
+      return false;
+  }
+};
+
 // module/quest.js
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
@@ -8215,9 +8240,10 @@ Hooks.once("init", async function() {
   };
   CONFIG.Actor.documentClass = QuestActor;
   CONFIG.Item.documentClass = QuestItem;
+  CONFIG.ui.combat = QuestCombatTracker;
   CONFIG.Dice.rolls.push(QuestRoll);
   CONFIG.Combat.initiative = {
-    formula: "1d20",
+    formula: "0",
     decimals: 2
   };
   Actors.unregisterSheet("core", ActorSheet);
@@ -8236,34 +8262,6 @@ Hooks.once("init", async function() {
     types: ["ability", "detail"],
     makeDefault: true
   });
-  game.settings.register("foundryvtt-quest", "macroShorthand", {
-    name: "SETTINGS.QuestMacroShorthandN",
-    hint: "SETTINGS.QuestMacroShorthandL",
-    scope: "world",
-    type: Boolean,
-    default: true,
-    config: true
-  });
-  game.settings.register("foundryvtt-quest", "initFormula", {
-    name: "SETTINGS.QuestInitFormulaN",
-    hint: "SETTINGS.QuestInitFormulaL",
-    scope: "world",
-    type: String,
-    default: "1d20",
-    config: true,
-    onChange: (formula) => _simpleUpdateInit(formula, true)
-  });
-  const initFormula = game.settings.get("foundryvtt-quest", "initFormula");
-  _simpleUpdateInit(initFormula);
-  function _simpleUpdateInit(formula, notify = false) {
-    const isValid = Roll.validate(formula);
-    if (!isValid) {
-      if (notify)
-        ui.notifications.error(`${game.i18n.localize("QUEST.NotifyInitFormulaInvalid")}: ${formula}`);
-      return;
-    }
-    CONFIG.Combat.initiative.formula = formula;
-  }
   await preloadHandlebarsTemplates();
   TextEditor.enrichHTML = function(content, {
     secrets = false,
@@ -8375,48 +8373,6 @@ async function getRoleList() {
   ];
   return roleList;
 }
-Handlebars.registerHelper("times", function(n, block) {
-  var accum = "";
-  for (var i = 0; i < n; ++i)
-    accum += block.fn(i);
-  return accum;
-});
-Handlebars.registerHelper("concat", function() {
-  var outStr = "";
-  for (var arg in arguments) {
-    if (typeof arguments[arg] != "object") {
-      outStr += arguments[arg];
-    }
-  }
-  return outStr;
-});
-Handlebars.registerHelper("enrich", function() {
-  var outStr = TextEditor.enrichHTML(arguments[0]);
-  return outStr;
-});
-Handlebars.registerHelper("enrich_stripcost", function() {
-  var removeCost = arguments[0];
-  const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
-  var removeCost = removeCost.replace(rgx, "");
-  removeCost = removeCost.replace(/<p[^>]*>/g, "");
-  var outStr = TextEditor.enrichHTML(removeCost);
-  return outStr;
-});
-Handlebars.registerHelper("cost", function() {
-  var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
-  return outStr;
-});
-Handlebars.registerHelper("abilityLink", function(name, type, id) {
-  let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
-  var outStr = TextEditor.enrichHTML("@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}");
-  return outStr;
-});
-Handlebars.registerHelper("replace", function(value, find, replace) {
-  return value.replace(find, replace);
-});
-Handlebars.registerHelper("slugify", function(value) {
-  return value.slugify({ strict: true });
-});
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
