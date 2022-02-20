@@ -8152,6 +8152,33 @@ var QuestCombatTracker = class extends CombatTracker {
   }
   activateListeners(html) {
     super.activateListeners(html);
+    html.find(".ct-item-hp").change((ev) => this._updateActor(ev));
+    html.find(".ct-item-ap").change((ev) => this._updateActor(ev));
+  }
+  async _updateActor(ev) {
+    ev.preventDefault();
+    console.log(ev);
+    const dataset = ev.currentTarget.dataset;
+    console.log(dataset.combatantId);
+    const combatant = game.combat.combatants.find((c) => c.id == dataset.combatantId);
+    console.log(combatant);
+    const actor = combatant.actor;
+    let target = ev.currentTarget;
+    let value = ev.currentTarget.value;
+    if (dataset.dtype == "Number") {
+      value = Number(value);
+      if (Number.isNaN(value)) {
+        if (target.name == "data.hp")
+          ev.currentTarget.value = actor.data.data.hp;
+        else if (target.name == "data.ap")
+          ev.currentTarget.value = actor.data.data.ap;
+        return false;
+      }
+    }
+    let updateData = {};
+    updateData[target.name] = value;
+    actor.update(updateData);
+    return;
   }
   async _onCombatantControl(event) {
     event.preventDefault();
@@ -8161,6 +8188,10 @@ var QuestCombatTracker = class extends CombatTracker {
     const combat = this.viewed;
     const c = combat.combatants.get(li.dataset.combatantId);
     switch (btn.dataset.control) {
+      case "toggleHidden":
+        return c.update({ hidden: !c.hidden });
+      case "toggleDefeated":
+        return this._onToggleDefeatedStatus(c);
       case "rollInitiative":
         let roll = new game.quest.QuestRoll("1d20");
         await roll.evaluate({ async: true });
@@ -8198,6 +8229,7 @@ var QuestCombatTracker = class extends CombatTracker {
     } else {
       context.difficulty.rating = "QUEST.Easy";
     }
+    console.log(context);
     return context;
   }
   firstOwner(doc) {

@@ -20,6 +20,41 @@ export default class QuestCombatTracker extends CombatTracker {
 
     activateListeners(html) {
         super.activateListeners(html);
+
+        html.find(".ct-item-hp").change((ev) => this._updateActor(ev));
+        html.find(".ct-item-ap").change((ev) => this._updateActor(ev));
+    }
+
+    async _updateActor(ev) {
+        ev.preventDefault();
+        console.log(ev);
+        const dataset = ev.currentTarget.dataset;
+        console.log(dataset.combatantId);
+        const combatant = game.combat.combatants.find(
+            (c) => c.id == dataset.combatantId
+        );
+        console.log(combatant);
+        const actor = combatant.actor;
+        let target = ev.currentTarget;
+        let value = ev.currentTarget.value;
+        if (dataset.dtype == "Number") {
+            value = Number(value);
+            if (Number.isNaN(value)) {
+                if (target.name == "data.hp")
+                    ev.currentTarget.value = actor.data.data.hp;
+                else if (target.name == "data.ap")
+                    ev.currentTarget.value = actor.data.data.ap;
+
+                return false;
+            }
+        }
+        // Prepare update data for the actor.
+        let updateData = {};
+        updateData[target.name] = value;
+
+        // Update the actor.
+        actor.update(updateData);
+        return;
     }
 
     /**
@@ -37,6 +72,13 @@ export default class QuestCombatTracker extends CombatTracker {
 
         // Switch control action
         switch (btn.dataset.control) {
+            case "toggleHidden":
+                return c.update({ hidden: !c.hidden });
+
+            // Toggle combatant defeated flag
+            case "toggleDefeated":
+                return this._onToggleDefeatedStatus(c);
+
             // Roll combatant initiative
             case "rollInitiative":
                 let roll = new game.quest.QuestRoll("1d20");
@@ -79,7 +121,7 @@ export default class QuestCombatTracker extends CombatTracker {
             context.difficulty.rating = "QUEST.Easy";
         }
 
-        //console.log(context);
+        console.log(context);
         return context;
     }
 

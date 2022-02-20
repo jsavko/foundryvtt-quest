@@ -31,15 +31,30 @@
         {{#each groups}}
         <li class="quest combat-header {{@key}}">{{@key}}s</li>
         <li class="quest"></li>
-        {{#ifCond @key '==' 'character'}}
-
-        {{/ifCond}}
-
         {{#if ../user.isGM}}
         {{#ifCond @key '==' 'npc'}}
         <li class="combat-header">  Encounter Balance: {{../difficulty.npc}}/{{../difficulty.character}} {{localize ../difficulty.rating}}</li>
         {{/ifCond}}
         {{/if}}
+        <li class="directory-item flexrow {{this.css}}" data-combatant-id="{{this.id}}">
+        <h4 style="padding-left: 48px">Name</h4>
+        <div class="combatant-controls flexrow"></div>
+        <div class="flexrow justify-right">
+            <div class="resource-tracker text-right">
+                  <span>HP</span>
+            </div>
+            <div class="resource-tracker text-right">
+                {{#ifCond @key '==' 'character'}}
+                      <span>AP</span>
+                {{else}}
+                        <span>ATK</span>
+                {{/ifCond}}
+            </div>
+        </div>
+        <div class="token-initiative text-center">
+            <span>Roll</span>
+        </div>
+        </li>
 
         {{#each this}}
         <li class="combatant actor directory-item flexrow {{this.css}}" data-combatant-id="{{this.id}}">
@@ -52,7 +67,10 @@
                         <i class="fas fa-eye-slash"></i></a>
                     <a class="combatant-control {{#if this.defeated}}active{{/if}}" title="{{localize 'COMBAT.ToggleDead'}}" data-control="toggleDefeated">
                         <i class="fas fa-skull"></i></a>
+                    <span id= "action-count" class="action-count">0</span>
                     {{/if}}
+
+
                     <div class="token-effects">
                         {{#each this.effects}}
                         <img class="token-effect" src="{{this}}"/>
@@ -61,17 +79,33 @@
                 </div>
             </div>
 
-            {{#if this.hasResource}}
-            <div class="token-resource">
-                <span class="resource">{{this.resource}}</span>
-            </div>
+            {{@log this.combatant.actor}}
+            <div class="flexrow justify-right">
+            <div class="resource-tracker">
+            {{#if this.owner}}
+              <input class="ct-item-hp" type="text" name="data.hp" value="{{this.combatant.actor.data.data.hp}}" data-combatant-id="{{this.id}}" data-dtype="Number">
+             {{else}}
+              <span>{{this.combatant.actor.data.data.hp}}</span>
             {{/if}}
-
+            </div>
+            <div class="resource-tracker">
+                {{#ifCond this.combatant.actor.type '==' 'character'}}
+                    {{#if this.owner}}
+                    <input class="ct-item-ap" type="text" name="data.ap" value="{{this.combatant.actor.data.data.ap}}" data-combatant-id="{{this.id}}" data-dtype="Number">
+                    {{else}}
+                    <span>{{this.combatant.actor.data.data.ap}}</span>
+                    {{/if}}
+                {{else}}
+                    <span>{{this.combatant.actor.data.data.attack}}</span>
+                {{/ifCond}}
+                
+                </div>
+            </div>
             <div class="token-initiative">
-                {{#if this.hasRolled}}
-                <span class="initiative">{{this.initiative}}</span>
-                {{else if this.owner}}
-                <a class="combatant-control roll" title="{{localize 'COMBAT.InitiativeRoll'}}" data-control="rollInitiative"></a>
+                {{#if this.owner}}
+                    {{#unless this.defeated}}
+                        <a class="combatant-control roll" title="{{localize 'QUEST.RollTheDie'}}" data-control="rollInitiative"></a>
+                    {{/unless}}
                 {{/if}}
             </div>
         </li>
