@@ -8,6 +8,7 @@ export class QuestRoll extends Roll {
      * @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
      * @return {Promise<string>}          The rendered HTML template as a string
      */
+
     async render(chatOptions = {}) {
         chatOptions = foundry.utils.mergeObject(
             {

@@ -36,7 +36,7 @@
         <li class="combat-header">  Encounter Balance: {{../difficulty.npc}}/{{../difficulty.character}} {{localize ../difficulty.rating}}</li>
         {{/ifCond}}
         {{/if}}
-        <li class="directory-item flexrow {{this.css}}" data-combatant-id="{{this.id}}">
+        <li class="directory-item flexrow {{this.css}}">
         <h4 style="padding-left: 48px">Name</h4>
         <div class="combatant-controls flexrow"></div>
         <div class="flexrow justify-right">
@@ -67,7 +67,7 @@
                         <i class="fas fa-eye-slash"></i></a>
                     <a class="combatant-control {{#if this.defeated}}active{{/if}}" title="{{localize 'COMBAT.ToggleDead'}}" data-control="toggleDefeated">
                         <i class="fas fa-skull"></i></a>
-                    <span id= "action-count" class="action-count">0</span>
+                    <span id= "action-count" class="action-count">{{#if this.combatant.data.flags.foundryvtt-quest}}{{this.combatant.data.flags.foundryvtt-quest.actionCount}}{{else}}0{{/if}}</span>
                     {{/if}}
 
 
@@ -79,7 +79,6 @@
                 </div>
             </div>
 
-            {{@log this.combatant.actor}}
             <div class="flexrow justify-right">
             <div class="resource-tracker">
             {{#if this.owner}}

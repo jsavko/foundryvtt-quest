@@ -487,9 +487,18 @@ var QuestActor = class extends Actor {
       }
     }
   }
-  getRollData() {
+  async getRollData() {
     const data = this.toObject(false).data;
-    console.log("roll data?");
+    if (game.combat && game.combat.combatants) {
+      let combatant = game.combat.combatants.find((c) => c.actor.id == this.id);
+      if (combatant) {
+        let actionCount = combatant.data.flags["foundryvtt-quest"] ? combatant.data.flags["foundryvtt-quest"].actionCount : 0;
+        actionCount = actionCount ? Number(actionCount) + 1 : 1;
+        console.log(actionCount);
+        console.log("update action Count!");
+        combatant.setFlag("foundryvtt-quest", "actionCount", actionCount);
+      }
+    }
     return data;
   }
 };
