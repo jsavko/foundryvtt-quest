@@ -59,6 +59,17 @@
     "QUEST.Failure": "Failure",
     "QUEST.Catastrophe": "Catastrophe",
 
+    "QUEST.Success": "Success",
+    "QUEST.TChoice": "Tough Choice",
+    "QUEST.Failure": "Failure",
+    "QUEST.Catastrophe": "Catastrophe",
+
+    "QUEST.Deadly": "Deadly",
+    "QUEST.DeadlyFair": "Deadly, but Fair",
+    "QUEST.Fair": "Fair",
+    "QUEST.Easy": "Easy",
+    "QUEST.RollTheDie": "Roll the Die",
+
     "QUEST.RoleAbilities": "Role Abilities",
     "QUEST.ImportMessage": "Importing Role Abiltiies into an editable world compendium. This should only take a moment.",
 

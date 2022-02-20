@@ -15,6 +15,8 @@ import { createQuestMacro } from "./macro.js";
 import { QuestRoll } from "./quest-roll.js";
 import { AbilityDialog } from "./ability-dialog.js";
 import { CompendiumImportHelper } from "./compendium-helper.js";
+import QuestCombatTracker from "./combat-tracker.js";
+
 //import { InlineTables } from "./inline-tables.js";
 
 //import MouseCombatModal from "./mouse-combat-modal.js";
@@ -54,11 +56,12 @@ Hooks.once("init", async function () {
     // Define custom Entity classes
     CONFIG.Actor.documentClass = QuestActor;
     CONFIG.Item.documentClass = QuestItem;
+    CONFIG.ui.combat = QuestCombatTracker;
 
     CONFIG.Dice.rolls.push(QuestRoll);
 
     CONFIG.Combat.initiative = {
-        formula: "1d20",
+        formula: "0",
         decimals: 2
     };
 
@@ -82,50 +85,6 @@ Hooks.once("init", async function () {
         types: ["ability", "detail"],
         makeDefault: true
     });
-
-    // Register system settings
-    game.settings.register("foundryvtt-quest", "macroShorthand", {
-        name: "SETTINGS.QuestMacroShorthandN",
-        hint: "SETTINGS.QuestMacroShorthandL",
-        scope: "world",
-        type: Boolean,
-        default: true,
-        config: true
-    });
-
-    // Register initiative setting.
-    game.settings.register("foundryvtt-quest", "initFormula", {
-        name: "SETTINGS.QuestInitFormulaN",
-        hint: "SETTINGS.QuestInitFormulaL",
-        scope: "world",
-        type: String,
-        default: "1d20",
-        config: true,
-        onChange: (formula) => _simpleUpdateInit(formula, true)
-    });
-
-    // Retrieve and assign the initiative formula setting.
-    const initFormula = game.settings.get("foundryvtt-quest", "initFormula");
-    _simpleUpdateInit(initFormula);
-
-    /**
-     * Update the initiative formula.
-     * @param {string} formula - Dice formula to evaluate.
-     * @param {boolean} notify - Whether or not to post nofications.
-     */
-    function _simpleUpdateInit(formula, notify = false) {
-        const isValid = Roll.validate(formula);
-        if (!isValid) {
-            if (notify)
-                ui.notifications.error(
-                    `${game.i18n.localize(
-                        "QUEST.NotifyInitFormulaInvalid"
-                    )}: ${formula}`
-                );
-            return;
-        }
-        CONFIG.Combat.initiative.formula = formula;
-    }
 
     // Preload template partials
     await preloadHandlebarsTemplates();
@@ -309,60 +268,3 @@ async function getRoleList() {
     ];
     return roleList;
 }
-
-Handlebars.registerHelper("times", function (n, block) {
-    var accum = "";
-    for (var i = 0; i < n; ++i) accum += block.fn(i);
-    return accum;
-});
-
-Handlebars.registerHelper("concat", function () {
-    var outStr = "";
-    for (var arg in arguments) {
-        if (typeof arguments[arg] != "object") {
-            outStr += arguments[arg];
-        }
-    }
-    return outStr;
-});
-
-Handlebars.registerHelper("enrich", function () {
-    var outStr = TextEditor.enrichHTML(arguments[0]);
-    return outStr;
-});
-
-Handlebars.registerHelper("enrich_stripcost", function () {
-    var removeCost = arguments[0];
-    const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
-    var removeCost = removeCost.replace(rgx, "");
-    removeCost = removeCost.replace(/<p[^>]*>/g, "");
-    var outStr = TextEditor.enrichHTML(removeCost);
-    return outStr;
-});
-
-Handlebars.registerHelper("cost", function () {
-    var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
-    return outStr;
-});
-
-Handlebars.registerHelper("abilityLink", function (name, type, id) {
-    let sourceCompendium = game.settings.get(
-        "foundryvtt-quest",
-        "abilityCompendium"
-    );
-    var outStr = TextEditor.enrichHTML(
-        "@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}"
-    );
-    return outStr;
-});
-
-Handlebars.registerHelper("replace", function (value, find, replace) {
-    return value.replace(find, replace);
-});
-
-/**
- * Slugify a string.
- */
-Handlebars.registerHelper("slugify", function (value) {
-    return value.slugify({ strict: true });
-});

@@ -1,5 +1,13 @@
 # Quest Foundry VTT System
 
+0.1.10
+
+-   Updated Combat Tracker to have combat groups and allowing rolls from the tracker.
+-   Combat Tracker has encounter difficulty rating based on rules from the core book
+-   Removed extra bootstrap code that wasn't actually being used.
+-   Added localization for combat tracker
+-   Added Common Item Type
+
 0.1.9
 
 -   Fixed issue with localization on rolls
