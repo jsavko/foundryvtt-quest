@@ -268,3 +268,14 @@ async function getRoleList() {
     ];
     return roleList;
 }
+
+// Update Combat Tracker UI when actor data is changed
+Hooks.on("updateActor", (actor, data, options, id) => {
+    ui.combat.render();
+});
+
+Hooks.on("updateToken", (scene, token, data, options, id) => {
+    if (data.actorData) {
+        ui.combat.render();
+    }
+});

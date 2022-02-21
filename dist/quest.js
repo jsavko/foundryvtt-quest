@@ -8413,6 +8413,14 @@ async function getRoleList() {
   ];
   return roleList;
 }
+Hooks.on("updateActor", (actor, data, options, id) => {
+  ui.combat.render();
+});
+Hooks.on("updateToken", (scene, token, data, options, id) => {
+  if (data.actorData) {
+    ui.combat.render();
+  }
+});
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
