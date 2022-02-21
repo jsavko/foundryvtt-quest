@@ -23,6 +23,9 @@ export default class QuestCombatTracker extends CombatTracker {
 
         html.find(".ct-item-hp").change((ev) => this._updateActor(ev));
         html.find(".ct-item-ap").change((ev) => this._updateActor(ev));
+
+        html.find(".ct-item-hp").dblclick((ev) => ev.stopPropagation());
+        html.find(".ct-item-ap").dblclick((ev) => ev.stopPropagation());
     }
 
     async _updateActor(ev) {
@@ -121,7 +124,7 @@ export default class QuestCombatTracker extends CombatTracker {
             context.difficulty.rating = "QUEST.Easy";
         }
 
-        console.log(context);
+        //console.log(context);
         return context;
     }
 

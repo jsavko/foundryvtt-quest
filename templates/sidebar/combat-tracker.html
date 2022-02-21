@@ -36,7 +36,7 @@
         <li class="combat-header">  Encounter Balance: {{../difficulty.npc}}/{{../difficulty.character}} {{localize ../difficulty.rating}}</li>
         {{/ifCond}}
         {{/if}}
-        <li class="directory-item flexrow {{this.css}}">
+        <li class="directory-item flexrow {{this.css}} {{@key}}-{{../user.isGM}}">
         <h4 style="padding-left: 48px">Name</h4>
         <div class="combatant-controls flexrow"></div>
         <div class="flexrow justify-right">
@@ -84,7 +84,9 @@
             {{#if this.owner}}
               <input class="ct-item-hp" type="text" name="data.hp" value="{{this.combatant.actor.data.data.hp}}" data-combatant-id="{{this.id}}" data-dtype="Number">
              {{else}}
+             {{#ifCond this.combatant.actor.type '==' 'character'}}
               <span>{{this.combatant.actor.data.data.hp}}</span>
+              {{/ifCond}}
             {{/if}}
             </div>
             <div class="resource-tracker">
@@ -95,7 +97,9 @@
                     <span>{{this.combatant.actor.data.data.ap}}</span>
                     {{/if}}
                 {{else}}
+                    {{#if this.owner}}
                     <span>{{this.combatant.actor.data.data.attack}}</span>
+                    {{/if}}
                 {{/ifCond}}
                 
                 </div>
@@ -116,18 +120,11 @@
     {{#if hasCombat}}
         {{#if user.isGM}}
             {{#if round}}
-            <a class="combat-control" title="{{localize 'COMBAT.RoundPrev'}}" data-control="previousRound"><i class="fas fa-step-backward"></i></a>
-            <a class="combat-control" title="{{localize 'COMBAT.TurnPrev'}}" data-control="previousTurn"><i class="fas fa-arrow-left"></i></a>
+
             <a class="combat-control center" title="{{localize 'COMBAT.End'}}" data-control="endCombat">{{localize 'COMBAT.End'}}</a>
-            <a class="combat-control" title="{{localize 'COMBAT.TurnNext'}}" data-control="nextTurn"><i class="fas fa-arrow-right"></i></a>
-            <a class="combat-control" title="{{localize 'COMBAT.RoundNext'}}" data-control="nextRound"><i class="fas fa-step-forward"></i></a>
             {{else}}
             <a class="combat-control center" title="{{localize 'COMBAT.Begin'}}" data-control="startCombat">{{localize 'COMBAT.Begin'}}</a>
             {{/if}}
-        {{else if control}}
-        <a class="combat-control" title="{{localize 'COMBAT.TurnPrev'}}" data-control="previousTurn"><i class="fas fa-arrow-left"></i></a>
-        <a class="combat-control center" title="{{localize 'COMBAT.TurnEnd'}}" data-control="nextTurn">{{localize 'COMBAT.TurnEnd'}}</a>
-        <a class="combat-control" title="{{localize 'COMBAT.TurnNext'}}" data-control="nextTurn"><i class="fas fa-arrow-right"></i></a>
         {{/if}}
     {{/if}}
     </nav>

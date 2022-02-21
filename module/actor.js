@@ -103,14 +103,14 @@ export class QuestActor extends Actor {
             let combatant = game.combat.combatants.find(
                 (c) => c.actor.id == this.id
             );
-            if (combatant) {
+            if (combatant.actor.isOwner) {
                 let actionCount = combatant.data.flags["foundryvtt-quest"]
                     ? combatant.data.flags["foundryvtt-quest"].actionCount
                     : 0;
                 actionCount = actionCount ? Number(actionCount) + 1 : 1;
-                console.log(actionCount);
-                console.log("update action Count!");
-                combatant.setFlag(
+                //console.log(actionCount);
+                //console.log("update action Count!");
+                await combatant.setFlag(
                     "foundryvtt-quest",
                     "actionCount",
                     actionCount

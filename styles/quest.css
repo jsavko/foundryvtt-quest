@@ -477,6 +477,10 @@ li.combatant .resource-tracker {
     text-align: center;
 }
 
+.npc-false {
+    display: none;
+}
+
 .justify-right {
     justify-content: right;
 }
