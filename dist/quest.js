@@ -8166,11 +8166,8 @@ var QuestCombatTracker = class extends CombatTracker {
   }
   async _updateActor(ev) {
     ev.preventDefault();
-    console.log(ev);
     const dataset = ev.currentTarget.dataset;
-    console.log(dataset.combatantId);
     const combatant = game.combat.combatants.find((c) => c.id == dataset.combatantId);
-    console.log(combatant);
     const actor = combatant.actor;
     let target = ev.currentTarget;
     let value = ev.currentTarget.value;
