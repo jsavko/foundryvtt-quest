@@ -491,12 +491,10 @@ var QuestActor = class extends Actor {
     const data = this.toObject(false).data;
     if (game.combat && game.combat.combatants) {
       let combatant = game.combat.combatants.find((c) => c.actor.id == this.id);
-      if (combatant) {
+      if (combatant.actor.isOwner) {
         let actionCount = combatant.data.flags["foundryvtt-quest"] ? combatant.data.flags["foundryvtt-quest"].actionCount : 0;
         actionCount = actionCount ? Number(actionCount) + 1 : 1;
-        console.log(actionCount);
-        console.log("update action Count!");
-        combatant.setFlag("foundryvtt-quest", "actionCount", actionCount);
+        await combatant.setFlag("foundryvtt-quest", "actionCount", actionCount);
       }
     }
     return data;
@@ -8163,6 +8161,8 @@ var QuestCombatTracker = class extends CombatTracker {
     super.activateListeners(html);
     html.find(".ct-item-hp").change((ev) => this._updateActor(ev));
     html.find(".ct-item-ap").change((ev) => this._updateActor(ev));
+    html.find(".ct-item-hp").dblclick((ev) => ev.stopPropagation());
+    html.find(".ct-item-ap").dblclick((ev) => ev.stopPropagation());
   }
   async _updateActor(ev) {
     ev.preventDefault();
@@ -8238,7 +8238,6 @@ var QuestCombatTracker = class extends CombatTracker {
     } else {
       context.difficulty.rating = "QUEST.Easy";
     }
-    console.log(context);
     return context;
   }
   firstOwner(doc) {
