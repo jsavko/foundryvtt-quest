@@ -8277,6 +8277,17 @@ var QuestCombatTracker = class extends CombatTracker {
   }
 };
 
+// module/role-api.js
+var QuestAPI = class {
+  static async init() {
+    this.register(game.settings.get("foundryvtt-quest", "abilityCompendium"));
+    Hooks.callAll("quest-registerRoles");
+  }
+  static async register(pack) {
+    game.quest.AbilitySources.push(pack);
+  }
+};
+
 // module/quest.js
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
@@ -8290,7 +8301,8 @@ Hooks.once("init", async function() {
     AbilityDialog,
     CompendiumImportHelper,
     roleList,
-    AbilitySources
+    AbilitySources,
+    api: QuestAPI
   };
   game.quest.AbilitySources = [];
   CONFIG.Actor.documentClass = QuestActor;
@@ -8410,7 +8422,7 @@ Hooks.once("ready", async () => {
     default: "world.role-abilities",
     choices: itemPacks
   });
-  game.quest.AbilitySources.push(game.settings.get("foundryvtt-quest", "abilityCompendium"));
+  game.quest.api.init();
   game.quest.roleList = await game.quest.AbilityDialog.getRollList();
 });
 Hooks.on("renderDialog", (dialog, html) => {

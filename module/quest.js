@@ -16,6 +16,7 @@ import { QuestRoll } from "./quest-roll.js";
 import { AbilityDialog } from "./ability-dialog.js";
 import { CompendiumImportHelper } from "./compendium-helper.js";
 import QuestCombatTracker from "./combat-tracker.js";
+import { QuestAPI } from "./role-api.js";
 
 //import { InlineTables } from "./inline-tables.js";
 
@@ -53,7 +54,8 @@ Hooks.once("init", async function () {
         AbilityDialog,
         CompendiumImportHelper,
         roleList,
-        AbilitySources
+        AbilitySources,
+        api: QuestAPI
     };
 
     game.quest.AbilitySources = [];
@@ -248,14 +250,8 @@ Hooks.once("ready", async () => {
         choices: itemPacks
     });
 
-    //Push Ability Compendium to sources list
-    game.quest.AbilitySources.push(
-        game.settings.get("foundryvtt-quest", "abilityCompendium")
-    );
-
-    //game.quest.AbilitySources.push("quest-beserker.beserker");
-
-    //Generate RoleList
+    //Initalize API and call for ability registration
+    game.quest.api.init();
 
     game.quest.roleList = await game.quest.AbilityDialog.getRollList();
 });
