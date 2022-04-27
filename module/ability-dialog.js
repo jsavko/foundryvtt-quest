@@ -25,20 +25,46 @@ export class AbilityDialog extends Dialog {
         });
     }
 
-    async _getContent(role) {
-        if (!role) role = "Spy";
-
+    static async getRollList() {
         let sourceCompendium = game.settings.get(
             "foundryvtt-quest",
             "abilityCompendium"
         );
 
-        //console.log(sourceCompendium);
+        let AllAbilities = [];
 
-        const QUESTAbilities = await game.packs.get(sourceCompendium);
-        //console.log(QUESTAbilities);
+        for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+            //console.log(game.quest.AbilitySources[i]);
+            let QUESTAbilities = await game.packs.get(
+                game.quest.AbilitySources[i]
+            );
+            let compendiumAbilities = await QUESTAbilities.getDocuments();
+            AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+        }
 
-        let AllAbilities = await QUESTAbilities.getDocuments();
+        //const QUESTAbilities = await game.packs.get(sourceCompendium);
+        //AllAbilities = await QUESTAbilities.getDocuments();
+        const roleList = [
+            ...new Set(AllAbilities.map((data) => data.data.data.role))
+        ];
+        return roleList;
+    }
+
+    async _getContent(role) {
+        if (!role) role = "Spy";
+
+        let AllAbilities = [];
+
+        for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+            let QUESTAbilities = await game.packs.get(
+                game.quest.AbilitySources[i]
+            );
+            let compendiumAbilities = await QUESTAbilities.getDocuments();
+            AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+        }
+
+        //const QUESTAbilities = await game.packs.get(sourceCompendium);
+        //AllAbilities = await QUESTAbilities.getDocuments();
         const roleList = [
             ...new Set(AllAbilities.map((data) => data.data.data.role))
         ];

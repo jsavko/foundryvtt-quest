@@ -43,15 +43,20 @@ Hooks.once("init", async function () {
      */
 
     let RollCount = 0;
-    let RoleList = [];
+    let roleList = [];
+    let AbilitySources = [];
+
     game.quest = {
         QuestActor,
         createQuestMacro,
         QuestRoll,
         AbilityDialog,
         CompendiumImportHelper,
-        RoleList
+        roleList,
+        AbilitySources
     };
+
+    game.quest.AbilitySources = [];
 
     // Define custom Entity classes
     CONFIG.Actor.documentClass = QuestActor;
@@ -243,8 +248,16 @@ Hooks.once("ready", async () => {
         choices: itemPacks
     });
 
+    //Push Ability Compendium to sources list
+    game.quest.AbilitySources.push(
+        game.settings.get("foundryvtt-quest", "abilityCompendium")
+    );
+
+    //game.quest.AbilitySources.push("quest-beserker.beserker");
+
     //Generate RoleList
-    game.quest.roleList = await getRoleList();
+
+    game.quest.roleList = await game.quest.AbilityDialog.getRollList();
 });
 
 Hooks.on("renderDialog", (dialog, html) => {
@@ -254,20 +267,6 @@ Hooks.on("renderDialog", (dialog, html) => {
         }
     });
 });
-
-async function getRoleList() {
-    let sourceCompendium = game.settings.get(
-        "foundryvtt-quest",
-        "abilityCompendium"
-    );
-
-    const QUESTAbilities = await game.packs.get(sourceCompendium);
-    let AllAbilities = await QUESTAbilities.getDocuments();
-    const roleList = [
-        ...new Set(AllAbilities.map((data) => data.data.data.role))
-    ];
-    return roleList;
-}
 
 // Update Combat Tracker UI when actor data is changed
 Hooks.on("updateActor", (actor, data, options, id) => {

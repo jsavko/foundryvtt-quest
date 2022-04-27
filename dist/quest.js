@@ -7916,8 +7916,7 @@ var preloadHandlebarsTemplates = async function() {
     return outStr;
   });
   Handlebars.registerHelper("abilityLink", function(name, type, id) {
-    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
-    var outStr = TextEditor.enrichHTML("@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}");
+    var outStr = TextEditor.enrichHTML("@Compendium[" + type + "." + id + "]{" + name + "}");
     return outStr;
   });
   Handlebars.registerHelper("replace", function(value, find, replace) {
@@ -8047,12 +8046,28 @@ var AbilityDialog = class extends Dialog {
       }
     });
   }
+  static async getRollList() {
+    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
+    let AllAbilities = [];
+    for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+      let QUESTAbilities = await game.packs.get(game.quest.AbilitySources[i]);
+      let compendiumAbilities = await QUESTAbilities.getDocuments();
+      AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+    }
+    const roleList = [
+      ...new Set(AllAbilities.map((data) => data.data.data.role))
+    ];
+    return roleList;
+  }
   async _getContent(role) {
     if (!role)
       role = "Spy";
-    let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
-    const QUESTAbilities = await game.packs.get(sourceCompendium);
-    let AllAbilities = await QUESTAbilities.getDocuments();
+    let AllAbilities = [];
+    for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+      let QUESTAbilities = await game.packs.get(game.quest.AbilitySources[i]);
+      let compendiumAbilities = await QUESTAbilities.getDocuments();
+      AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+    }
     const roleList = [
       ...new Set(AllAbilities.map((data) => data.data.data.role))
     ];
@@ -8266,15 +8281,18 @@ var QuestCombatTracker = class extends CombatTracker {
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
   let RollCount = 0;
-  let RoleList = [];
+  let roleList = [];
+  let AbilitySources = [];
   game.quest = {
     QuestActor,
     createQuestMacro,
     QuestRoll,
     AbilityDialog,
     CompendiumImportHelper,
-    RoleList
+    roleList,
+    AbilitySources
   };
+  game.quest.AbilitySources = [];
   CONFIG.Actor.documentClass = QuestActor;
   CONFIG.Item.documentClass = QuestItem;
   CONFIG.ui.combat = QuestCombatTracker;
@@ -8392,7 +8410,8 @@ Hooks.once("ready", async () => {
     default: "world.role-abilities",
     choices: itemPacks
   });
-  game.quest.roleList = await getRoleList();
+  game.quest.AbilitySources.push(game.settings.get("foundryvtt-quest", "abilityCompendium"));
+  game.quest.roleList = await game.quest.AbilityDialog.getRollList();
 });
 Hooks.on("renderDialog", (dialog, html) => {
   Array.from(html.find("#document-create option")).forEach((i) => {
@@ -8401,15 +8420,6 @@ Hooks.on("renderDialog", (dialog, html) => {
     }
   });
 });
-async function getRoleList() {
-  let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
-  const QUESTAbilities = await game.packs.get(sourceCompendium);
-  let AllAbilities = await QUESTAbilities.getDocuments();
-  const roleList = [
-    ...new Set(AllAbilities.map((data) => data.data.data.role))
-  ];
-  return roleList;
-}
 Hooks.on("updateActor", (actor, data, options, id) => {
   ui.combat.render();
 });
