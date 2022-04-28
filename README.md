@@ -24,6 +24,11 @@
 -   Short Descriptions appear in the ability browser. Long descriptions will be sent to chat. When editing abilities with full text please update the Long Description. (If no long description exists the short description is sent to chat)
     ![image](https://user-images.githubusercontent.com/192591/146589229-e0fb35e0-c43c-4376-a215-5f4b981b6a26.png)
 
+## Ability Compendiums and Modules
+-   Toggle new abilities into the Ability Browser from the Compendium Sidebar by right clicking and selecting Toggle Ability Browser
+-   ![Screenshot 2022-04-27 182509](https://user-images.githubusercontent.com/192591/165657848-825bbd28-8d12-4cd9-a051-91c9e73f3e67.png)
+-   Modules can now register to the compendium browser by using the hook `quest-registerRoles` to call `game.quest.api.register(pack-name)`
+
 ## Short Codes
 
 -   Using @cost[X] and @damage[X] will generate the cost and damage bubbles within the ability editor
