@@ -54,12 +54,8 @@ export const preloadHandlebarsTemplates = async function () {
     });
 
     Handlebars.registerHelper("abilityLink", function (name, type, id) {
-        let sourceCompendium = game.settings.get(
-            "foundryvtt-quest",
-            "abilityCompendium"
-        );
         var outStr = TextEditor.enrichHTML(
-            "@Compendium[" + sourceCompendium + "." + id + "]{" + name + "}"
+            "@Compendium[" + type + "." + id + "]{" + name + "}"
         );
         return outStr;
     });

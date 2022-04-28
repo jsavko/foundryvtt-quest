@@ -16,6 +16,7 @@ import { QuestRoll } from "./quest-roll.js";
 import { AbilityDialog } from "./ability-dialog.js";
 import { CompendiumImportHelper } from "./compendium-helper.js";
 import QuestCombatTracker from "./combat-tracker.js";
+import { QuestAPI } from "./role-api.js";
 
 //import { InlineTables } from "./inline-tables.js";
 
@@ -43,15 +44,21 @@ Hooks.once("init", async function () {
      */
 
     let RollCount = 0;
-    let RoleList = [];
+    let roleList = [];
+    let AbilitySources = [];
+
     game.quest = {
         QuestActor,
         createQuestMacro,
         QuestRoll,
         AbilityDialog,
         CompendiumImportHelper,
-        RoleList
+        roleList,
+        AbilitySources,
+        api: QuestAPI
     };
+
+    game.quest.AbilitySources = [];
 
     // Define custom Entity classes
     CONFIG.Actor.documentClass = QuestActor;
@@ -243,8 +250,20 @@ Hooks.once("ready", async () => {
         choices: itemPacks
     });
 
-    //Generate RoleList
-    game.quest.roleList = await getRoleList();
+    game.settings.register("foundryvtt-quest", "abilitySources", {
+        name: "Additional Ability Sources",
+        hint: "List of compendiums that are also loaded into the ability browser.",
+        scope: "world",
+        config: false,
+        type: Array,
+        default: [],
+        filePicker: false
+    });
+
+    //Initalize API and call for ability registration
+    game.quest.api.init();
+
+    game.quest.roleList = await game.quest.AbilityDialog.getRollList();
 });
 
 Hooks.on("renderDialog", (dialog, html) => {
@@ -254,20 +273,6 @@ Hooks.on("renderDialog", (dialog, html) => {
         }
     });
 });
-
-async function getRoleList() {
-    let sourceCompendium = game.settings.get(
-        "foundryvtt-quest",
-        "abilityCompendium"
-    );
-
-    const QUESTAbilities = await game.packs.get(sourceCompendium);
-    let AllAbilities = await QUESTAbilities.getDocuments();
-    const roleList = [
-        ...new Set(AllAbilities.map((data) => data.data.data.role))
-    ];
-    return roleList;
-}
 
 // Update Combat Tracker UI when actor data is changed
 Hooks.on("updateActor", (actor, data, options, id) => {
