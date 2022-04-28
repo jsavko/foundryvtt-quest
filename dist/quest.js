@@ -8328,11 +8328,13 @@ var QuestAPI = class {
       sources.push(pack);
       game.settings.set("foundryvtt-quest", "abilitySources", sources);
     } else {
-      this.unregister(pack);
       const sourceIndex = sources.indexOf(pack);
       if (sourceIndex > -1) {
         sources.splice(sourceIndex, 1);
         game.settings.set("foundryvtt-quest", "abilitySources", sources);
+        this.unregister(pack);
+      } else {
+        ui.notifications.error("This compendium was activated by a module. Please disable the module to remove the abilities.");
       }
     }
   }
