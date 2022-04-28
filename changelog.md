@@ -1,6 +1,6 @@
 # Quest Foundry VTT System
 
-0.1.11
+0.1.12
 
 -   Added API hook event to register compendium to the ability browser
 -   Added ability to add compendium to the ability browser through the right click context window of the compendium
