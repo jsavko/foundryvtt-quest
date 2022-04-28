@@ -164,3 +164,26 @@ export class AbilityDialog extends Dialog {
         html.find(".paths").click(this._scrollTo.bind(this));
     }
 }
+
+Hooks.on("renderCompendiumDirectory", (sidebar, html, _) => {
+    //console.log(html);
+    let addhtml = `<footer class="compendium-footer">
+    <span class="document-type">Loaded in Ability Browser</span>
+</footer>`;
+    for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+        console.log(game.quest.AbilitySources[i]);
+        let element = html.find(
+            `[data-pack='${game.quest.AbilitySources[i]}']`
+        );
+        element.append(addhtml);
+    }
+    //let test = html.find(`[data-pack='${current}']`);
+});
+
+Hooks.on("getCompendiumDirectoryEntryContext", (html, entryOptions) => {
+    entryOptions.push({
+        name: "Toggle Ability Browser",
+        icon: '<i class="fas fa-edit"></i>',
+        callback: (e) => game.quest.api.toggle(e[0].attributes[1].nodeValue)
+    });
+});

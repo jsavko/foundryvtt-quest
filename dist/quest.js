@@ -8136,6 +8136,23 @@ var AbilityDialog = class extends Dialog {
     html.find(".paths").click(this._scrollTo.bind(this));
   }
 };
+Hooks.on("renderCompendiumDirectory", (sidebar, html, _) => {
+  let addhtml = `<footer class="compendium-footer">
+    <span class="document-type">Loaded in Ability Browser</span>
+</footer>`;
+  for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+    console.log(game.quest.AbilitySources[i]);
+    let element3 = html.find(`[data-pack='${game.quest.AbilitySources[i]}']`);
+    element3.append(addhtml);
+  }
+});
+Hooks.on("getCompendiumDirectoryEntryContext", (html, entryOptions) => {
+  entryOptions.push({
+    name: "Toggle Ability Browser",
+    icon: '<i class="fas fa-edit"></i>',
+    callback: (e) => game.quest.api.toggle(e[0].attributes[1].nodeValue)
+  });
+});
 
 // module/compendium-helper.js
 var CompendiumImportHelper = class {
@@ -8285,6 +8302,22 @@ var QuestAPI = class {
   }
   static async register(pack) {
     game.quest.AbilitySources.push(pack);
+    ui.compendium.render();
+  }
+  static async unregister(pack) {
+    const index = game.quest.AbilitySources.indexOf(pack);
+    if (index > -1) {
+      game.quest.AbilitySources.splice(index, 1);
+      ui.compendium.render();
+    }
+  }
+  static async toggle(pack) {
+    const index = game.quest.AbilitySources.indexOf(pack);
+    if (index == -1) {
+      this.register(pack);
+    } else {
+      this.unregister(pack);
+    }
   }
 };
 
