@@ -250,6 +250,16 @@ Hooks.once("ready", async () => {
         choices: itemPacks
     });
 
+    game.settings.register("foundryvtt-quest", "abilitySources", {
+        name: "Additional Ability Sources",
+        hint: "List of compendiums that are also loaded into the ability browser.",
+        scope: "world",
+        config: false,
+        type: Array,
+        default: [],
+        filePicker: false
+    });
+
     //Initalize API and call for ability registration
     game.quest.api.init();
 
