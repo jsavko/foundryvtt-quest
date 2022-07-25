@@ -20,7 +20,7 @@
     </p>
     <p>{{localize "QUEST.Browser.Choose" }}:</p>
     <p>
-        {{#each content.quickStart}} {{{abilityLink name pack data._id}}}
+        {{#each content.quickStart}} {{{abilityLink name pack _id}}}
         {{/each}}
     </p>
     <p>
@@ -32,9 +32,9 @@
     {{#each content.abilities}}
     <h2 style="text-align: center" id="{{slugify name}}">{{name}}</h2>
     {{#each data}}
-        {{{cost data.data.cost}}} {{{abilityLink data.name pack
-        data._id}}}
-        <span>{{{enrich_stripcost data.data.description}}}</span>
+        {{{system.enrichCost}}} {{{abilityLink name pack
+        _id}}}
+        <span>{{{enrich_stripcost system.description}}}</span>
     </p>
     {{/each}}
     <p>&nbsp;</p>

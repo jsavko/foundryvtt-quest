@@ -50,45 +50,42 @@ var require_6 = __commonJS({
   }
 });
 
-// module/constants.js
-var ATTRIBUTE_TYPES = ["String", "Number", "Boolean", "Formula", "Resource"];
-
 // module/helper.js
 var EntitySheetHelper = class {
   static getAttributeData(data) {
-    for (let attr3 of Object.values(data.data.attributes)) {
+    for (let attr3 of Object.values(document.system.attributes)) {
       if (attr3.dtype) {
         attr3.isCheckbox = attr3.dtype === "Boolean";
         attr3.isResource = attr3.dtype === "Resource";
         attr3.isFormula = attr3.dtype === "Formula";
       }
     }
-    data.data.ungroupedAttributes = {};
-    const groups = data.data.groups || {};
+    document.system.ungroupedAttributes = {};
+    const groups = document.system.groups || {};
     let groupKeys = Object.keys(groups).sort((a, b) => {
       let aSort = groups[a].label ?? a;
       let bSort = groups[b].label ?? b;
       return aSort.localeCompare(bSort);
     });
     for (let key of groupKeys) {
-      let group = data.data.attributes[key] || {};
-      if (!data.data.groups[key]["attributes"])
-        data.data.groups[key]["attributes"] = {};
+      let group = document.system.attributes[key] || {};
+      if (!document.system.groups[key]["attributes"])
+        document.system.groups[key]["attributes"] = {};
       Object.keys(group).sort((a, b) => a.localeCompare(b)).forEach((attr3) => {
         if (typeof group[attr3] != "object" || !group[attr3])
           return;
         group[attr3]["isCheckbox"] = group[attr3]["dtype"] === "Boolean";
         group[attr3]["isResource"] = group[attr3]["dtype"] === "Resource";
         group[attr3]["isFormula"] = group[attr3]["dtype"] === "Formula";
-        data.data.groups[key]["attributes"][attr3] = group[attr3];
+        document.system.groups[key]["attributes"][attr3] = group[attr3];
       });
     }
-    Object.keys(data.data.attributes).filter((a) => !groupKeys.includes(a)).sort((a, b) => a.localeCompare(b)).forEach((key) => {
-      data.data.ungroupedAttributes[key] = data.data.attributes[key];
+    Object.keys(document.system.attributes).filter((a) => !groupKeys.includes(a)).sort((a, b) => a.localeCompare(b)).forEach((key) => {
+      document.system.ungroupedAttributes[key] = document.system.attributes[key];
     });
-    if (data.items) {
-      data.items.forEach((item2) => {
-        for (let [k, v] of Object.entries(item2.data.attributes)) {
+    if (document.items) {
+      document.items.forEach((item2) => {
+        for (let [k, v] of Object.entries(item2.system.attributes)) {
           if (!v.dtype) {
             for (let [gk, gv] of Object.entries(v)) {
               if (gv.dtype) {
@@ -190,13 +187,13 @@ var EntitySheetHelper = class {
   static getAttributeHtml(items, index, group = false) {
     let result = '<div style="display: none;">';
     for (let [key, item2] of Object.entries(items)) {
-      result = result + `<input type="${item2.type}" name="data.attributes${group ? "." + group : ""}.attr${index}.${key}" value="${item2.value}"/>`;
+      result = result + `<input type="${item2.type}" name="document.attributes${group ? "." + group : ""}.attr${index}.${key}" value="${item2.value}"/>`;
     }
     return result + "</div>";
   }
   static validateGroup(groupName, document2) {
-    let groups = Object.keys(document2.data.data.groups || {});
-    let attributes = Object.keys(document2.data.data.attributes).filter((a) => !groups.includes(a));
+    let groups = Object.keys(document2.system.groups || {});
+    let attributes = Object.keys(document2.system.attributes).filter((a) => !groups.includes(a));
     if (groups.includes(groupName)) {
       ui.notifications.error(game.i18n.localize("QUEST.NotifyGroupDuplicate") + ` (${groupName})`);
       return false;
@@ -215,8 +212,8 @@ var EntitySheetHelper = class {
     const a = event.currentTarget;
     const group = a.dataset.group;
     let dtype = a.dataset.dtype;
-    const attrs = app.object.data.data.attributes;
-    const groups = app.object.data.data.groups;
+    const attrs = app.object.document.system.attributes;
+    const groups = app.object.document.system.groups;
     const form = app.form;
     let objKeys = Object.keys(attrs).filter((k) => !Object.keys(groups).includes(k));
     let nk = Object.keys(attrs).length + 1;
@@ -278,7 +275,7 @@ var EntitySheetHelper = class {
     let newValue = $(a).siblings(".group-prefix").val();
     if (newValue.length > 0 && EntitySheetHelper.validateGroup(newValue, app.object)) {
       let newKey = document.createElement("div");
-      newKey.innerHTML = `<input type="text" name="data.groups.${newValue}.key" value="${newValue}"/>`;
+      newKey.innerHTML = `<input type="text" name="document.groups.${newValue}.key" value="${newValue}"/>`;
       newKey = newKey.children[0];
       form.appendChild(newKey);
       await app._onSubmit(event);
@@ -310,7 +307,7 @@ var EntitySheetHelper = class {
   }
   static updateAttributes(formData, document2) {
     let groupKeys = [];
-    const formAttrs = foundry.utils.expandObject(formData)?.data?.attributes || {};
+    const formAttrs = foundry.utils.expandObject(formData)?.document?.attributes || {};
     const attributes = Object.values(formAttrs).reduce((obj, v) => {
       let attrs = [];
       let group = null;
@@ -340,26 +337,26 @@ var EntitySheetHelper = class {
       }
       return obj;
     }, {});
-    for (let k of Object.keys(document2.data.data.attributes)) {
+    for (let k of Object.keys(document2.system.attributes)) {
       if (!attributes.hasOwnProperty(k))
         attributes[`-=${k}`] = null;
     }
     for (let group of groupKeys) {
-      if (document2.data.data.attributes[group]) {
-        for (let k of Object.keys(document2.data.data.attributes[group])) {
+      if (document2.system.attributes[group]) {
+        for (let k of Object.keys(document2.system.attributes[group])) {
           if (!attributes[group].hasOwnProperty(k))
             attributes[group][`-=${k}`] = null;
         }
       }
     }
-    formData = Object.entries(formData).filter((e) => !e[0].startsWith("data.attributes")).reduce((obj, e) => {
+    formData = Object.entries(formData).filter((e) => !e[0].startsWith("document.attributes")).reduce((obj, e) => {
       obj[e[0]] = e[1];
       return obj;
-    }, { _id: document2.id, "data.attributes": attributes });
+    }, { _id: document2.id, "document.attributes": attributes });
     return formData;
   }
   static updateGroups(formData, document2) {
-    const formGroups = expandObject(formData).data.groups || {};
+    const formGroups = expandObject(formData).document.groups || {};
     const groups = Object.values(formGroups).reduce((obj, v) => {
       if (Array.isArray(v["key"])) {
         v["key"] = v["key"][0];
@@ -371,19 +368,19 @@ var EntitySheetHelper = class {
       obj[k] = v;
       return obj;
     }, {});
-    for (let k of Object.keys(document2.data.data.groups)) {
+    for (let k of Object.keys(document2.system.groups)) {
       if (!groups.hasOwnProperty(k))
         groups[`-=${k}`] = null;
     }
-    formData = Object.entries(formData).filter((e) => !e[0].startsWith("data.groups")).reduce((obj, e) => {
+    formData = Object.entries(formData).filter((e) => !e[0].startsWith("document.groups")).reduce((obj, e) => {
       obj[e[0]] = e[1];
       return obj;
-    }, { _id: document2.id, "data.groups": groups });
+    }, { _id: document2.id, "document.groups": groups });
     return formData;
   }
   static async createDialog(data = {}, options = {}) {
     const documentName = this.metadata.name;
-    const folders = game.folders.filter((f) => f.data.type === documentName && f.displayed);
+    const folders = game.folders.filter((f) => f.document.type === documentName && f.displayed);
     const label = game.i18n.localize(this.metadata.label);
     const title = game.i18n.format("ENTITY.Create", { entity: label });
     const collection = game.collections.get(this.documentName);
@@ -396,11 +393,11 @@ var EntitySheetHelper = class {
       types[a.id] = a.name;
     }
     const html = await renderTemplate(`templates/sidebar/entity-create.html`, {
-      name: data.name || game.i18n.format("ENTITY.New", { entity: label }),
-      folder: data.folder,
+      name: document.name || game.i18n.format("ENTITY.New", { entity: label }),
+      folder: document.folder,
       folders,
       hasFolders: folders.length > 1,
-      type: data.type || templates[0]?.id || "",
+      type: document.type || templates[0]?.id || "",
       types,
       hasTypes: true
     });
@@ -431,33 +428,37 @@ var EntitySheetHelper = class {
 var QuestActor = class extends Actor {
   prepareDerivedData() {
     super.prepareDerivedData();
-    this.data.data.groups = this.data.data.groups || {};
-    this.data.data.attributes = this.data.data.attributes || {};
+    this.system.groups = this.system.groups || {};
+    this.system.attributes = this.system.attributes || {};
   }
   prepareData() {
     super.prepareData();
-    const actorData = this.data;
-    if (actorData.type == "character") {
-      this._prepareCharacterData(this.data);
-    } else if (actorData.type == "npc") {
-      this._prepareNPCData(this.data);
+    console.log("prep data");
+    console.log(this);
+    const actorData = this;
+    if (this.type == "character") {
+      this._prepareCharacterData(this);
+    } else if (this.type == "npc") {
+      this._prepareNPCData(this);
     }
-    return this.data;
+    return this;
   }
   _prepareCharacterData(actorData) {
-    actorData.data.itemTypes = this.itemTypes;
+    console.log("prep char data");
+    console.log(this);
+    actorData.system.itemTypes = this.itemTypes;
     let abilities = this.itemTypes.ability;
     let paths = {};
     for (let ability of abilities) {
-      if (!!paths[ability.data.data.path] == false)
-        paths[ability.data.data.path] = [];
-      paths[ability.data.data.path].push(ability);
+      if (!!paths[ability.system.path] == false)
+        paths[ability.system.path] = [];
+      paths[ability.system.path].push(ability);
     }
-    actorData.data.abilityTypes = paths;
+    actorData.system.abilityTypes = paths;
     return actorData;
   }
   _prepareNPCData(actorData) {
-    actorData.data.itemTypes = this.itemTypes;
+    actorData.system.itemTypes = this.itemTypes;
     return actorData;
   }
   async _preCreate(data, options, user) {
@@ -483,16 +484,16 @@ var QuestActor = class extends Actor {
             type: "detail"
           });
         }
-        this.data.update({ items: details });
+        this.update({ items: details });
       }
     }
   }
   async getRollData() {
-    const data = this.toObject(false).data;
+    const data = this.toObject(false);
     if (game.combat && game.combat.combatants) {
       let combatant = game.combat.combatants.find((c) => c.actor.id == this.id);
-      if (combatant.actor.isOwner) {
-        let actionCount = combatant.data.flags["foundryvtt-quest"] ? combatant.data.flags["foundryvtt-quest"].actionCount : 0;
+      if (combatant?.actor.isOwner) {
+        let actionCount = combatant.flags["foundryvtt-quest"] ? combatant.flags["foundryvtt-quest"].actionCount : 0;
         actionCount = actionCount ? Number(actionCount) + 1 : 1;
         await combatant.setFlag("foundryvtt-quest", "actionCount", actionCount);
       }
@@ -505,18 +506,18 @@ var QuestActor = class extends Actor {
 var QuestItem = class extends Item {
   prepareDerivedData() {
     super.prepareDerivedData();
-    this.data.data.groups = this.data.data.groups || {};
-    this.data.data.attributes = this.data.data.attributes || {};
-    if (this.data.type == "ability") {
-      let tmp = String(this.data.data.description).toLowerCase();
+    this.system.groups = this.system.groups || {};
+    this.system.attributes = this.system.attributes || {};
+    if (this.type == "ability") {
+      let tmp = String(this.system.description).toLowerCase();
       const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
       let CostArray = rgx.exec(tmp);
-      this.data.data.cost = 0;
+      this.system.cost = 0;
       if (!!CostArray) {
-        this.data.data.cost = CostArray[2];
+        this.system.cost = CostArray[2];
         var count = (tmp.match(/@cost/g) || []).length;
         if (count > 1)
-          this.data.data.cost = CostArray[2] + "+";
+          this.system.cost = CostArray[2] + "+";
       }
     }
   }
@@ -536,24 +537,18 @@ var QuestItemSheet = class extends ItemSheet {
           contentSelector: ".sheet-body",
           initial: "description"
         }
-      ],
-      scrollY: [".attributes"]
+      ]
     });
   }
   getData() {
     const context = super.getData();
-    EntitySheetHelper.getAttributeData(context.data);
-    context.systemData = context.data.data;
-    context.dtypes = ATTRIBUTE_TYPES;
+    console.log(context);
     return context;
   }
   activateListeners(html) {
     super.activateListeners(html);
     if (!this.isEditable)
       return;
-    html.find(".attributes").on("click", ".attribute-control", EntitySheetHelper.onClickAttributeControl.bind(this));
-    html.find(".groups").on("click", ".group-control", EntitySheetHelper.onClickAttributeGroupControl.bind(this));
-    html.find(".attributes").on("click", "a.attribute-roll", EntitySheetHelper.onAttributeRoll.bind(this));
     html.find(".attributes a.attribute-roll").each((i, a) => {
       a.setAttribute("draggable", true);
       a.addEventListener("dragstart", (ev) => {
@@ -564,9 +559,25 @@ var QuestItemSheet = class extends ItemSheet {
   }
   _getSubmitData(updateData) {
     let formData = super._getSubmitData(updateData);
-    formData = EntitySheetHelper.updateAttributes(formData, this.object);
-    formData = EntitySheetHelper.updateGroups(formData, this.object);
+    console.log(formData);
     return formData;
+  }
+};
+
+// module/quest-texteditor.js
+var QuestTextEditor = class extends TextEditor {
+  static async enrichHTML(content, options = {}) {
+    super.enrichHTML(content, options);
+  }
+  static _createCost(match) {
+    const a = document.createElement("a");
+    a.innerHTML = '<i class="cost">' + match[2] + "</i>";
+    return a;
+  }
+  static _createDamage(match) {
+    const a = document.createElement("a");
+    a.innerHTML = '<i class="damage">' + match[2] + "</i>";
+    return a;
   }
 };
 
@@ -591,11 +602,10 @@ var QuestAbilitySheet = class extends ItemSheet {
     const path = "systems/foundryvtt-quest/templates/";
     return `${path}/${this.item.type}-sheet.html`;
   }
-  getData() {
+  async getData() {
     const context = super.getData();
-    EntitySheetHelper.getAttributeData(context.data);
-    context.systemData = context.data.data;
-    context.dtypes = ATTRIBUTE_TYPES;
+    context.document.system.description = await TextEditor.enrichHTML(context.document.system.description, { async: true });
+    context.document.system.long_description = await TextEditor.enrichHTML(context.document.system.long_description, { async: true });
     return context;
   }
   activateListeners(html) {
@@ -4124,7 +4134,7 @@ function create_if_block_22(ctx) {
   let li;
   let div1;
   let span;
-  let t0_value = ctx[1][ctx[12]].data.name + "";
+  let t0_value = ctx[1][ctx[12]].name + "";
   let t0;
   let span_class_value;
   let t1;
@@ -4140,7 +4150,7 @@ function create_if_block_22(ctx) {
       div0 = element("div");
       if (if_block)
         if_block.c();
-      attr(span, "class", span_class_value = "" + (null_to_empty(ctx[1][ctx[12]].data.data.rarity) + " svelte-gddmne"));
+      attr(span, "class", span_class_value = "" + (null_to_empty(ctx[1][ctx[12]].system.rarity) + " svelte-gddmne"));
       attr(div0, "class", "right");
       attr(div1, "class", "flex svelte-gddmne");
       attr(li, "class", "svelte-gddmne");
@@ -4156,9 +4166,9 @@ function create_if_block_22(ctx) {
         if_block.m(div0, null);
     },
     p(ctx2, dirty) {
-      if (dirty & 2 && t0_value !== (t0_value = ctx2[1][ctx2[12]].data.name + ""))
+      if (dirty & 2 && t0_value !== (t0_value = ctx2[1][ctx2[12]].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && span_class_value !== (span_class_value = "" + (null_to_empty(ctx2[1][ctx2[12]].data.data.rarity) + " svelte-gddmne"))) {
+      if (dirty & 2 && span_class_value !== (span_class_value = "" + (null_to_empty(ctx2[1][ctx2[12]].system.rarity) + " svelte-gddmne"))) {
         attr(span, "class", span_class_value);
       }
       if (ctx2[3].isEditable)
@@ -4352,22 +4362,22 @@ function instance3($$self, $$props, $$invalidate) {
   let data;
   let abilities;
   const click_handler = (i, e) => {
-    sheet?._chatAbility(items[i].data._id);
+    sheet?._chatAbility(items[i]._id);
   };
   const click_handler_1 = (i, e) => {
-    sheet?._onItemEdit(items[i].data._id);
+    sheet?._onItemEdit(items[i]._id);
   };
   const click_handler_2 = (i, e) => {
-    sheet?._onItemDelete(items[i].data._id);
+    sheet?._onItemDelete(items[i]._id);
   };
   $$self.$$.update = () => {
     if ($$self.$$.dirty & 1) {
       $:
-        data = $sheetData.data;
+        data = $sheetData.actor;
     }
     if ($$self.$$.dirty & 1) {
       $:
-        $$invalidate(1, items = $sheetData.data.data.itemTypes.item);
+        $$invalidate(1, items = $sheetData.actor.system.itemTypes.item);
     }
   };
   return [
@@ -4554,7 +4564,7 @@ function create_each_block_13(ctx) {
   let div0;
   let a;
   let i;
-  let t0_value = ctx[13].data.data.cost + "";
+  let t0_value = ctx[13].system.cost + "";
   let t0;
   let t1_value = ctx[13].name + "";
   let t1;
@@ -4603,7 +4613,7 @@ function create_each_block_13(ctx) {
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      if (dirty & 2 && t0_value !== (t0_value = ctx[13].data.data.cost + ""))
+      if (dirty & 2 && t0_value !== (t0_value = ctx[13].system.cost + ""))
         set_data(t0, t0_value);
       if (dirty & 2 && t1_value !== (t1_value = ctx[13].name + ""))
         set_data(t1, t1_value);
@@ -4736,22 +4746,22 @@ function instance4($$self, $$props, $$invalidate) {
   let abilities;
   const click_handler = (ability, e) => {
     if (sheet.isEditable)
-      sheet?._chatAbility(ability.data._id);
+      sheet?._chatAbility(ability._id);
   };
   const click_handler_1 = (ability, e) => {
-    sheet?._onItemEdit(ability.data._id);
+    sheet?._onItemEdit(ability._id);
   };
   const click_handler_2 = (ability, e) => {
-    sheet?._onItemDelete(ability.data._id);
+    sheet?._onItemDelete(ability._id);
   };
   $$self.$$.update = () => {
     if ($$self.$$.dirty & 1) {
       $:
-        data = $sheetData.data;
+        data = $sheetData.actor;
     }
     if ($$self.$$.dirty & 1) {
       $:
-        $$invalidate(1, abilityTypes = $sheetData.data.data.abilityTypes);
+        $$invalidate(1, abilityTypes = $sheetData.actor.system.abilityTypes);
     }
   };
   return [
@@ -5132,9 +5142,9 @@ function create__1_slot_6(ctx) {
       span = element("span");
       input = element("input");
       attr(input, "class", input_class_value = "dotted short " + ctx[13] + " svelte-811xhi");
-      attr(input, "name", "data.age");
+      attr(input, "name", "system.age");
       attr(input, "type", "number");
-      input.value = input_value_value = ctx[1].data.age;
+      input.value = input_value_value = ctx[1].system.age;
       attr(input, "placeholder", input_placeholder_value = game.i18n.localize("QUEST.Age"));
       attr(span, "slot", "1");
     },
@@ -5146,7 +5156,7 @@ function create__1_slot_6(ctx) {
       if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted short " + ctx2[13] + " svelte-811xhi")) {
         attr(input, "class", input_class_value);
       }
-      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.age)) {
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].system.age)) {
         input.value = input_value_value;
       }
     },
@@ -5167,9 +5177,9 @@ function create__2_slot_4(ctx) {
       span = element("span");
       input = element("input");
       attr(input, "class", input_class_value = "dotted medium " + ctx[13] + " svelte-811xhi");
-      attr(input, "name", "data.height");
+      attr(input, "name", "system.height");
       attr(input, "type", "text");
-      input.value = input_value_value = ctx[1].data.height;
+      input.value = input_value_value = ctx[1].system.height;
       attr(input, "placeholder", input_placeholder_value = game.i18n.localize("QUEST.Height"));
       attr(span, "slot", "2");
     },
@@ -5181,7 +5191,7 @@ function create__2_slot_4(ctx) {
       if (dirty[0] & 8192 && input_class_value !== (input_class_value = "dotted medium " + ctx2[13] + " svelte-811xhi")) {
         attr(input, "class", input_class_value);
       }
-      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].data.height) && input.value !== input_value_value) {
+      if (dirty[0] & 2 && input_value_value !== (input_value_value = ctx2[1].system.height) && input.value !== input_value_value) {
         input.value = input_value_value;
       }
     },
@@ -5208,8 +5218,8 @@ function create__1_slot_5(ctx) {
     onCreate: ctx[16],
     onChange: ctx[29]
   };
-  if (ctx[1].data.role !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.role;
+  if (ctx[1].system.role !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.role;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding));
@@ -5232,7 +5242,7 @@ function create__1_slot_5(ctx) {
         autocomplete_changes.inputClassName = "dotted medium " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.role;
+        autocomplete_changes.selectedItem = ctx2[1].system.role;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5271,8 +5281,8 @@ function create__1_slot_4(ctx) {
     onCreate: ctx[15],
     onChange: ctx[35]
   };
-  if (ctx[1].data.featurebody !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.featurebody;
+  if (ctx[1].system.featurebody !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.featurebody;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_3));
@@ -5295,7 +5305,7 @@ function create__1_slot_4(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.featurebody;
+        autocomplete_changes.selectedItem = ctx2[1].system.featurebody;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5334,8 +5344,8 @@ function create__2_slot_3(ctx) {
     onCreate: ctx[17],
     onChange: ctx[33]
   };
-  if (ctx[1].data.featureface !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.featureface;
+  if (ctx[1].system.featureface !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.featureface;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_2));
@@ -5358,7 +5368,7 @@ function create__2_slot_3(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.featureface;
+        autocomplete_changes.selectedItem = ctx2[1].system.featureface;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5397,8 +5407,8 @@ function create__3_slot_1(ctx) {
     onCreate: ctx[18],
     onChange: ctx[31]
   };
-  if (ctx[1].data.featurevibe !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.featurevibe;
+  if (ctx[1].system.featurevibe !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.featurevibe;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_1));
@@ -5421,7 +5431,7 @@ function create__3_slot_1(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.featurevibe;
+        autocomplete_changes.selectedItem = ctx2[1].system.featurevibe;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5460,8 +5470,8 @@ function create__1_slot_3(ctx) {
     onCreate: ctx[19],
     onChange: ctx[41]
   };
-  if (ctx[1].data.style1 !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.style1;
+  if (ctx[1].system.style1 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.style1;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_6));
@@ -5484,7 +5494,7 @@ function create__1_slot_3(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.style1;
+        autocomplete_changes.selectedItem = ctx2[1].system.style1;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5523,8 +5533,8 @@ function create__2_slot_2(ctx) {
     onCreate: ctx[19],
     onChange: ctx[39]
   };
-  if (ctx[1].data.style2 !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.style2;
+  if (ctx[1].system.style2 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.style2;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_5));
@@ -5547,7 +5557,7 @@ function create__2_slot_2(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.style2;
+        autocomplete_changes.selectedItem = ctx2[1].system.style2;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5586,8 +5596,8 @@ function create__3_slot(ctx) {
     onCreate: ctx[20],
     onChange: ctx[37]
   };
-  if (ctx[1].data.style3 !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.style3;
+  if (ctx[1].system.style3 !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.style3;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_4));
@@ -5610,7 +5620,7 @@ function create__3_slot(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.style3;
+        autocomplete_changes.selectedItem = ctx2[1].system.style3;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5649,8 +5659,8 @@ function create__1_slot_2(ctx) {
     onCreate: ctx[21],
     onChange: ctx[45]
   };
-  if (ctx[1].data.home !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.home;
+  if (ctx[1].system.home !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.home;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_8));
@@ -5673,7 +5683,7 @@ function create__1_slot_2(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.home;
+        autocomplete_changes.selectedItem = ctx2[1].system.home;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5713,8 +5723,8 @@ function create__2_slot_1(ctx) {
     onCreate: ctx[22],
     onChange: ctx[43]
   };
-  if (ctx[1].data.community !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.community;
+  if (ctx[1].system.community !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.community;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_7));
@@ -5737,7 +5747,7 @@ function create__2_slot_1(ctx) {
         autocomplete_changes.className = "verylong " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.community;
+        autocomplete_changes.selectedItem = ctx2[1].system.community;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5776,8 +5786,8 @@ function create__1_slot_1(ctx) {
     onCreate: ctx[23],
     onChange: ctx[49]
   };
-  if (ctx[1].data.ideal !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.ideal;
+  if (ctx[1].system.ideal !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.ideal;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_10));
@@ -5800,7 +5810,7 @@ function create__1_slot_1(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.ideal;
+        autocomplete_changes.selectedItem = ctx2[1].system.ideal;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5839,8 +5849,8 @@ function create__2_slot(ctx) {
     onCreate: ctx[24],
     onChange: ctx[47]
   };
-  if (ctx[1].data.flaw !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.flaw;
+  if (ctx[1].system.flaw !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.flaw;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_9));
@@ -5863,7 +5873,7 @@ function create__2_slot(ctx) {
         autocomplete_changes.inputClassName = "dotted long " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.flaw;
+        autocomplete_changes.selectedItem = ctx2[1].system.flaw;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -5903,8 +5913,8 @@ function create__1_slot(ctx) {
     onCreate: ctx[25],
     onChange: ctx[51]
   };
-  if (ctx[1].data.dream !== void 0) {
-    autocomplete_props.selectedItem = ctx[1].data.dream;
+  if (ctx[1].system.dream !== void 0) {
+    autocomplete_props.selectedItem = ctx[1].system.dream;
   }
   autocomplete = new simple_svelte_autocomplete_default({ props: autocomplete_props });
   binding_callbacks.push(() => bind(autocomplete, "selectedItem", autocomplete_selectedItem_binding_11));
@@ -5927,7 +5937,7 @@ function create__1_slot(ctx) {
         autocomplete_changes.inputClassName = "dotted " + ctx2[13];
       if (!updating_selectedItem && dirty[0] & 2) {
         updating_selectedItem = true;
-        autocomplete_changes.selectedItem = ctx2[1].data.dream;
+        autocomplete_changes.selectedItem = ctx2[1].system.dream;
         add_flush_callback(() => updating_selectedItem = false);
       }
       autocomplete.$set(autocomplete_changes);
@@ -6214,17 +6224,17 @@ function create_fragment6(ctx) {
       content1 = element("content");
       create_component(tabs.$$.fragment);
       attr(label0, "class", "character-label");
-      attr(label0, "for", "data.hp");
+      attr(label0, "for", "system.hp");
       attr(input0, "type", "number");
       attr(input0, "class", input0_class_value = "hp " + ctx[13] + " svelte-811xhi");
-      attr(input0, "name", "data.hp");
+      attr(input0, "name", "system.hp");
       attr(input0, "data-dtype", "Number");
-      input0.value = input0_value_value = ctx[1].data.hp;
+      input0.value = input0_value_value = ctx[1].system.hp;
       attr(input1, "type", "number");
       attr(input1, "class", input1_class_value = "hp " + ctx[13] + " svelte-811xhi");
-      attr(input1, "name", "data.maxhp");
+      attr(input1, "name", "system.maxhp");
       attr(input1, "data-dtype", "Number");
-      input1.value = input1_value_value = ctx[1].data.maxhp;
+      input1.value = input1_value_value = ctx[1].system.maxhp;
       attr(span, "id", "maxhp");
       attr(div0, "class", "hitpoints svelte-811xhi");
       attr(a, "class", "svelte-811xhi");
@@ -6233,9 +6243,9 @@ function create_fragment6(ctx) {
       attr(label1, "for", "data.actionpoints");
       attr(input2, "type", "number");
       attr(input2, "class", input2_class_value = "hp " + ctx[13] + " svelte-811xhi");
-      attr(input2, "name", "data.ap");
+      attr(input2, "name", "system.ap");
       attr(input2, "data-dtype", "Number");
-      input2.value = input2_value_value = ctx[1].data.ap;
+      input2.value = input2_value_value = ctx[1].system.ap;
       attr(div2, "class", "actionpoints svelte-811xhi");
       attr(div3, "class", "header flexrow svelte-811xhi");
       attr(img, "class", img_class_value = "profile " + ctx[13] + " svelte-811xhi");
@@ -6246,9 +6256,9 @@ function create_fragment6(ctx) {
       attr(img, "title", img_title_value = ctx[1].name);
       attr(img, "align", "left");
       attr(input3, "class", input3_class_value = "dotted medium " + ctx[13] + " svelte-811xhi");
-      attr(input3, "name", "data.pronouns");
+      attr(input3, "name", "system.pronouns");
       attr(input3, "type", "text");
-      input3.value = input3_value_value = ctx[1].data.pronouns;
+      input3.value = input3_value_value = ctx[1].system.pronouns;
       attr(input3, "placeholder", input3_placeholder_value = game.i18n.localize("QUEST.Pronouns"));
       attr(p0, "class", "svelte-811xhi");
       attr(p1, "class", "svelte-811xhi");
@@ -6259,64 +6269,64 @@ function create_fragment6(ctx) {
       attr(p6, "class", "svelte-811xhi");
       attr(p7, "class", "svelte-811xhi");
       attr(input4, "class", "long svelte-811xhi");
-      attr(input4, "name", "data.role");
+      attr(input4, "name", "system.role");
       attr(input4, "type", "hidden");
-      input4.value = input4_value_value = ctx[1].data.role;
+      input4.value = input4_value_value = ctx[1].system.role;
       attr(input4, "placeholder", "Role");
       attr(input5, "class", "long svelte-811xhi");
-      attr(input5, "name", "data.featurebody");
+      attr(input5, "name", "system.featurebody");
       attr(input5, "type", "hidden");
-      input5.value = input5_value_value = ctx[1].data.featurebody;
+      input5.value = input5_value_value = ctx[1].system.featurebody;
       attr(input5, "placeholder", "Body");
       attr(input6, "class", "long svelte-811xhi");
-      attr(input6, "name", "data.featureface");
+      attr(input6, "name", "system.featureface");
       attr(input6, "type", "hidden");
-      input6.value = input6_value_value = ctx[1].data.featureface;
+      input6.value = input6_value_value = ctx[1].system.featureface;
       attr(input6, "placeholder", "Face");
       attr(input7, "class", "long svelte-811xhi");
-      attr(input7, "name", "data.featurevibe");
+      attr(input7, "name", "system.featurevibe");
       attr(input7, "type", "hidden");
-      input7.value = input7_value_value = ctx[1].data.featurevibe;
+      input7.value = input7_value_value = ctx[1].system.featurevibe;
       attr(input7, "placeholder", "Vibe");
       attr(input8, "class", "long svelte-811xhi");
-      attr(input8, "name", "data.style1");
+      attr(input8, "name", "system.style1");
       attr(input8, "type", "hidden");
-      input8.value = input8_value_value = ctx[1].data.style1;
+      input8.value = input8_value_value = ctx[1].system.style1;
       attr(input8, "placeholder", "Outfit");
       attr(input9, "class", "long svelte-811xhi");
-      attr(input9, "name", "data.style2");
+      attr(input9, "name", "system.style2");
       attr(input9, "type", "hidden");
-      input9.value = input9_value_value = ctx[1].data.style2;
+      input9.value = input9_value_value = ctx[1].system.style2;
       attr(input9, "placeholder", "Outfit");
       attr(input10, "class", "long svelte-811xhi");
-      attr(input10, "name", "data.style3");
+      attr(input10, "name", "system.style3");
       attr(input10, "type", "hidden");
-      input10.value = input10_value_value = ctx[1].data.style3;
+      input10.value = input10_value_value = ctx[1].system.style3;
       attr(input10, "placeholder", "Movement");
       attr(input11, "class", "long svelte-811xhi");
-      attr(input11, "name", "data.home");
+      attr(input11, "name", "system.home");
       attr(input11, "type", "hidden");
-      input11.value = input11_value_value = ctx[1].data.home;
+      input11.value = input11_value_value = ctx[1].system.home;
       attr(input11, "placeholder", "My Home");
       attr(input12, "class", "long svelte-811xhi");
-      attr(input12, "name", "data.community");
+      attr(input12, "name", "system.community");
       attr(input12, "type", "hidden");
-      input12.value = input12_value_value = ctx[1].data.community;
+      input12.value = input12_value_value = ctx[1].system.community;
       attr(input12, "placeholder", "");
       attr(input13, "class", "long svelte-811xhi");
-      attr(input13, "name", "data.ideal");
+      attr(input13, "name", "system.ideal");
       attr(input13, "type", "hidden");
-      input13.value = input13_value_value = ctx[1].data.ideal;
+      input13.value = input13_value_value = ctx[1].system.ideal;
       attr(input13, "placeholder", "my ideal");
       attr(input14, "class", "long svelte-811xhi");
-      attr(input14, "name", "data.flaw");
+      attr(input14, "name", "system.flaw");
       attr(input14, "type", "hidden");
-      input14.value = input14_value_value = ctx[1].data.flaw;
+      input14.value = input14_value_value = ctx[1].system.flaw;
       attr(input14, "placeholder", "flaw");
       attr(input15, "class", "long svelte-811xhi");
-      attr(input15, "name", "data.dream");
+      attr(input15, "name", "system.dream");
       attr(input15, "type", "hidden");
-      input15.value = input15_value_value = ctx[1].data.dream;
+      input15.value = input15_value_value = ctx[1].system.dream;
       attr(input15, "placeholder", "my dream");
       attr(content0, "class", "svelte-811xhi");
       attr(div4, "class", "biography flexcol flex1 svelte-811xhi");
@@ -6416,19 +6426,19 @@ function create_fragment6(ctx) {
       if (!current || dirty[0] & 8192 && input0_class_value !== (input0_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
         attr(input0, "class", input0_class_value);
       }
-      if (!current || dirty[0] & 2 && input0_value_value !== (input0_value_value = ctx2[1].data.hp)) {
+      if (!current || dirty[0] & 2 && input0_value_value !== (input0_value_value = ctx2[1].system.hp)) {
         input0.value = input0_value_value;
       }
       if (!current || dirty[0] & 8192 && input1_class_value !== (input1_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
         attr(input1, "class", input1_class_value);
       }
-      if (!current || dirty[0] & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.maxhp)) {
+      if (!current || dirty[0] & 2 && input1_value_value !== (input1_value_value = ctx2[1].system.maxhp)) {
         input1.value = input1_value_value;
       }
       if (!current || dirty[0] & 8192 && input2_class_value !== (input2_class_value = "hp " + ctx2[13] + " svelte-811xhi")) {
         attr(input2, "class", input2_class_value);
       }
-      if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].data.ap)) {
+      if (!current || dirty[0] & 2 && input2_value_value !== (input2_value_value = ctx2[1].system.ap)) {
         input2.value = input2_value_value;
       }
       if (!current || dirty[0] & 8192 && img_class_value !== (img_class_value = "profile " + ctx2[13] + " svelte-811xhi")) {
@@ -6451,7 +6461,7 @@ function create_fragment6(ctx) {
       if (!current || dirty[0] & 8192 && input3_class_value !== (input3_class_value = "dotted medium " + ctx2[13] + " svelte-811xhi")) {
         attr(input3, "class", input3_class_value);
       }
-      if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].data.pronouns) && input3.value !== input3_value_value) {
+      if (!current || dirty[0] & 2 && input3_value_value !== (input3_value_value = ctx2[1].system.pronouns) && input3.value !== input3_value_value) {
         input3.value = input3_value_value;
       }
       const translation1_changes = {};
@@ -6489,40 +6499,40 @@ function create_fragment6(ctx) {
         translation7_changes.$$scope = { dirty, ctx: ctx2 };
       }
       translation7.$set(translation7_changes);
-      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].data.role)) {
+      if (!current || dirty[0] & 2 && input4_value_value !== (input4_value_value = ctx2[1].system.role)) {
         input4.value = input4_value_value;
       }
-      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].data.featurebody)) {
+      if (!current || dirty[0] & 2 && input5_value_value !== (input5_value_value = ctx2[1].system.featurebody)) {
         input5.value = input5_value_value;
       }
-      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].data.featureface)) {
+      if (!current || dirty[0] & 2 && input6_value_value !== (input6_value_value = ctx2[1].system.featureface)) {
         input6.value = input6_value_value;
       }
-      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].data.featurevibe)) {
+      if (!current || dirty[0] & 2 && input7_value_value !== (input7_value_value = ctx2[1].system.featurevibe)) {
         input7.value = input7_value_value;
       }
-      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].data.style1)) {
+      if (!current || dirty[0] & 2 && input8_value_value !== (input8_value_value = ctx2[1].system.style1)) {
         input8.value = input8_value_value;
       }
-      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].data.style2)) {
+      if (!current || dirty[0] & 2 && input9_value_value !== (input9_value_value = ctx2[1].system.style2)) {
         input9.value = input9_value_value;
       }
-      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].data.style3)) {
+      if (!current || dirty[0] & 2 && input10_value_value !== (input10_value_value = ctx2[1].system.style3)) {
         input10.value = input10_value_value;
       }
-      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].data.home)) {
+      if (!current || dirty[0] & 2 && input11_value_value !== (input11_value_value = ctx2[1].system.home)) {
         input11.value = input11_value_value;
       }
-      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].data.community)) {
+      if (!current || dirty[0] & 2 && input12_value_value !== (input12_value_value = ctx2[1].system.community)) {
         input12.value = input12_value_value;
       }
-      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].data.ideal)) {
+      if (!current || dirty[0] & 2 && input13_value_value !== (input13_value_value = ctx2[1].system.ideal)) {
         input13.value = input13_value_value;
       }
-      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].data.flaw)) {
+      if (!current || dirty[0] & 2 && input14_value_value !== (input14_value_value = ctx2[1].system.flaw)) {
         input14.value = input14_value_value;
       }
-      if (!current || dirty[0] & 2 && input15_value_value !== (input15_value_value = ctx2[1].data.dream)) {
+      if (!current || dirty[0] & 2 && input15_value_value !== (input15_value_value = ctx2[1].system.dream)) {
         input15.value = input15_value_value;
       }
     },
@@ -6899,8 +6909,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding(value) {
-    if ($$self.$$.not_equal(data.data.role, value)) {
-      data.data.role = value;
+    if ($$self.$$.not_equal(data.system.role, value)) {
+      data.system.role = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6908,8 +6918,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_1(value) {
-    if ($$self.$$.not_equal(data.data.featurevibe, value)) {
-      data.data.featurevibe = value;
+    if ($$self.$$.not_equal(data.system.featurevibe, value)) {
+      data.system.featurevibe = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6917,8 +6927,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_2(value) {
-    if ($$self.$$.not_equal(data.data.featureface, value)) {
-      data.data.featureface = value;
+    if ($$self.$$.not_equal(data.system.featureface, value)) {
+      data.system.featureface = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6926,8 +6936,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_3(value) {
-    if ($$self.$$.not_equal(data.data.featurebody, value)) {
-      data.data.featurebody = value;
+    if ($$self.$$.not_equal(data.system.featurebody, value)) {
+      data.system.featurebody = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6935,8 +6945,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_4(value) {
-    if ($$self.$$.not_equal(data.data.style3, value)) {
-      data.data.style3 = value;
+    if ($$self.$$.not_equal(data.system.style3, value)) {
+      data.system.style3 = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6944,8 +6954,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_5(value) {
-    if ($$self.$$.not_equal(data.data.style2, value)) {
-      data.data.style2 = value;
+    if ($$self.$$.not_equal(data.system.style2, value)) {
+      data.system.style2 = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6953,8 +6963,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_6(value) {
-    if ($$self.$$.not_equal(data.data.style1, value)) {
-      data.data.style1 = value;
+    if ($$self.$$.not_equal(data.system.style1, value)) {
+      data.system.style1 = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6962,8 +6972,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_7(value) {
-    if ($$self.$$.not_equal(data.data.community, value)) {
-      data.data.community = value;
+    if ($$self.$$.not_equal(data.system.community, value)) {
+      data.system.community = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6971,8 +6981,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_8(value) {
-    if ($$self.$$.not_equal(data.data.home, value)) {
-      data.data.home = value;
+    if ($$self.$$.not_equal(data.system.home, value)) {
+      data.system.home = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6980,8 +6990,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_9(value) {
-    if ($$self.$$.not_equal(data.data.flaw, value)) {
-      data.data.flaw = value;
+    if ($$self.$$.not_equal(data.system.flaw, value)) {
+      data.system.flaw = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6989,8 +6999,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_10(value) {
-    if ($$self.$$.not_equal(data.data.ideal, value)) {
-      data.data.ideal = value;
+    if ($$self.$$.not_equal(data.system.ideal, value)) {
+      data.system.ideal = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -6998,8 +7008,8 @@ function instance6($$self, $$props, $$invalidate) {
     sheet?._onSubmit(new Event("submit"));
   };
   function autocomplete_selectedItem_binding_11(value) {
-    if ($$self.$$.not_equal(data.data.dream, value)) {
-      data.data.dream = value;
+    if ($$self.$$.not_equal(data.system.dream, value)) {
+      data.system.dream = value;
       $$invalidate(1, data), $$invalidate(28, $dataStore);
     }
   }
@@ -7010,7 +7020,7 @@ function instance6($$self, $$props, $$invalidate) {
   $$self.$$.update = () => {
     if ($$self.$$.dirty[0] & 268435456) {
       $:
-        $$invalidate(1, data = $dataStore.data);
+        $$invalidate(1, data = $dataStore.actor);
     }
   };
   return [
@@ -7093,7 +7103,6 @@ var QuestActorSheet = class extends ActorSheet {
   }
   getData() {
     const context = super.getData();
-    context.systemData = context.data.data;
     context.sheet = this;
     return context;
   }
@@ -7143,6 +7152,7 @@ var QuestActorSheet = class extends ActorSheet {
     ]);
   }
   async _updateEmbededItem(id, _data) {
+    console.log(_data);
     await this.actor.updateEmbeddedDocuments("Item", [
       { _id: id, data: _data }
     ]);
@@ -7157,7 +7167,7 @@ var QuestActorSheet = class extends ActorSheet {
     this.render();
   }
   async _openAbilityDialog() {
-    game.quest.AbilityDialog.showAbilityDialog(this.object.data.data.role);
+    game.quest.AbilityDialog.showAbilityDialog(this.object.system.role);
   }
   async _onItemCreate(event) {
     event.preventDefault();
@@ -7167,11 +7177,8 @@ var QuestActorSheet = class extends ActorSheet {
     const name = `New ${type.capitalize()}`;
     const itemData = {
       name,
-      type,
-      data
+      type
     };
-    itemData.data = { rank: 1 };
-    delete itemData.data["type"];
     if (type == "item" && Object(this.actor.itemTypes.item).length >= 12) {
       ui.notifications.error(this.actor.name + " can not carry another item.");
       return false;
@@ -7206,9 +7213,9 @@ var QuestActorSheet = class extends ActorSheet {
   async _chatAbility(id) {
     const item2 = this.actor.items.get(id);
     let template = "systems/foundryvtt-quest/templates/chat/ability.html";
-    if (item2.data.data.long_description == "" || !!item2.data.data.long_description == false)
-      item2.data.data.long_description = item2.data.data.description;
-    let data = { ability: item2.data, actor: this.actor.data };
+    if (item2.system.long_description == "" || !!item2.system.long_description == false)
+      item2.system.long_description = item2.system.description;
+    let data = { ability: item2, actor: this.actor.system };
     const html = await renderTemplate(template, data);
     const chatData = {
       actor: this.actor._id,
@@ -7222,6 +7229,7 @@ var QuestActorSheet = class extends ActorSheet {
   }
   render(force = false, options = {}) {
     let sheetData = this.getData();
+    console.log(sheetData);
     if (this.app !== null) {
       let states = Application.RENDER_STATES;
       if (this._state == states.RENDERING || this._state == states.RENDERED) {
@@ -7283,7 +7291,7 @@ function create_each_block_14(ctx) {
   let a1;
   let t3;
   let p;
-  let raw_value = ctx[4].enrichHTML(ctx[14].data.data.description) + "";
+  let raw_value = ctx[4].enrichHTML(ctx[14].data.system.description) + "";
   let t4;
   let mounted;
   let dispose;
@@ -7338,7 +7346,7 @@ function create_each_block_14(ctx) {
       ctx = new_ctx;
       if (dirty & 2 && t0_value !== (t0_value = ctx[14].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[14].data.data.description) + ""))
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[14].data.system.description) + ""))
         p.innerHTML = raw_value;
       ;
     },
@@ -7363,7 +7371,7 @@ function create_each_block6(ctx) {
   let a1;
   let t3;
   let p;
-  let raw_value = ctx[4].enrichHTML(ctx[11].data.data.description) + "";
+  let raw_value = ctx[4].enrichHTML(ctx[11].data.system.description) + "";
   let t4;
   let mounted;
   let dispose;
@@ -7421,7 +7429,7 @@ function create_each_block6(ctx) {
       ctx = new_ctx;
       if (dirty & 2 && t0_value !== (t0_value = ctx[11].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[11].data.data.description) + ""))
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[11].data.system.description) + ""))
         p.innerHTML = raw_value;
       ;
     },
@@ -7467,12 +7475,12 @@ function create_fragment7(ctx) {
   let ul1;
   let mounted;
   let dispose;
-  let each_value_1 = ctx[1].data.itemTypes.detail;
+  let each_value_1 = ctx[1].system.itemTypes.detail;
   let each_blocks_1 = [];
   for (let i = 0; i < each_value_1.length; i += 1) {
     each_blocks_1[i] = create_each_block_14(get_each_context_14(ctx, each_value_1, i));
   }
-  let each_value = ctx[1].data.itemTypes.ability;
+  let each_value = ctx[1].system.itemTypes.ability;
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
     each_blocks[i] = create_each_block6(get_each_context6(ctx, each_value, i));
@@ -7515,12 +7523,12 @@ function create_fragment7(ctx) {
         each_blocks[i].c();
       }
       attr(label0, "class", "character-label");
-      attr(label0, "for", "data.hp");
+      attr(label0, "for", "system.hp");
       attr(input0, "type", "number");
       attr(input0, "class", "hp svelte-1yi3kjs");
-      attr(input0, "name", "data.hp");
+      attr(input0, "name", "system.hp");
       attr(input0, "data-dtype", "Number");
-      input0.value = input0_value_value = ctx[1].data.hp;
+      input0.value = input0_value_value = ctx[1].system.hp;
       attr(div0, "class", "hitpoints svelte-1yi3kjs");
       attr(a, "class", "svelte-1yi3kjs");
       attr(div1, "class", "roll-generic svelte-1yi3kjs");
@@ -7528,9 +7536,9 @@ function create_fragment7(ctx) {
       attr(label1, "for", "data.attack");
       attr(input1, "type", "number");
       attr(input1, "class", "hp svelte-1yi3kjs");
-      attr(input1, "name", "data.attack");
+      attr(input1, "name", "system.attack");
       attr(input1, "data-dtype", "Number");
-      input1.value = input1_value_value = ctx[1].data.attack;
+      input1.value = input1_value_value = ctx[1].system.attack;
       attr(div2, "class", "actionpoints svelte-1yi3kjs");
       attr(div3, "class", "header flexrow svelte-1yi3kjs");
       attr(img, "class", "profile svelte-1yi3kjs");
@@ -7590,10 +7598,10 @@ function create_fragment7(ctx) {
       }
     },
     p(ctx2, [dirty]) {
-      if (dirty & 2 && input0_value_value !== (input0_value_value = ctx2[1].data.hp)) {
+      if (dirty & 2 && input0_value_value !== (input0_value_value = ctx2[1].system.hp)) {
         input0.value = input0_value_value;
       }
-      if (dirty & 2 && input1_value_value !== (input1_value_value = ctx2[1].data.attack)) {
+      if (dirty & 2 && input1_value_value !== (input1_value_value = ctx2[1].system.attack)) {
         input1.value = input1_value_value;
       }
       if (dirty & 2 && img.src !== (img_src_value = ctx2[1].img)) {
@@ -7609,7 +7617,7 @@ function create_fragment7(ctx) {
         input2.value = input2_value_value;
       }
       if (dirty & 22) {
-        each_value_1 = ctx2[1].data.itemTypes.detail;
+        each_value_1 = ctx2[1].system.itemTypes.detail;
         let i;
         for (i = 0; i < each_value_1.length; i += 1) {
           const child_ctx = get_each_context_14(ctx2, each_value_1, i);
@@ -7627,7 +7635,7 @@ function create_fragment7(ctx) {
         each_blocks_1.length = each_value_1.length;
       }
       if (dirty & 22) {
-        each_value = ctx2[1].data.itemTypes.ability;
+        each_value = ctx2[1].system.itemTypes.ability;
         let i;
         for (i = 0; i < each_value.length; i += 1) {
           const child_ctx = get_each_context6(ctx2, each_value, i);
@@ -7742,7 +7750,7 @@ var QuestNPCActorSheet = class extends ActorSheet {
   }
   getData() {
     const context = super.getData();
-    context.systemData = context.data.data;
+    context.systemData = context.data.system;
     context.sheet = this;
     return context;
   }
@@ -7833,7 +7841,6 @@ var QuestNPCActorSheet = class extends ActorSheet {
       type,
       data
     };
-    itemData.data = { rank: 1 };
     delete itemData.data["type"];
     return await Item.create(itemData, { parent: this.actor }).then((item2) => {
       item2.sheet.render(true);
@@ -7900,7 +7907,7 @@ var preloadHandlebarsTemplates = async function() {
     return outStr;
   });
   Handlebars.registerHelper("enrich", function() {
-    var outStr = TextEditor.enrichHTML(arguments[0]);
+    var outStr = TextEditor.enrichHTML(arguments[0], { async: false });
     return outStr;
   });
   Handlebars.registerHelper("enrich_stripcost", function() {
@@ -7908,15 +7915,16 @@ var preloadHandlebarsTemplates = async function() {
     const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
     var removeCost = removeCost.replace(rgx, "");
     removeCost = removeCost.replace(/<p[^>]*>/g, "");
-    var outStr = TextEditor.enrichHTML(removeCost);
+    var outStr = TextEditor.enrichHTML(removeCost, { async: false });
     return outStr;
   });
-  Handlebars.registerHelper("cost", function() {
-    var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
+  Handlebars.registerHelper("cost", async function() {
+    var outStr = await TextEditor.enrichHTML("@cost[" + arguments[0] + "]", { async: true });
+    console.log(outStr);
     return outStr;
   });
   Handlebars.registerHelper("abilityLink", function(name, type, id) {
-    var outStr = TextEditor.enrichHTML("@Compendium[" + type + "." + id + "]{" + name + "}");
+    var outStr = TextEditor.enrichHTML("@Compendium[" + type + "." + id + "]{" + name + "}", { async: false });
     return outStr;
   });
   Handlebars.registerHelper("replace", function(value, find, replace) {
@@ -7951,6 +7959,9 @@ var preloadHandlebarsTemplates = async function() {
         return options.inverse(this);
     }
   });
+  Handlebars.registerHelper("selectQ", function(selected, options) {
+    return options.fn(this).replace(new RegExp(' value="' + selected + '"'), '$& selected="selected"');
+  });
   return loadTemplates(templatePaths);
 };
 
@@ -7977,15 +7988,17 @@ var QuestRoll = class extends Roll {
     super(...args);
   }
   async render(chatOptions = {}) {
+    console.log("custom render");
+    if (!this._evaluated)
+      await this.evaluate({ async: true });
     chatOptions = foundry.utils.mergeObject({
       user: game.user.id,
       flavor: null,
       template: this.constructor.CHAT_TEMPLATE,
       blind: false
     }, chatOptions);
-    if (!this._evaluated)
-      this.evaluate();
     let chatData = await questChatData(this, chatOptions);
+    console.log(chatData);
     return renderTemplate(chatOptions.template, chatData);
   }
 };
@@ -7994,6 +8007,8 @@ var questChatData = async (roll, chatOptions) => {
   const isPrivate = chatOptions.isPrivate;
   let outcome;
   let css;
+  console.log("Render Custom Chat Roll Data");
+  console.log(roll);
   if (roll.result == "20") {
     outcome = game.i18n.localize("QUEST.Triumph");
     css = "triumph";
@@ -8047,15 +8062,19 @@ var AbilityDialog = class extends Dialog {
     });
   }
   static async getRollList() {
+    console.log("Quest - Loading Role List");
     let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
     let AllAbilities = [];
     for (let i = 0; i < game.quest.AbilitySources.length; i++) {
+      console.log(game.quest.AbilitySources[i]);
       let QUESTAbilities = await game.packs.get(game.quest.AbilitySources[i]);
-      let compendiumAbilities = await QUESTAbilities.getDocuments();
-      AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+      if (QUESTAbilities) {
+        let compendiumAbilities = await QUESTAbilities.getDocuments();
+        AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+      }
     }
     const roleList = [
-      ...new Set(AllAbilities.map((data) => data.data.data.role))
+      ...new Set(AllAbilities.map((document2) => document2.system.role))
     ];
     return roleList;
   }
@@ -8065,21 +8084,24 @@ var AbilityDialog = class extends Dialog {
     let AllAbilities = [];
     for (let i = 0; i < game.quest.AbilitySources.length; i++) {
       let QUESTAbilities = await game.packs.get(game.quest.AbilitySources[i]);
-      let compendiumAbilities = await QUESTAbilities.getDocuments();
-      AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+      if (QUESTAbilities) {
+        let compendiumAbilities = await QUESTAbilities.getDocuments();
+        AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+      }
     }
     const roleList = [
-      ...new Set(AllAbilities.map((data) => data.data.data.role))
+      ...new Set(AllAbilities.map((document2) => document2.system.role))
     ];
-    let abilityList = AllAbilities.filter((i) => i.data.type == "ability" && i.data.data.role === role);
-    let quickStart = await abilityList.filter((i) => i.data.type == "ability" && i.data.data.quickstart == true && i.data.data.role === role);
+    let abilityList = AllAbilities.filter((i) => i.type == "ability" && i.system.role === role);
+    let quickStart = await abilityList.filter((i) => i.type == "ability" && i.system.quickstart == true && i.system.role === role);
     abilityList.sort((first, second) => {
-      return String(first.data.data.path).localeCompare(second.data.data.path) || String(first.data.data.order).localeCompare(second.data.data.order);
+      return String(first.system.path).localeCompare(second.system.path) || String(first.system.order).localeCompare(second.system.order);
     });
     let unGrouped = abilityList.reduce(function(r, a) {
       let keys = [];
-      r[a.data.data.path] = r[a.data.data.path] || [];
-      r[a.data.data.path].push(a);
+      a.system.enrichCost = '<i class="cost">' + a.system.cost + "</i>";
+      r[a.system.path] = r[a.system.path] || [];
+      r[a.system.path].push(a);
       return r;
     }, Object.create(null));
     let groupedAbilitiies = [];
@@ -8206,10 +8228,10 @@ var QuestCombatTracker = class extends CombatTracker {
     if (dataset.dtype == "Number") {
       value = Number(value);
       if (Number.isNaN(value)) {
-        if (target.name == "data.hp")
-          ev.currentTarget.value = actor.data.data.hp;
-        else if (target.name == "data.ap")
-          ev.currentTarget.value = actor.data.data.ap;
+        if (target.name == "system.hp")
+          ev.currentTarget.value = actor.data.system.hp;
+        else if (target.name == "system.ap")
+          ev.currentTarget.value = actor.data.system.ap;
         return false;
       }
     }
@@ -8255,7 +8277,7 @@ var QuestCombatTracker = class extends CombatTracker {
       turn.css = turn.css.replace("active", "");
       turn.combatant = combatant;
       context.groups[group].push(turn);
-      context.difficulty[group] += combatant.actor.data.data.hp;
+      context.difficulty[group] += combatant.actor.data.system.hp;
     }
     context.difficulty.score = parseInt(context.difficulty.npc / context.difficulty.character * 100);
     if (context.difficulty.score > 80) {
@@ -8354,7 +8376,8 @@ Hooks.once("init", async function() {
     CompendiumImportHelper,
     roleList,
     AbilitySources,
-    api: QuestAPI
+    api: QuestAPI,
+    QuestTextEditor
   };
   game.quest.AbilitySources = [];
   CONFIG.Actor.documentClass = QuestActor;
@@ -8382,74 +8405,6 @@ Hooks.once("init", async function() {
     makeDefault: true
   });
   await preloadHandlebarsTemplates();
-  TextEditor.enrichHTML = function(content, {
-    secrets = false,
-    documents = true,
-    links = true,
-    rolls = true,
-    cost = true,
-    damage = true,
-    rollData,
-    ...options
-  } = {}) {
-    const html = document.createElement("div");
-    html.innerHTML = String(content || "");
-    if (!secrets) {
-      let elements = html.querySelectorAll("section.secret");
-      elements.forEach((e) => e.parentNode.removeChild(e));
-    }
-    let updateTextArray = true;
-    let text3 = [];
-    if (options.entities) {
-      console.warn("The 'entities' option for TextEditor.enrichHTML is deprecated. Please use 'documents' instead.");
-      documents = options.entities;
-    }
-    if (documents) {
-      if (updateTextArray)
-        text3 = this._getTextNodes(html);
-      const documentTypes = CONST.DOCUMENT_LINK_TYPES.concat("Compendium");
-      const rgx = new RegExp(`@(${documentTypes.join("|")})\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
-      updateTextArray = this._replaceTextContent(text3, rgx, this._createContentLink);
-    }
-    if (links) {
-      if (updateTextArray)
-        text3 = this._getTextNodes(html);
-      const rgx = /(https?:\/\/)(www\.)?([^\s<]+)/gi;
-      updateTextArray = this._replaceTextContent(text3, rgx, this._createHyperlink);
-    }
-    if (rolls) {
-      rollData = rollData instanceof Function ? rollData() : rollData || {};
-      if (updateTextArray)
-        text3 = this._getTextNodes(html);
-      const rgx = /\[\[(\/[a-zA-Z]+\s)?(.*?)([\]]{2,3})(?:{([^}]+)})?/gi;
-      updateTextArray = this._replaceTextContent(text3, rgx, (...args) => this._createInlineRoll(...args, rollData));
-    }
-    if (cost) {
-      if (updateTextArray)
-        text3 = this._getTextNodes(html);
-      const rgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
-      updateTextArray = this._replaceTextContent(text3, rgx, this._createCost);
-    }
-    if (damage) {
-      if (updateTextArray)
-        text3 = this._getTextNodes(html);
-      const rgx = new RegExp(`@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
-      updateTextArray = this._replaceTextContent(text3, rgx, this._createDamage);
-    }
-    return html.innerHTML;
-  };
-  TextEditor._createCost = function(match) {
-    const a = document.createElement("a");
-    match = match.substring(6, match.length - 1);
-    a.innerHTML = '<i class="cost">' + match + "</i>";
-    return a;
-  };
-  TextEditor._createDamage = function(match) {
-    const a = document.createElement("a");
-    match = match.substring(8, match.length - 1);
-    a.innerHTML = '<i class="damage">' + match + "</i>";
-    return a;
-  };
 });
 Hooks.once("ready", async () => {
   let compendium = await game.quest.CompendiumImportHelper.createCompenium();
@@ -8485,6 +8440,10 @@ Hooks.once("ready", async () => {
   });
   game.quest.api.init();
   game.quest.roleList = await game.quest.AbilityDialog.getRollList();
+  const costRgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+  const damageRgx = new RegExp(`@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
+  CONFIG.TextEditor.enrichers.push({ pattern: costRgx, enricher: game.quest.QuestTextEditor._createCost });
+  CONFIG.TextEditor.enrichers.push({ pattern: damageRgx, enricher: game.quest.QuestTextEditor._createDamage });
 });
 Hooks.on("renderDialog", (dialog, html) => {
   Array.from(html.find("#document-create option")).forEach((i) => {

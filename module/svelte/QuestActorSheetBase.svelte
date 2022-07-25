@@ -1,9 +1,7 @@
 <script>
     import { setContext } from "svelte";
-    import { slide } from "svelte/transition";
     import { writable } from "svelte/store";
     import AutoComplete from "simple-svelte-autocomplete";
-    import { dataset_dev } from "svelte/internal";
     import Tabs from "./Tabs.svelte";
     import QuestActorSheetInventory from "./QuestActorSheetInventory.svelte";
     import QuestActorSheetAbilities from "./QuestActorSheetAbilities.svelte";
@@ -17,7 +15,7 @@
     setContext("sheetStore", dataStore);
     //let sheetData = getContext("sheetStore");
     let { actor, data, sheet } = $dataStore;
-    $: data = $dataStore.data;
+    $: data = $dataStore.actor;
 
     //TODO: Get rolls from compendiums
     //
@@ -370,24 +368,26 @@
 
 <div class="header flexrow">
     <div class="hitpoints">
-        <label class="character-label" for="data.hp"
+        <label class="character-label" for="system.hp"
             >{game.i18n.localize("QUEST.HP")}</label
         >
         <input
             type="number"
             class="hp {editclass}"
-            name="data.hp"
+            name="system.hp"
             data-dtype="Number"
-            value={data.data.hp}
+            value={data.system.hp}
         />
         /
-        <span id="maxhp"><input
-            type="number"
-            class="hp {editclass}"
-            name="data.maxhp"
-            data-dtype="Number"
-            value={data.data.maxhp}
-        /></span>
+        <span id="maxhp"
+            ><input
+                type="number"
+                class="hp {editclass}"
+                name="system.maxhp"
+                data-dtype="Number"
+                value={data.system.maxhp}
+            /></span
+        >
     </div>
     <div class="roll-generic">
         <a on:click={sheet?._rollDice.bind(sheet)}
@@ -401,9 +401,9 @@
         <input
             type="number"
             class="hp {editclass}"
-            name="data.ap"
+            name="system.ap"
             data-dtype="Number"
-            value={data.data.ap}
+            value={data.system.ap}
         />
     </div>
 </div>
@@ -434,9 +434,9 @@
                 </Translation>
                 <br />(<input
                     class="dotted medium {editclass}"
-                    name="data.pronouns"
+                    name="system.pronouns"
                     type="text"
-                    value={data.data.pronouns}
+                    value={data.system.pronouns}
                     placeholder={game.i18n.localize("QUEST.Pronouns")}
                 />).
             </p>
@@ -445,18 +445,18 @@
                     <span slot="1">
                         <input
                             class="dotted short {editclass}"
-                            name="data.age"
+                            name="system.age"
                             type="number"
-                            value={data.data.age}
+                            value={data.system.age}
                             placeholder={game.i18n.localize("QUEST.Age")}
                         />
                     </span>
                     <span slot="2">
                         <input
                             class="dotted medium {editclass}"
-                            name="data.height"
+                            name="system.height"
                             type="text"
-                            value={data.data.height}
+                            value={data.system.height}
                             placeholder={game.i18n.localize("QUEST.Height")}
                         />
                     </span>
@@ -472,7 +472,7 @@
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreateR}
-                            bind:selectedItem={data.data.role}
+                            bind:selectedItem={data.system.role}
                             onChange={(e) => {
                                 sheet?._onSubmit(new Event("submit"));
                             }}
@@ -489,7 +489,7 @@
                             items={featurebody}
                             placeholder={game.i18n.localize("QUEST.Body")}
                             inputClassName="dotted long {editclass}"
-                            bind:selectedItem={data.data.featurebody}
+                            bind:selectedItem={data.system.featurebody}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreate}
@@ -503,7 +503,7 @@
                             items={featureface}
                             placeholder={game.i18n.localize("QUEST.Face")}
                             inputClassName="dotted long {editclass}"
-                            bind:selectedItem={data.data.featureface}
+                            bind:selectedItem={data.system.featureface}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreatef2}
@@ -518,7 +518,7 @@
                             items={featurevibe}
                             inputClassName="dotted long {editclass}"
                             placeholder={game.i18n.localize("QUEST.Vibe")}
-                            bind:selectedItem={data.data.featurevibe}
+                            bind:selectedItem={data.system.featurevibe}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreatef3}
@@ -536,7 +536,7 @@
                             items={styleoutfit}
                             placeholder={game.i18n.localize("QUEST.Outfit")}
                             inputClassName="dotted long {editclass}"
-                            bind:selectedItem={data.data.style1}
+                            bind:selectedItem={data.system.style1}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreates1}
@@ -550,7 +550,7 @@
                             items={styleoutfit}
                             placeholder={game.i18n.localize("QUEST.Outfit")}
                             inputClassName="dotted long {editclass}"
-                            bind:selectedItem={data.data.style2}
+                            bind:selectedItem={data.system.style2}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreates1}
@@ -564,7 +564,7 @@
                             items={stylemovement}
                             inputClassName="dotted long {editclass}"
                             placeholder={game.i18n.localize("QUEST.Movement")}
-                            bind:selectedItem={data.data.style3}
+                            bind:selectedItem={data.system.style3}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreates2}
@@ -582,7 +582,7 @@
                             items={homeland}
                             inputClassName="dotted long {editclass}"
                             placeholder={game.i18n.localize("QUEST.Home")}
-                            bind:selectedItem={data.data.home}
+                            bind:selectedItem={data.system.home}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreateh1}
@@ -597,7 +597,7 @@
                             className="verylong {editclass}"
                             inputClassName="dotted"
                             placeholder={game.i18n.localize("QUEST.Legacy")}
-                            bind:selectedItem={data.data.community}
+                            bind:selectedItem={data.system.community}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreateh2}
@@ -615,7 +615,7 @@
                             items={ideal}
                             placeholder={game.i18n.localize("QUEST.Ideal")}
                             inputClassName="dotted long {editclass}"
-                            bind:selectedItem={data.data.ideal}
+                            bind:selectedItem={data.system.ideal}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreateI}
@@ -629,7 +629,7 @@
                             items={flaw}
                             inputClassName="dotted long {editclass}"
                             placeholder={game.i18n.localize("QUEST.Flaw")}
-                            bind:selectedItem={data.data.flaw}
+                            bind:selectedItem={data.system.flaw}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreateF}
@@ -648,7 +648,7 @@
                             className="verylong"
                             inputClassName="dotted {editclass}"
                             placeholder={game.i18n.localize("QUEST.Dream")}
-                            bind:selectedItem={data.data.dream}
+                            bind:selectedItem={data.system.dream}
                             create={true}
                             createText={"Item doesn't exist, create one?"}
                             onCreate={handleCreateD}
@@ -661,86 +661,86 @@
             </p>
             <input
                 class="long"
-                name="data.role"
+                name="system.role"
                 type="hidden"
-                value={data.data.role}
+                value={data.system.role}
                 placeholder="Role"
             />
             <input
                 class="long"
-                name="data.featurebody"
+                name="system.featurebody"
                 type="hidden"
-                value={data.data.featurebody}
+                value={data.system.featurebody}
                 placeholder="Body"
             />
             <input
                 class="long"
-                name="data.featureface"
+                name="system.featureface"
                 type="hidden"
-                value={data.data.featureface}
+                value={data.system.featureface}
                 placeholder="Face"
             />
             <input
                 class="long"
-                name="data.featurevibe"
+                name="system.featurevibe"
                 type="hidden"
-                value={data.data.featurevibe}
+                value={data.system.featurevibe}
                 placeholder="Vibe"
             />
             <input
                 class="long"
-                name="data.style1"
+                name="system.style1"
                 type="hidden"
-                value={data.data.style1}
+                value={data.system.style1}
                 placeholder="Outfit"
             />
             <input
                 class="long"
-                name="data.style2"
+                name="system.style2"
                 type="hidden"
-                value={data.data.style2}
+                value={data.system.style2}
                 placeholder="Outfit"
             />
             <input
                 class="long"
-                name="data.style3"
+                name="system.style3"
                 type="hidden"
-                value={data.data.style3}
+                value={data.system.style3}
                 placeholder="Movement"
             />
             <input
                 class="long"
-                name="data.home"
+                name="system.home"
                 type="hidden"
-                value={data.data.home}
+                value={data.system.home}
                 placeholder="My Home"
             />
             <input
                 class="long"
-                name="data.community"
+                name="system.community"
                 type="hidden"
-                value={data.data.community}
+                value={data.system.community}
                 placeholder=""
             />
             <input
                 class="long"
-                name="data.ideal"
+                name="system.ideal"
                 type="hidden"
-                value={data.data.ideal}
+                value={data.system.ideal}
                 placeholder="my ideal"
             />
             <input
                 class="long"
-                name="data.flaw"
+                name="system.flaw"
                 type="hidden"
-                value={data.data.flaw}
+                value={data.system.flaw}
                 placeholder="flaw"
             />
             <input
                 class="long"
-                name="data.dream"
+                name="system.dream"
                 type="hidden"
-                value={data.data.dream}
+                value={data.system.dream}
                 placeholder="my dream"
             />
         </content>

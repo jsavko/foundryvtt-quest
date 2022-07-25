@@ -40,13 +40,13 @@
 
 <div class="header flexrow">
     <div class="hitpoints">
-        <label class="character-label" for="data.hp">HP:</label>
+        <label class="character-label" for="system.hp">HP:</label>
         <input
             type="number"
             class="hp"
-            name="data.hp"
+            name="system.hp"
             data-dtype="Number"
-            value={data.data.hp}
+            value={data.system.hp}
         />
     </div>
     <div class="roll-generic">
@@ -59,9 +59,9 @@
         <input
             type="number"
             class="hp"
-            name="data.attack"
+            name="system.attack"
             data-dtype="Number"
-            value={data.data.attack}
+            value={data.system.attack}
         />
     </div>
 </div>
@@ -88,7 +88,7 @@
         />
     </div>
     <ul>
-        {#each data.data.itemTypes.detail as detail}
+        {#each data.system.itemTypes.detail as detail}
             <li>
                 <div class="flex">
                     <span class="Uncommon">{detail.name}</span>
@@ -111,14 +111,16 @@
                     </div>
                 </div>
                 <p class="shrink">
-                    {@html TextEditor.enrichHTML(detail.data.data.description)}
+                    {@html TextEditor.enrichHTML(
+                        detail.data.system.description
+                    )}
                 </p>
             </li>
         {/each}
     </ul>
 
     <ul>
-        {#each data.data.itemTypes.ability as ability}
+        {#each data.system.itemTypes.ability as ability}
             <li>
                 <div class="flex">
                     <span class="Uncommon">{ability.name}</span>
@@ -140,7 +142,9 @@
                     </div>
                 </div>
                 <p class="shrink">
-                    {@html TextEditor.enrichHTML(ability.data.data.description)}
+                    {@html TextEditor.enrichHTML(
+                        ability.data.system.description
+                    )}
                 </p>
             </li>
         {/each}

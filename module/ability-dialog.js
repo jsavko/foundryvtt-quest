@@ -26,26 +26,28 @@ export class AbilityDialog extends Dialog {
     }
 
     static async getRollList() {
+        console.log("Quest - Loading Role List");
         let sourceCompendium = game.settings.get(
             "foundryvtt-quest",
             "abilityCompendium"
         );
-
         let AllAbilities = [];
 
         for (let i = 0; i < game.quest.AbilitySources.length; i++) {
-            //console.log(game.quest.AbilitySources[i]);
+            console.log(game.quest.AbilitySources[i]);
             let QUESTAbilities = await game.packs.get(
                 game.quest.AbilitySources[i]
             );
-            let compendiumAbilities = await QUESTAbilities.getDocuments();
-            AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+            if (QUESTAbilities) {
+                let compendiumAbilities = await QUESTAbilities.getDocuments();
+                AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+            }
         }
 
         //const QUESTAbilities = await game.packs.get(sourceCompendium);
         //AllAbilities = await QUESTAbilities.getDocuments();
         const roleList = [
-            ...new Set(AllAbilities.map((data) => data.data.data.role))
+            ...new Set(AllAbilities.map((document) => document.system.role))
         ];
         return roleList;
     }
@@ -59,42 +61,40 @@ export class AbilityDialog extends Dialog {
             let QUESTAbilities = await game.packs.get(
                 game.quest.AbilitySources[i]
             );
-            let compendiumAbilities = await QUESTAbilities.getDocuments();
-            AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+            if (QUESTAbilities) {
+                let compendiumAbilities = await QUESTAbilities.getDocuments();
+                AllAbilities = [].concat(AllAbilities, compendiumAbilities);
+            }
         }
 
-        //const QUESTAbilities = await game.packs.get(sourceCompendium);
-        //AllAbilities = await QUESTAbilities.getDocuments();
         const roleList = [
-            ...new Set(AllAbilities.map((data) => data.data.data.role))
+            ...new Set(AllAbilities.map((document) => document.system.role))
         ];
 
         let abilityList = AllAbilities.filter(
-            (i) => i.data.type == "ability" && i.data.data.role === role
+            (i) => i.type == "ability" && i.system.role === role
         );
 
         let quickStart = await abilityList.filter(
             (i) =>
-                i.data.type == "ability" &&
-                i.data.data.quickstart == true &&
-                i.data.data.role === role
+                i.type == "ability" &&
+                i.system.quickstart == true &&
+                i.system.role === role
         );
 
         abilityList.sort((first, second) => {
             return (
-                String(first.data.data.path).localeCompare(
-                    second.data.data.path
-                ) ||
-                String(first.data.data.order).localeCompare(
-                    second.data.data.order
-                )
+                String(first.system.path).localeCompare(second.system.path) ||
+                String(first.system.order).localeCompare(second.system.order)
             );
         });
 
         let unGrouped = abilityList.reduce(function (r, a) {
             let keys = [];
-            r[a.data.data.path] = r[a.data.data.path] || [];
-            r[a.data.data.path].push(a);
+            //Enrich the cost for the ability browser.  Changes in v10 prevent this from auto enriching and the enricher is now async
+            a.system.enrichCost = '<i class="cost">' + a.system.cost + '</i>';
+            r[a.system.path] = r[a.system.path] || [];
+            r[a.system.path].push(a);
             return r;
         }, Object.create(null));
 

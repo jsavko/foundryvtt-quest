@@ -25,7 +25,7 @@ export class QuestActorSheet extends ActorSheet {
     /** @inheritdoc */
     getData() {
         const context = super.getData();
-        context.systemData = context.data.data;
+        //context.systemData = context.actor.system;
         context.sheet = this;
         return context;
     }
@@ -110,6 +110,7 @@ export class QuestActorSheet extends ActorSheet {
     }
 
     async _updateEmbededItem(id, _data) {
+        console.log(_data);
         await this.actor.updateEmbeddedDocuments("Item", [
             { _id: id, data: _data }
         ]);
@@ -127,7 +128,7 @@ export class QuestActorSheet extends ActorSheet {
     }
 
     async _openAbilityDialog() {
-        game.quest.AbilityDialog.showAbilityDialog(this.object.data.data.role);
+        game.quest.AbilityDialog.showAbilityDialog(this.object.system.role);
     }
 
     async _onItemCreate(event) {
@@ -142,12 +143,11 @@ export class QuestActorSheet extends ActorSheet {
         // Prepare the item object.
         const itemData = {
             name: name,
-            type: type,
-            data: data
+            type: type
         };
-        itemData.data = { rank: 1 };
+        //itemData.data = { rank: 1 };
         // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.data["type"];
+        //delete itemData["type"];
         // Finally, create the item!
 
         if (type == "item" && Object(this.actor.itemTypes.item).length >= 12) {
@@ -196,14 +196,13 @@ export class QuestActorSheet extends ActorSheet {
         const item = this.actor.items.get(id);
         //Prep Chat Card using Ability Template
         let template = "systems/foundryvtt-quest/templates/chat/ability.html";
-
         if (
-            item.data.data.long_description == "" ||
-            !!item.data.data.long_description == false
+            item.system.long_description == "" ||
+            !!item.system.long_description == false
         )
-            item.data.data.long_description = item.data.data.description;
+            item.system.long_description = item.system.description;
 
-        let data = { ability: item.data, actor: this.actor.data };
+        let data = { ability: item, actor: this.actor.system };
         const html = await renderTemplate(template, data);
         const chatData = {
             actor: this.actor._id,
@@ -219,6 +218,7 @@ export class QuestActorSheet extends ActorSheet {
     render(force = false, options = {}) {
         // Grab the sheetdata for both updates and new apps.
         let sheetData = this.getData();
+        console.log(sheetData);
 
         // Exit if Vue has already rendered.
         if (this.app !== null) {

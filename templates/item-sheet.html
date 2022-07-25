@@ -2,36 +2,36 @@
     <header class="sheet-header">
         <img
             class="profile-img"
-            src="{{data.img}}"
+            src="{{document.img}}"
             data-edit="img"
-            title="{{data.name}}"
+            title="{{document.name}}"
         />
         <div class="header-fields">
             <h1 class="charname">
                 <input
                     name="name"
                     type="text"
-                    value="{{data.name}}"
+                    value="{{document.name}}"
                     placeholder="Name"
                 />
             </h1>
             <div class="resource">
                 <label>Rarity</label>
-                <select name="data.rarity">
-                    {{#select data.data.rarity}}
+                <select name="system.rarity">
+                    {{#selectQ document.system.rarity}}
                     <option value="Common">Common</option>
                     <option value="Uncommon">Uncommon</option>
                     <option value="Rare">Rare</option>
                     <option value="Legendary">Legendary</option>
                     <option value="Supreme">Supreme</option>
-                    {{/select}}
+                    {{/selectQ}}
                 </select>
             </div>
             <div class="resource">
                 <label>Quantity</label>
                 <input
                     type="number"
-                    name="data.quantity"
+                    name="system.quantity"
                     value="{{systemData.quantity}}"
                 />
             </div>
@@ -47,7 +47,7 @@
     <section class="sheet-body">
         {{!-- Description Tab --}}
         <div class="tab" data-group="primary" data-tab="description">
-            {{editor content=systemData.description target="data.description"
+            {{editor document.system.description target="system.description"
             button=true owner=owner editable=editable rollData=rollData}}
         </div>
     </section>

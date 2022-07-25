@@ -32,7 +32,7 @@ export const preloadHandlebarsTemplates = async function () {
     });
 
     Handlebars.registerHelper("enrich", function () {
-        var outStr = TextEditor.enrichHTML(arguments[0]);
+        var outStr = TextEditor.enrichHTML(arguments[0], {async:false});
         return outStr;
     });
 
@@ -44,19 +44,20 @@ export const preloadHandlebarsTemplates = async function () {
         );
         var removeCost = removeCost.replace(rgx, "");
         removeCost = removeCost.replace(/<p[^>]*>/g, "");
-        var outStr = TextEditor.enrichHTML(removeCost);
+        var outStr = TextEditor.enrichHTML(removeCost, {async:false});
         return outStr;
     });
 
-    Handlebars.registerHelper("cost", function () {
-        var outStr = TextEditor.enrichHTML("@cost[" + arguments[0] + "]");
+    Handlebars.registerHelper("cost", async function () {
+        var outStr =  await TextEditor.enrichHTML("@cost[" + arguments[0] + "]", {async:true});
+        console.log(outStr)
         return outStr;
     });
 
     Handlebars.registerHelper("abilityLink", function (name, type, id) {
         var outStr = TextEditor.enrichHTML(
             "@Compendium[" + type + "." + id + "]{" + name + "}"
-        );
+        ,{async:false});
         return outStr;
     });
 
@@ -96,6 +97,12 @@ export const preloadHandlebarsTemplates = async function () {
             default:
                 return options.inverse(this);
         }
+    });
+
+    Handlebars.registerHelper('selectQ', function(selected, options) {
+        return options.fn(this).replace(
+            new RegExp(' value=\"' + selected + '\"'),
+            '$& selected="selected"');
     });
 
     // Load the template parts

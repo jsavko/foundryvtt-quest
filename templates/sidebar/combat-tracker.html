@@ -82,23 +82,23 @@
             <div class="flexrow justify-right">
             <div class="resource-tracker">
             {{#if this.owner}}
-              <input class="ct-item-hp" type="text" name="data.hp" value="{{this.combatant.actor.data.data.hp}}" data-combatant-id="{{this.id}}" data-dtype="Number">
+              <input class="ct-item-hp" type="text" name="system.hp" value="{{this.combatant.actor.data.system.hp}}" data-combatant-id="{{this.id}}" data-dtype="Number">
              {{else}}
              {{#ifCond this.combatant.actor.type '==' 'character'}}
-              <span>{{this.combatant.actor.data.data.hp}}</span>
+              <span>{{this.combatant.actor.data.system.hp}}</span>
               {{/ifCond}}
             {{/if}}
             </div>
             <div class="resource-tracker">
                 {{#ifCond this.combatant.actor.type '==' 'character'}}
                     {{#if this.owner}}
-                    <input class="ct-item-ap" type="text" name="data.ap" value="{{this.combatant.actor.data.data.ap}}" data-combatant-id="{{this.id}}" data-dtype="Number">
+                    <input class="ct-item-ap" type="text" name="system.ap" value="{{this.combatant.actor.data.system.ap}}" data-combatant-id="{{this.id}}" data-dtype="Number">
                     {{else}}
-                    <span>{{this.combatant.actor.data.data.ap}}</span>
+                    <span>{{this.combatant.actor.data.system.ap}}</span>
                     {{/if}}
                 {{else}}
                     {{#if this.owner}}
-                    <span>{{this.combatant.actor.data.data.attack}}</span>
+                    <span>{{this.combatant.actor.data.system.attack}}</span>
                     {{/if}}
                 {{/ifCond}}
                 

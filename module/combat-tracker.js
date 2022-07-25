@@ -43,10 +43,10 @@ export default class QuestCombatTracker extends CombatTracker {
         if (dataset.dtype == "Number") {
             value = Number(value);
             if (Number.isNaN(value)) {
-                if (target.name == "data.hp")
-                    ev.currentTarget.value = actor.data.data.hp;
-                else if (target.name == "data.ap")
-                    ev.currentTarget.value = actor.data.data.ap;
+                if (target.name == "system.hp")
+                    ev.currentTarget.value = actor.data.system.hp;
+                else if (target.name == "system.ap")
+                    ev.currentTarget.value = actor.data.system.ap;
 
                 return false;
             }
@@ -109,7 +109,7 @@ export default class QuestCombatTracker extends CombatTracker {
             turn.css = turn.css.replace("active", "");
             turn.combatant = combatant;
             context.groups[group].push(turn);
-            context.difficulty[group] += combatant.actor.data.data.hp;
+            context.difficulty[group] += combatant.actor.data.system.hp;
         }
         context.difficulty.score = parseInt(
             (context.difficulty.npc / context.difficulty.character) * 100

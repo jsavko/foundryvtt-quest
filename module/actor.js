@@ -8,46 +8,50 @@ export class QuestActor extends Actor {
     /** @inheritdoc */
     prepareDerivedData() {
         super.prepareDerivedData();
-        this.data.data.groups = this.data.data.groups || {};
-        this.data.data.attributes = this.data.data.attributes || {};
+        this.system.groups = this.system.groups || {};
+        this.system.attributes = this.system.attributes || {};
     }
 
     prepareData() {
         super.prepareData();
-        const actorData = this.data;
+        console.log("prep data");
+        console.log(this);
+        const actorData = this;
 
-        if (actorData.type == "character") {
-            this._prepareCharacterData(this.data);
-        } else if (actorData.type == "npc") {
-            this._prepareNPCData(this.data);
+        if (this.type == "character") {
+            this._prepareCharacterData(this);
+        } else if (this.type == "npc") {
+            this._prepareNPCData(this);
         }
 
-        return this.data;
+        return this;
     }
 
     _prepareCharacterData(actorData) {
-        actorData.data.itemTypes = this.itemTypes;
+        console.log("prep char data");
+        console.log(this);
+        actorData.system.itemTypes = this.itemTypes;
 
         // Set abilities into paths
         let abilities = this.itemTypes.ability;
 
         let paths = {};
         for (let ability of abilities) {
-            //console.log(ability.data.data.path);
-            if (!!paths[ability.data.data.path] == false)
-                paths[ability.data.data.path] = [];
-            paths[ability.data.data.path].push(ability);
+            //console.log(ability.system.path);
+            if (!!paths[ability.system.path] == false)
+                paths[ability.system.path] = [];
+            paths[ability.system.path].push(ability);
         }
-        actorData.data.abilityTypes = paths;
+        actorData.system.abilityTypes = paths;
         //console.log(actorData);
         return actorData;
-        //mergeObject(actorData.data, this.itemTypes)
+        //mergeObject(actorData.system, this.itemTypes)
     }
 
     _prepareNPCData(actorData) {
-        actorData.data.itemTypes = this.itemTypes;
+        actorData.system.itemTypes = this.itemTypes;
         return actorData;
-        //mergeObject(actorData.data, this.itemTypes)
+        //mergeObject(actorData.system, this.itemTypes)
     }
 
     async _preCreate(data, options, user) {
@@ -77,7 +81,7 @@ export class QuestActor extends Actor {
                         type: "detail"
                     });
                 }
-                this.data.update({ items: details });
+                this.update({ items: details });
             }
         }
     }
@@ -96,16 +100,16 @@ export class QuestActor extends Actor {
     /** @inheritdoc */
     async getRollData() {
         // Copy the actor's system data
-        const data = this.toObject(false).data;
+        const data = this.toObject(false);
 
         // Update the combat flags.
         if (game.combat && game.combat.combatants) {
             let combatant = game.combat.combatants.find(
                 (c) => c.actor.id == this.id
             );
-            if (combatant.actor.isOwner) {
-                let actionCount = combatant.data.flags["foundryvtt-quest"]
-                    ? combatant.data.flags["foundryvtt-quest"].actionCount
+            if (combatant?.actor.isOwner) {
+                let actionCount = combatant.flags["foundryvtt-quest"]
+                    ? combatant.flags["foundryvtt-quest"].actionCount
                     : 0;
                 actionCount = actionCount ? Number(actionCount) + 1 : 1;
                 //console.log(actionCount);

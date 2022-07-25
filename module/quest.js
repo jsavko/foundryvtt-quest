@@ -17,6 +17,7 @@ import { AbilityDialog } from "./ability-dialog.js";
 import { CompendiumImportHelper } from "./compendium-helper.js";
 import QuestCombatTracker from "./combat-tracker.js";
 import { QuestAPI } from "./role-api.js";
+import {QuestTextEditor} from "./quest-texteditor.js";
 
 //import { InlineTables } from "./inline-tables.js";
 
@@ -55,7 +56,8 @@ Hooks.once("init", async function () {
         CompendiumImportHelper,
         roleList,
         AbilitySources,
-        api: QuestAPI
+        api: QuestAPI,
+        QuestTextEditor
     };
 
     game.quest.AbilitySources = [];
@@ -96,126 +98,7 @@ Hooks.once("init", async function () {
     // Preload template partials
     await preloadHandlebarsTemplates();
 
-    // Replace functions for tinyMCE
-    TextEditor.enrichHTML = function (
-        content,
-        {
-            secrets = false,
-            documents = true,
-            links = true,
-            rolls = true,
-            cost = true,
-            damage = true,
-            rollData,
-            ...options
-        } = {}
-    ) {
-        // Create the HTML element
-        const html = document.createElement("div");
-        html.innerHTML = String(content || "");
-
-        // Remove secret blocks
-        if (!secrets) {
-            let elements = html.querySelectorAll("section.secret");
-            elements.forEach((e) => e.parentNode.removeChild(e));
-        }
-
-        // Plan text content replacements
-        let updateTextArray = true;
-        let text = [];
-
-        // Replace document links
-        if (options.entities) {
-            console.warn(
-                "The 'entities' option for TextEditor.enrichHTML is deprecated. Please use 'documents' instead."
-            );
-            documents = options.entities;
-        }
-
-        if (documents) {
-            if (updateTextArray) text = this._getTextNodes(html);
-            const documentTypes =
-                CONST.DOCUMENT_LINK_TYPES.concat("Compendium");
-            const rgx = new RegExp(
-                `@(${documentTypes.join("|")})\\[([^\\]]+)\\](?:{([^}]+)})?`,
-                "g"
-            );
-            updateTextArray = this._replaceTextContent(
-                text,
-                rgx,
-                this._createContentLink
-            );
-        }
-
-        // Replace hyperlinks
-        if (links) {
-            if (updateTextArray) text = this._getTextNodes(html);
-            const rgx = /(https?:\/\/)(www\.)?([^\s<]+)/gi;
-            updateTextArray = this._replaceTextContent(
-                text,
-                rgx,
-                this._createHyperlink
-            );
-        }
-
-        // Replace inline rolls
-        if (rolls) {
-            rollData =
-                rollData instanceof Function ? rollData() : rollData || {};
-            if (updateTextArray) text = this._getTextNodes(html);
-            const rgx = /\[\[(\/[a-zA-Z]+\s)?(.*?)([\]]{2,3})(?:{([^}]+)})?/gi;
-            updateTextArray = this._replaceTextContent(text, rgx, (...args) =>
-                this._createInlineRoll(...args, rollData)
-            );
-        }
-
-        // Look for Cost?
-        if (cost) {
-            if (updateTextArray) text = this._getTextNodes(html);
-            const rgx = new RegExp(
-                `@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`,
-                "g"
-            );
-            updateTextArray = this._replaceTextContent(
-                text,
-                rgx,
-                this._createCost
-            );
-        }
-
-        if (damage) {
-            if (updateTextArray) text = this._getTextNodes(html);
-            const rgx = new RegExp(
-                `@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`,
-                "g"
-            );
-            updateTextArray = this._replaceTextContent(
-                text,
-                rgx,
-                this._createDamage
-            );
-        }
-
-        // Return the enriched HTML
-        return html.innerHTML;
-    };
-
-    TextEditor._createCost = function (match) {
-        const a = document.createElement("a");
-        match = match.substring(6, match.length - 1);
-        a.innerHTML = '<i class="cost">' + match + "</i>";
-
-        return a;
-    };
-
-    TextEditor._createDamage = function (match) {
-        const a = document.createElement("a");
-        //console.log(match);
-        match = match.substring(8, match.length - 1);
-        a.innerHTML = '<i class="damage">' + match + "</i>";
-
-        return a;
-    };
+   
 });
 
 /**
@@ -264,6 +147,19 @@ Hooks.once("ready", async () => {
     game.quest.api.init();
 
     game.quest.roleList = await game.quest.AbilityDialog.getRollList();
+
+    const costRgx = new RegExp(
+        `@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`,
+        "g"
+    );
+
+    const damageRgx = new RegExp(
+        `@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`,
+        "g"
+        );
+
+    CONFIG.TextEditor.enrichers.push({pattern:costRgx, enricher:game.quest.QuestTextEditor._createCost});
+    CONFIG.TextEditor.enrichers.push({pattern:damageRgx, enricher:game.quest.QuestTextEditor._createDamage});
 });
 
 Hooks.on("renderDialog", (dialog, html) => {

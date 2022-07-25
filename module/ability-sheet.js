@@ -1,5 +1,6 @@
 import { EntitySheetHelper } from "./helper.js";
 import { ATTRIBUTE_TYPES } from "./constants.js";
+import { QuestTextEditor } from "./quest-texteditor.js";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -31,11 +32,13 @@ export class QuestAbilitySheet extends ItemSheet {
     /* -------------------------------------------- */
 
     /** @inheritdoc */
-    getData() {
+    async getData() {
         const context = super.getData();
-        EntitySheetHelper.getAttributeData(context.data);
-        context.systemData = context.data.data;
-        context.dtypes = ATTRIBUTE_TYPES;
+        context.document.system.description = await TextEditor.enrichHTML(context.document.system.description, {async:true});
+        context.document.system.long_description = await TextEditor.enrichHTML(context.document.system.long_description, {async:true});
+        //EntitySheetHelper.getAttributeData(context);
+        //context.systemData = context.system;
+        //context.dtypes = ATTRIBUTE_TYPES;
 
         return context;
     }
