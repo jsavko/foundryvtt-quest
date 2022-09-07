@@ -1,11 +1,18 @@
 {
-    "name": "foundryvtt-quest",
+    "id": "foundryvtt-quest",
     "title": "Quest",
     "description": "A system for playing the Quest RPG in Foundry VTT.",
-    "version": "0.1.15",
-    "minimumCoreVersion": "9",
-    "compatibleCoreVersion": "9",
-    "author": "LostPhoenix",
+    "version": "0.2.0",
+    "compatibility": {
+        "minimum": 10,
+        "verified": "10.284"
+    },
+    "authors": [
+        {
+            "name": "James Savko",
+            "discord": "Phoenix#0009"
+        }
+    ],
     "esmodules": ["dist/quest.js"],
     "socket": false,
     "styles": ["styles/quest.css", "dist/quest.css"],
@@ -15,14 +22,16 @@
             "label": "Quest System - Role Abilities [Do Not Edit]",
             "path": "packs/role-abilities.db",
             "entity": "Item",
-            "type": "Item"
+            "type": "Item",
+            "system": "foundryvtt-quest"
         },
         {
             "name": "npc-abilities",
             "label": "Quest System - NPC Abilities [Do Not Edit]",
             "path": "packs/npc-abilities.db",
             "entity": "Item",
-            "type": "Item"
+            "type": "Item",
+            "system": "foundryvtt-quest"
         }
     ],
     "languages": [

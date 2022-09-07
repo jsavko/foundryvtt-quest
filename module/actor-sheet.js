@@ -201,7 +201,9 @@ export class QuestActorSheet extends ActorSheet {
             !!item.system.long_description == false
         )
             item.system.long_description = item.system.description;
-
+        
+        // New enrichers are async. Allows chat messages to be sent full HTML
+        item.system.long_description = await TextEditor.enrichHTML(item.system.long_description, {async:true})   
         let data = { ability: item, actor: this.actor.system };
         const html = await renderTemplate(template, data);
         const chatData = {
@@ -218,7 +220,7 @@ export class QuestActorSheet extends ActorSheet {
     render(force = false, options = {}) {
         // Grab the sheetdata for both updates and new apps.
         let sheetData = this.getData();
-        console.log(sheetData);
+        //console.log(sheetData);
 
         // Exit if Vue has already rendered.
         if (this.app !== null) {
