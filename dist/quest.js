@@ -433,8 +433,6 @@ var QuestActor = class extends Actor {
   }
   prepareData() {
     super.prepareData();
-    console.log("prep data");
-    console.log(this);
     const actorData = this;
     if (this.type == "character") {
       this._prepareCharacterData(this);
@@ -444,8 +442,6 @@ var QuestActor = class extends Actor {
     return this;
   }
   _prepareCharacterData(actorData) {
-    console.log("prep char data");
-    console.log(this);
     actorData.system.itemTypes = this.itemTypes;
     let abilities = this.itemTypes.ability;
     let paths = {};
@@ -7942,7 +7938,6 @@ var QuestRoll = class extends Roll {
     super(...args);
   }
   async render(chatOptions = {}) {
-    console.log("custom render");
     if (!this._evaluated)
       await this.evaluate({ async: true });
     chatOptions = foundry.utils.mergeObject({
@@ -7952,7 +7947,6 @@ var QuestRoll = class extends Roll {
       blind: false
     }, chatOptions);
     let chatData = await questChatData(this, chatOptions);
-    console.log(chatData);
     return renderTemplate(chatOptions.template, chatData);
   }
 };
@@ -7961,8 +7955,6 @@ var questChatData = async (roll, chatOptions) => {
   const isPrivate = chatOptions.isPrivate;
   let outcome;
   let css;
-  console.log("Render Custom Chat Roll Data");
-  console.log(roll);
   if (roll.result == "20") {
     outcome = game.i18n.localize("QUEST.Triumph");
     css = "triumph";
@@ -8019,6 +8011,7 @@ var AbilityDialog = class extends Dialog {
     console.log("Quest - Loading Role List");
     let sourceCompendium = game.settings.get("foundryvtt-quest", "abilityCompendium");
     let AllAbilities = [];
+    console.log(game.quest.AbilitySources);
     for (let i = 0; i < game.quest.AbilitySources.length; i++) {
       console.log(game.quest.AbilitySources[i]);
       let QUESTAbilities = await game.packs.get(game.quest.AbilitySources[i]);
@@ -8281,13 +8274,14 @@ var QuestAPI = class {
     sources.forEach((sources2) => {
       this.register(sources2);
     });
-    console.log("Loading Additional Sources");
+    console.log("Quest - Loading Additional Sources");
     console.log(sources);
     Hooks.callAll("quest-registerRoles");
   }
   static async register(pack) {
     const index = game.quest.AbilitySources.indexOf(pack);
     if (index == -1) {
+      console.log("adding " + pack);
       game.quest.AbilitySources.push(pack);
       ui.compendium.render();
     }
@@ -8370,7 +8364,7 @@ Hooks.once("ready", async () => {
   }
   let gamePacks = game.packs.filter((entry) => entry.documentName === "Item");
   let itemPacks = {};
-  console.log("getting packs");
+  console.log("Quest - Indexing Packs");
   for (let pack of gamePacks) {
     if (pack.metadata.package != "foundryvtt-quest") {
       let source = pack.metadata.package + "." + pack.metadata.name;
@@ -8399,8 +8393,14 @@ Hooks.once("ready", async () => {
   game.quest.roleList = await game.quest.AbilityDialog.getRollList();
   const costRgx = new RegExp(`@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
   const damageRgx = new RegExp(`@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`, "g");
-  CONFIG.TextEditor.enrichers.push({ pattern: costRgx, enricher: game.quest.QuestTextEditor._createCost });
-  CONFIG.TextEditor.enrichers.push({ pattern: damageRgx, enricher: game.quest.QuestTextEditor._createDamage });
+  CONFIG.TextEditor.enrichers.push({
+    pattern: costRgx,
+    enricher: game.quest.QuestTextEditor._createCost
+  });
+  CONFIG.TextEditor.enrichers.push({
+    pattern: damageRgx,
+    enricher: game.quest.QuestTextEditor._createDamage
+  });
 });
 Hooks.on("renderDialog", (dialog, html) => {
   Array.from(html.find("#document-create option")).forEach((i) => {

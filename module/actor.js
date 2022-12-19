@@ -14,8 +14,7 @@ export class QuestActor extends Actor {
 
     prepareData() {
         super.prepareData();
-        console.log("prep data");
-        console.log(this);
+
         const actorData = this;
 
         if (this.type == "character") {
@@ -28,8 +27,6 @@ export class QuestActor extends Actor {
     }
 
     _prepareCharacterData(actorData) {
-        console.log("prep char data");
-        console.log(this);
         actorData.system.itemTypes = this.itemTypes;
 
         // Set abilities into paths

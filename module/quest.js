@@ -17,7 +17,7 @@ import { AbilityDialog } from "./ability-dialog.js";
 import { CompendiumImportHelper } from "./compendium-helper.js";
 import QuestCombatTracker from "./combat-tracker.js";
 import { QuestAPI } from "./role-api.js";
-import {QuestTextEditor} from "./quest-texteditor.js";
+import { QuestTextEditor } from "./quest-texteditor.js";
 
 //import { InlineTables } from "./inline-tables.js";
 
@@ -97,8 +97,6 @@ Hooks.once("init", async function () {
 
     // Preload template partials
     await preloadHandlebarsTemplates();
-
-   
 });
 
 /**
@@ -115,7 +113,7 @@ Hooks.once("ready", async () => {
 
     let gamePacks = game.packs.filter((entry) => entry.documentName === "Item");
     let itemPacks = {};
-    console.log("getting packs");
+    console.log("Quest - Indexing Packs");
     for (let pack of gamePacks) {
         if (pack.metadata.package != "foundryvtt-quest") {
             let source = pack.metadata.package + "." + pack.metadata.name;
@@ -156,10 +154,16 @@ Hooks.once("ready", async () => {
     const damageRgx = new RegExp(
         `@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`,
         "g"
-        );
+    );
 
-    CONFIG.TextEditor.enrichers.push({pattern:costRgx, enricher:game.quest.QuestTextEditor._createCost});
-    CONFIG.TextEditor.enrichers.push({pattern:damageRgx, enricher:game.quest.QuestTextEditor._createDamage});
+    CONFIG.TextEditor.enrichers.push({
+        pattern: costRgx,
+        enricher: game.quest.QuestTextEditor._createCost
+    });
+    CONFIG.TextEditor.enrichers.push({
+        pattern: damageRgx,
+        enricher: game.quest.QuestTextEditor._createDamage
+    });
 });
 
 Hooks.on("renderDialog", (dialog, html) => {

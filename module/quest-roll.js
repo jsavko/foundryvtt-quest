@@ -10,7 +10,6 @@ export class QuestRoll extends Roll {
      */
 
     async render(chatOptions = {}) {
-        console.log("custom render");
         // Execute the roll, if needed
         if (!this._evaluated) await this.evaluate({ async: true });
 
@@ -26,7 +25,6 @@ export class QuestRoll extends Roll {
 
         // Define chat data
         let chatData = await questChatData(this, chatOptions);
-        console.log(chatData);
 
         // Render the roll display template
         return renderTemplate(chatOptions.template, chatData);
@@ -40,8 +38,7 @@ const questChatData = async (roll, chatOptions) => {
     let outcome;
     let css;
     // Do some calcs
-    console.log("Render Custom Chat Roll Data");
-    console.log(roll);
+
     if (roll.result == "20") {
         outcome = game.i18n.localize("QUEST.Triumph");
         css = "triumph";

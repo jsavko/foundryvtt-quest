@@ -32,7 +32,7 @@ export class AbilityDialog extends Dialog {
             "abilityCompendium"
         );
         let AllAbilities = [];
-
+        console.log(game.quest.AbilitySources);
         for (let i = 0; i < game.quest.AbilitySources.length; i++) {
             console.log(game.quest.AbilitySources[i]);
             let QUESTAbilities = await game.packs.get(
@@ -92,7 +92,7 @@ export class AbilityDialog extends Dialog {
         let unGrouped = abilityList.reduce(function (r, a) {
             let keys = [];
             //Enrich the cost for the ability browser.  Changes in v10 prevent this from auto enriching and the enricher is now async
-            a.system.enrichCost = '<i class="cost">' + a.system.cost + '</i>';
+            a.system.enrichCost = '<i class="cost">' + a.system.cost + "</i>";
             r[a.system.path] = r[a.system.path] || [];
             r[a.system.path].push(a);
             return r;

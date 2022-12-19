@@ -30,13 +30,10 @@
     <p>&nbsp;</p>
     {{#each content.abilities}}
     <h2 style="text-align: center" id="{{slugify name}}">{{name}}</h2>
-    {{#each data}}
+    {{#each data}} {{@log this}}
     <p>
         {{{system.enrichCost}}} {{{abilityLink name pack _id}}}
         <span>{{{enrich_stripcost system.description}}}</span>
     </p>
-    {{/each}}
-
-    <p>&nbsp;</p>
-    {{/each}}
+    {{/each}} {{/each}}
 </form>
