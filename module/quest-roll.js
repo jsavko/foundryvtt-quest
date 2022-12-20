@@ -10,6 +10,9 @@ export class QuestRoll extends Roll {
      */
 
     async render(chatOptions = {}) {
+        // Execute the roll, if needed
+        if (!this._evaluated) await this.evaluate({ async: true });
+
         chatOptions = foundry.utils.mergeObject(
             {
                 user: game.user.id,
@@ -19,9 +22,6 @@ export class QuestRoll extends Roll {
             },
             chatOptions
         );
-
-        // Execute the roll, if needed
-        if (!this._evaluated) this.evaluate();
 
         // Define chat data
         let chatData = await questChatData(this, chatOptions);
@@ -38,6 +38,7 @@ const questChatData = async (roll, chatOptions) => {
     let outcome;
     let css;
     // Do some calcs
+
     if (roll.result == "20") {
         outcome = game.i18n.localize("QUEST.Triumph");
         css = "triumph";

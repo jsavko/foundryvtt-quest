@@ -7,8 +7,8 @@
     let { actor, sheet } = $sheetData;
     let data;
     let abilities;
-    $: data = $sheetData.data;
-    $: abilityTypes = $sheetData.data.data.abilityTypes;
+    $: data = $sheetData.actor;
+    $: abilityTypes = $sheetData.actor.system.abilityTypes;
 </script>
 
 {#if !$sheetData.limited}
@@ -33,11 +33,9 @@
                                     // sheet.delete.id
                                     {
                                         if (sheet.isEditable)
-                                            sheet?._chatAbility(
-                                                ability.data._id
-                                            );
+                                            sheet?._chatAbility(ability._id);
                                     }}
-                                ><i class="cost">{ability.data.data.cost}</i></a
+                                ><i class="cost">{ability.system.cost}</i></a
                             >{ability.name}
                         </div>
                         <div class="flex medium">
@@ -45,9 +43,7 @@
                                     on:click={(e) =>
                                         // sheet.delete.id
                                         {
-                                            sheet?._onItemEdit(
-                                                ability.data._id
-                                            );
+                                            sheet?._onItemEdit(ability._id);
                                         }}><i class="fas fa-info-circle" /></a
                                 >
 
@@ -55,9 +51,7 @@
                                     on:click={(e) =>
                                         // sheet.delete.id
                                         {
-                                            sheet?._onItemDelete(
-                                                ability.data._id
-                                            );
+                                            sheet?._onItemDelete(ability._id);
                                         }}><i class="fas fa-trash" /></a
                                 >{/if}
                         </div>

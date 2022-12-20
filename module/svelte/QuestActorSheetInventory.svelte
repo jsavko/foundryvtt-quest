@@ -7,8 +7,8 @@
     let { actor, sheet } = $sheetData;
     let data;
     let abilities;
-    $: data = $sheetData.data;
-    $: items = $sheetData.data.data.itemTypes.item;
+    $: data = $sheetData.actor;
+    $: items = $sheetData.actor.system.itemTypes.item;
 </script>
 
 {#if !$sheetData.limited}
@@ -17,24 +17,24 @@
             {#if !!items[i]}
                 <li>
                     <div class="flex">
-                        <span class={items[i].data.data.rarity}
-                            >{items[i].data.name}</span
+                        <span class={items[i].system.rarity}
+                            >{items[i].name}</span
                         >
                         <div class="right">
                             {#if sheet.isEditable}<a
                                     on:click={(e) => {
-                                        sheet?._chatAbility(items[i].data._id);
+                                        sheet?._chatAbility(items[i]._id);
                                     }}><i class="fas fa-bullhorn" /></a
                                 >
                                 <a
                                     on:click={(e) => {
-                                        sheet?._onItemEdit(items[i].data._id);
+                                        sheet?._onItemEdit(items[i]._id);
                                     }}><i class="fas fa-pen" /></a
                                 >
 
                                 <a
                                     on:click={(e) => {
-                                        sheet?._onItemDelete(items[i].data._id);
+                                        sheet?._onItemDelete(items[i]._id);
                                     }}><i class="fas fa-trash" /></a
                                 >{/if}
                         </div>

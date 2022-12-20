@@ -25,7 +25,7 @@ export class QuestNPCActorSheet extends ActorSheet {
     /** @inheritdoc */
     getData() {
         const context = super.getData();
-        context.systemData = context.data.data;
+        context.systemData = context.data.system;
         context.sheet = this;
         return context;
     }
@@ -162,7 +162,7 @@ export class QuestNPCActorSheet extends ActorSheet {
             type: type,
             data: data
         };
-        itemData.data = { rank: 1 };
+        //itemData.data = { rank: 1 };
         // Remove the type from the dataset since it's in the itemData.type prop.
         delete itemData.data["type"];
         // Finally, create the item!

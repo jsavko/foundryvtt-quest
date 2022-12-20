@@ -13,7 +13,7 @@ export class QuestAPI {
             this.register(sources);
         });
 
-        console.log("Loading Additional Sources");
+        console.log("Quest - Loading Additional Sources");
         console.log(sources);
 
         Hooks.callAll("quest-registerRoles");
@@ -23,6 +23,7 @@ export class QuestAPI {
         // Prevent registering an already registered pack
         const index = game.quest.AbilitySources.indexOf(pack);
         if (index == -1) {
+            console.log("adding " + pack);
             game.quest.AbilitySources.push(pack);
             ui.compendium.render();
         }

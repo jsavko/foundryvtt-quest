@@ -405,6 +405,9 @@
     margin: 0;
 }
 
+.abilityblock {
+    margin-bottom: 5px;
+}
 .quest .detailsheet-header {
     flex: 0 0 50px;
     overflow: hidden;

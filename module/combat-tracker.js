@@ -43,10 +43,10 @@ export default class QuestCombatTracker extends CombatTracker {
         if (dataset.dtype == "Number") {
             value = Number(value);
             if (Number.isNaN(value)) {
-                if (target.name == "data.hp")
-                    ev.currentTarget.value = actor.data.data.hp;
-                else if (target.name == "data.ap")
-                    ev.currentTarget.value = actor.data.data.ap;
+                if (target.name == "system.hp")
+                    ev.currentTarget.value = actor.system.hp;
+                else if (target.name == "system.ap")
+                    ev.currentTarget.value = actor.system.ap;
 
                 return false;
             }
@@ -103,25 +103,27 @@ export default class QuestCombatTracker extends CombatTracker {
             score: null,
             rating: null
         };
-        for (let [i, combatant] of context.combat.turns.entries()) {
-            let group = combatant.actor.data.type;
-            let turn = context.turns[i];
-            turn.css = turn.css.replace("active", "");
-            turn.combatant = combatant;
-            context.groups[group].push(turn);
-            context.difficulty[group] += combatant.actor.data.data.hp;
-        }
-        context.difficulty.score = parseInt(
-            (context.difficulty.npc / context.difficulty.character) * 100
-        );
-        if (context.difficulty.score > 80) {
-            context.difficulty.rating = "QUEST.Deadly";
-        } else if (context.difficulty.score > 50) {
-            context.difficulty.rating = "QUEST.DeadlyFair";
-        } else if (context.difficulty.score > 30) {
-            context.difficulty.rating = "QUEST.Fair";
-        } else {
-            context.difficulty.rating = "QUEST.Easy";
+        if (context.combat) {
+            for (let [i, combatant] of context.combat.turns.entries()) {
+                let group = combatant.actor.type;
+                let turn = context.turns[i];
+                turn.css = turn.css.replace("active", "");
+                turn.combatant = combatant;
+                context.groups[group].push(turn);
+                context.difficulty[group] += combatant.actor.system.hp;
+            }
+            context.difficulty.score = parseInt(
+                (context.difficulty.npc / context.difficulty.character) * 100
+            );
+            if (context.difficulty.score > 80) {
+                context.difficulty.rating = "QUEST.Deadly";
+            } else if (context.difficulty.score > 50) {
+                context.difficulty.rating = "QUEST.DeadlyFair";
+            } else if (context.difficulty.score > 30) {
+                context.difficulty.rating = "QUEST.Fair";
+            } else {
+                context.difficulty.rating = "QUEST.Easy";
+            }
         }
 
         //console.log(context);
@@ -131,7 +133,7 @@ export default class QuestCombatTracker extends CombatTracker {
     firstOwner(doc) {
         /* null docs could mean an empty lookup, null docs are not owned by anyone */
         if (!doc) return false;
-
+        console.log(doc);
         const gmOwners = Object.entries(doc.data.permission)
             .filter(
                 ([id, level]) =>
