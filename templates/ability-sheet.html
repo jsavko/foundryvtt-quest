@@ -45,7 +45,7 @@
                     type="checkbox"
                     name="system.quickstart"
                     {{checked
-                        document.system.quickstart}}
+                    document.system.quickstart}}
                 />
             </div>
         </div>
@@ -61,14 +61,13 @@
     <section class="sheet-body">
         {{!-- Description Tab --}}
         <div class="tab" data-group="primary" data-tab="description">
-            {{editor document.system.description target="system.description"
-            button=true owner=owner editable=editable rollData=rollData}}
+            {{editor descriptionHTML target="system.description" button=true
+            owner=owner editable=editable rollData=rollData}}
         </div>
         {{!-- Description Tab --}}
         <div class="tab" data-group="primary" data-tab="long_description">
-            {{editor document.system.long_description
-            target="system.long_description" button=true owner=owner
-            editable=editable rollData=rollData}}
+            {{editor long_descriptionHTML target="system.long_description"
+            button=true owner=owner editable=editable rollData=rollData}}
         </div>
     </section>
 </form>

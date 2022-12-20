@@ -34,12 +34,14 @@ export class QuestAbilitySheet extends ItemSheet {
     /** @inheritdoc */
     async getData() {
         const context = super.getData();
-        context.document.system.description = await TextEditor.enrichHTML(context.document.system.description, {async:true});
-        context.document.system.long_description = await TextEditor.enrichHTML(context.document.system.long_description, {async:true});
-        //EntitySheetHelper.getAttributeData(context);
-        //context.systemData = context.system;
-        //context.dtypes = ATTRIBUTE_TYPES;
-
+        context.descriptionHTML = await TextEditor.enrichHTML(
+            context.document.system.description,
+            { async: true }
+        );
+        context.long_descriptionHTML = await TextEditor.enrichHTML(
+            context.document.system.long_description,
+            { async: true }
+        );
         return context;
     }
 
