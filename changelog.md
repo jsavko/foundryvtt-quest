@@ -1,10 +1,15 @@
 # Quest Foundry VTT System
 
+0.2.1
+
+-   Added notes to actor sheet at request of a user.
+-   Updated Svelte Dependancy to fix some legacy code workarounds
+-   Updated actorsheet to remove some decapriated code for v11
+
 0.2.0
 
 -   Updated for v10
 -   Fixed bug when rolling from an actor not in combat.
-
 
 0.1.12
 
