@@ -1,6 +1,4 @@
 import { EntitySheetHelper } from "./helper.js";
-import { ATTRIBUTE_TYPES } from "./constants.js";
-import { QuestTextEditor } from "./quest-texteditor.js";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications

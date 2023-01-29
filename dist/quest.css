@@ -89,6 +89,15 @@ h3.svelte-17i6vo1.svelte-17i6vo1 {
   font-weight: 900;
 }
 
+/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css */
+.editor.svelte-1ccthvk {
+  display: grid;
+  grid-template-rows: 1px 1fr;
+}
+.editor-content.svelte-1ccthvk {
+  min-height: 100px;
+}
+
 /* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css */
 input.svelte-811xhi .quest {
   border-top: none;
@@ -195,15 +204,6 @@ input.short.svelte-811xhi.svelte-811xhi {
   font-weight: bold;
 }
 
-/* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css */
-.editor.svelte-1ccthvk {
-  display: grid;
-  grid-template-rows: 1px 1fr;
-}
-.editor-content.svelte-1ccthvk {
-  min-height: 100px;
-}
-
 /* fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestNPCActorSheetBase.esbuild-svelte-fake-css */
 input.svelte-1yi3kjs.svelte-1yi3kjs {
   border-top: none;
@@ -301,3 +301,4 @@ li.svelte-1yi3kjs span.svelte-1yi3kjs {
 p.svelte-1yi3kjs.svelte-1yi3kjs {
   line-height: 1;
 }
+/*# sourceMappingURL=quest.css.map */
