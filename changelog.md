@@ -5,6 +5,7 @@
 -   Updated for v10
 -   Fixed bug when rolling from an actor not in combat.
 
+
 0.1.12
 
 -   Added API hook event to register compendium to the ability browser
