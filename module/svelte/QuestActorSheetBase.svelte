@@ -1,11 +1,11 @@
 <script>
     import { setContext } from "svelte";
-    import { writable } from "svelte/store";
     import AutoComplete from "simple-svelte-autocomplete";
     import Tabs from "./Tabs.svelte";
     import QuestActorSheetInventory from "./QuestActorSheetInventory.svelte";
     import QuestActorSheetAbilities from "./QuestActorSheetAbilities.svelte";
     import Translation from "./Translation.svelte";
+    import QuestActorSheetNotes from "./QuestActorSheetNotes.svelte";
 
     // Component imports
     //TODO: IMPORTS
@@ -346,6 +346,11 @@
             label: game.i18n.localize("QUEST.Abilities"),
             value: 2,
             component: QuestActorSheetAbilities
+        },
+        {
+            label: game.i18n.localize("QUEST.Notes"),
+            value: 3,
+            component: QuestActorSheetNotes
         }
     ];
 

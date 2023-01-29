@@ -25,7 +25,7 @@ export class QuestItemSheet extends ItemSheet {
     /** @inheritdoc */
     getData() {
         const context = super.getData();
-        console.log(context);
+        //console.log(context);
         return context;
     }
 
@@ -60,7 +60,7 @@ export class QuestItemSheet extends ItemSheet {
     /** @override */
     _getSubmitData(updateData) {
         let formData = super._getSubmitData(updateData);
-        console.log(formData);
+        //console.log(formData);
         return formData;
     }
 }

@@ -6,11 +6,6 @@ import { EntitySheetHelper } from "./helper.js";
  */
 export class QuestActor extends Actor {
     /** @inheritdoc */
-    prepareDerivedData() {
-        super.prepareDerivedData();
-        this.system.groups = this.system.groups || {};
-        this.system.attributes = this.system.attributes || {};
-    }
 
     prepareData() {
         super.prepareData();
@@ -78,7 +73,7 @@ export class QuestActor extends Actor {
                         type: "detail"
                     });
                 }
-                this.update({ items: details });
+                this.updateSource({ items: details });
             }
         }
     }

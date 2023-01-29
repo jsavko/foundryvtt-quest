@@ -2,7 +2,7 @@
     "id": "foundryvtt-quest",
     "title": "Quest",
     "description": "A system for playing the Quest RPG in Foundry VTT.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "compatibility": {
         "minimum": 10,
         "verified": "10.284"
@@ -45,7 +45,7 @@
     "gridUnits": "ft",
     "primaryTokenAttribute": "health",
     "secondaryTokenAttribute": "power",
-    "templateVersion": 6,
+    "templateVersion": 7,
     "url": "https://github.com/jsavko/foundryvtt-quest",
     "manifest": "https://raw.githubusercontent.com/jsavko/foundryvtt-quest/main/system.json",
     "download": "https://github.com/jsavko/foundryvtt-quest/archive/refs/heads/main.zip",

@@ -111,9 +111,9 @@
                     </div>
                 </div>
                 <p class="shrink">
-                    {@html TextEditor.enrichHTML(
-                        detail.data.system.description
-                    )}
+                    {@html TextEditor.enrichHTML(detail.system.description, {
+                        async: false
+                    })}
                 </p>
             </li>
         {/each}
@@ -142,9 +142,9 @@
                     </div>
                 </div>
                 <p class="shrink">
-                    {@html TextEditor.enrichHTML(
-                        ability.data.system.description
-                    )}
+                    {@html TextEditor.enrichHTML(ability.system.description, {
+                        async: false
+                    })}
                 </p>
             </li>
         {/each}

@@ -1,54 +1,9 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-
-// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/Tabs.esbuild-svelte-fake-css
-var require_ = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/Tabs.esbuild-svelte-fake-css"(exports, module) {
-    module.exports = {};
-  }
-});
-
-// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css
-var require_2 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetInventory.esbuild-svelte-fake-css"(exports, module) {
-    module.exports = {};
-  }
-});
-
-// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css
-var require_3 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetAbilities.esbuild-svelte-fake-css"(exports, module) {
-    module.exports = {};
-  }
-});
-
-// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css
-var require_4 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
-    module.exports = {};
-  }
-});
-
-// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css
-var require_5 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestEditor.esbuild-svelte-fake-css"(exports, module) {
-    module.exports = {};
-  }
-});
-
-// fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestNPCActorSheetBase.esbuild-svelte-fake-css
-var require_6 = __commonJS({
-  "fakecss:D:/FoundryData/Data/systems/foundryvtt-quest/module/svelte/QuestNPCActorSheetBase.esbuild-svelte-fake-css"(exports, module) {
-    module.exports = {};
-  }
-});
 
 // module/helper.js
 var EntitySheetHelper = class {
@@ -426,11 +381,6 @@ var EntitySheetHelper = class {
 
 // module/actor.js
 var QuestActor = class extends Actor {
-  prepareDerivedData() {
-    super.prepareDerivedData();
-    this.system.groups = this.system.groups || {};
-    this.system.attributes = this.system.attributes || {};
-  }
   prepareData() {
     super.prepareData();
     const actorData = this;
@@ -480,7 +430,7 @@ var QuestActor = class extends Actor {
             type: "detail"
           });
         }
-        this.update({ items: details });
+        this.updateSource({ items: details });
       }
     }
   }
@@ -538,7 +488,6 @@ var QuestItemSheet = class extends ItemSheet {
   }
   getData() {
     const context = super.getData();
-    console.log(context);
     return context;
   }
   activateListeners(html) {
@@ -555,25 +504,7 @@ var QuestItemSheet = class extends ItemSheet {
   }
   _getSubmitData(updateData) {
     let formData = super._getSubmitData(updateData);
-    console.log(formData);
     return formData;
-  }
-};
-
-// module/quest-texteditor.js
-var QuestTextEditor = class extends TextEditor {
-  static async enrichHTML(content, options = {}) {
-    super.enrichHTML(content, options);
-  }
-  static _createCost(match) {
-    const a = document.createElement("a");
-    a.innerHTML = '<i class="cost">' + match[2] + "</i>";
-    return a;
-  }
-  static _createDamage(match) {
-    const a = document.createElement("a");
-    a.innerHTML = '<i class="damage">' + match[2] + "</i>";
-    return a;
   }
 };
 
@@ -733,7 +664,9 @@ function insert(target, node, anchor) {
   target.insertBefore(node, anchor || null);
 }
 function detach(node) {
-  node.parentNode.removeChild(node);
+  if (node.parentNode) {
+    node.parentNode.removeChild(node);
+  }
 }
 function destroy_each(iterations, detaching) {
   for (let i = 0; i < iterations.length; i += 1) {
@@ -757,6 +690,12 @@ function listen(node, event, handler, options) {
   node.addEventListener(event, handler, options);
   return () => node.removeEventListener(event, handler, options);
 }
+function prevent_default(fn) {
+  return function(event) {
+    event.preventDefault();
+    return fn.call(this, event);
+  };
+}
 function attr(node, attribute, value) {
   if (value == null)
     node.removeAttribute(attribute);
@@ -778,6 +717,56 @@ function set_style(node, key, value, important) {
     node.style.setProperty(key, value, important ? "important" : "");
   }
 }
+var crossorigin;
+function is_crossorigin() {
+  if (crossorigin === void 0) {
+    crossorigin = false;
+    try {
+      if (typeof window !== "undefined" && window.parent) {
+        void window.parent.document;
+      }
+    } catch (error) {
+      crossorigin = true;
+    }
+  }
+  return crossorigin;
+}
+function add_resize_listener(node, fn) {
+  const computed_style = getComputedStyle(node);
+  if (computed_style.position === "static") {
+    node.style.position = "relative";
+  }
+  const iframe = element("iframe");
+  iframe.setAttribute("style", "display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;");
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.tabIndex = -1;
+  const crossorigin2 = is_crossorigin();
+  let unsubscribe;
+  if (crossorigin2) {
+    iframe.src = "data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}<\/script>";
+    unsubscribe = listen(window, "message", (event) => {
+      if (event.source === iframe.contentWindow)
+        fn();
+    });
+  } else {
+    iframe.src = "about:blank";
+    iframe.onload = () => {
+      unsubscribe = listen(iframe.contentWindow, "resize", fn);
+    };
+  }
+  append(node, iframe);
+  return () => {
+    if (crossorigin2) {
+      unsubscribe();
+    } else if (unsubscribe && iframe.contentWindow) {
+      unsubscribe();
+    }
+    detach(iframe);
+  };
+}
+function construct_svelte_component(component, props) {
+  return new component(props);
+}
 var managed_styles = new Map();
 var current_component;
 function set_current_component(component) {
@@ -787,6 +776,9 @@ function get_current_component() {
   if (!current_component)
     throw new Error("Function called outside component initialization");
   return current_component;
+}
+function onDestroy(fn) {
+  get_current_component().$$.on_destroy.push(fn);
 }
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
@@ -816,13 +808,22 @@ function add_flush_callback(fn) {
 var seen_callbacks = new Set();
 var flushidx = 0;
 function flush() {
+  if (flushidx !== 0) {
+    return;
+  }
   const saved_component = current_component;
   do {
-    while (flushidx < dirty_components.length) {
-      const component = dirty_components[flushidx];
-      flushidx++;
-      set_current_component(component);
-      update(component.$$);
+    try {
+      while (flushidx < dirty_components.length) {
+        const component = dirty_components[flushidx];
+        flushidx++;
+        set_current_component(component);
+        update(component.$$);
+      }
+    } catch (e) {
+      dirty_components.length = 0;
+      flushidx = 0;
+      throw e;
     }
     set_current_component(null);
     dirty_components.length = 0;
@@ -908,7 +909,9 @@ var boolean_attributes = new Set([
   "disabled",
   "formnovalidate",
   "hidden",
+  "inert",
   "ismap",
+  "itemscope",
   "loop",
   "multiple",
   "muted",
@@ -932,13 +935,13 @@ function create_component(block) {
   block && block.c();
 }
 function mount_component(component, target, anchor, customElement) {
-  const { fragment, on_mount, on_destroy, after_update } = component.$$;
+  const { fragment, after_update } = component.$$;
   fragment && fragment.m(target, anchor);
   if (!customElement) {
     add_render_callback(() => {
-      const new_on_destroy = on_mount.map(run).filter(is_function);
-      if (on_destroy) {
-        on_destroy.push(...new_on_destroy);
+      const new_on_destroy = component.$$.on_mount.map(run).filter(is_function);
+      if (component.$$.on_destroy) {
+        component.$$.on_destroy.push(...new_on_destroy);
       } else {
         run_all(new_on_destroy);
       }
@@ -964,12 +967,12 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance8, create_fragment8, not_equal, props, append_styles, dirty = [-1]) {
+function init(component, options, instance10, create_fragment10, not_equal, props, append_styles, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
     fragment: null,
-    ctx: null,
+    ctx: [],
     props,
     update: noop,
     not_equal,
@@ -987,7 +990,7 @@ function init(component, options, instance8, create_fragment8, not_equal, props,
   };
   append_styles && append_styles($$.root);
   let ready = false;
-  $$.ctx = instance8 ? instance8(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance10 ? instance10(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -1000,7 +1003,7 @@ function init(component, options, instance8, create_fragment8, not_equal, props,
   $$.update();
   ready = true;
   run_all($$.before_update);
-  $$.fragment = create_fragment8 ? create_fragment8($$.ctx) : false;
+  $$.fragment = create_fragment10 ? create_fragment10($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       start_hydrating();
@@ -1043,6 +1046,9 @@ if (typeof HTMLElement === "function") {
       this.$destroy = noop;
     }
     $on(type, callback) {
+      if (!is_function(callback)) {
+        return noop;
+      }
       const callbacks = this.$$.callbacks[type] || (this.$$.callbacks[type] = []);
       callbacks.push(callback);
       return () => {
@@ -1066,6 +1072,9 @@ var SvelteComponent = class {
     this.$destroy = noop;
   }
   $on(type, callback) {
+    if (!is_function(callback)) {
+      return noop;
+    }
     const callbacks = this.$$.callbacks[type] || (this.$$.callbacks[type] = []);
     callbacks.push(callback);
     return () => {
@@ -1082,50 +1091,6 @@ var SvelteComponent = class {
     }
   }
 };
-
-// node_modules/svelte/store/index.mjs
-var subscriber_queue = [];
-function writable(value, start = noop) {
-  let stop;
-  const subscribers = new Set();
-  function set(new_value) {
-    if (safe_not_equal(value, new_value)) {
-      value = new_value;
-      if (stop) {
-        const run_queue = !subscriber_queue.length;
-        for (const subscriber of subscribers) {
-          subscriber[1]();
-          subscriber_queue.push(subscriber, value);
-        }
-        if (run_queue) {
-          for (let i = 0; i < subscriber_queue.length; i += 2) {
-            subscriber_queue[i][0](subscriber_queue[i + 1]);
-          }
-          subscriber_queue.length = 0;
-        }
-      }
-    }
-  }
-  function update3(fn) {
-    set(fn(value));
-  }
-  function subscribe2(run3, invalidate = noop) {
-    const subscriber = [run3, invalidate];
-    subscribers.add(subscriber);
-    if (subscribers.size === 1) {
-      stop = start(set) || noop;
-    }
-    run3(value);
-    return () => {
-      subscribers.delete(subscriber);
-      if (subscribers.size === 0) {
-        stop();
-        stop = null;
-      }
-    };
-  }
-  return { set, update: update3, subscribe: subscribe2 };
-}
 
 // node_modules/simple-svelte-autocomplete/index.mjs
 function noop2() {
@@ -1218,7 +1183,7 @@ function listen2(node, event, handler, options) {
   node.addEventListener(event, handler, options);
   return () => node.removeEventListener(event, handler, options);
 }
-function prevent_default(fn) {
+function prevent_default2(fn) {
   return function(event) {
     event.preventDefault();
     return fn.call(this, event);
@@ -1406,7 +1371,7 @@ function make_dirty2(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init2(component, options, instance8, create_fragment8, not_equal, props, dirty = [-1]) {
+function init2(component, options, instance10, create_fragment10, not_equal, props, dirty = [-1]) {
   const parent_component = current_component2;
   set_current_component2(component);
   const $$ = component.$$ = {
@@ -1427,7 +1392,7 @@ function init2(component, options, instance8, create_fragment8, not_equal, props
     skip_bound: false
   };
   let ready = false;
-  $$.ctx = instance8 ? instance8(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance10 ? instance10(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -1440,7 +1405,7 @@ function init2(component, options, instance8, create_fragment8, not_equal, props
   $$.update();
   ready = true;
   run_all2($$.before_update);
-  $$.fragment = create_fragment8 ? create_fragment8($$.ctx) : false;
+  $$.fragment = create_fragment10 ? create_fragment10($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       const nodes = children2(options.target);
@@ -1741,7 +1706,7 @@ function fallback_block_4(ctx) {
       append2(div, span1);
       insert2(target, t2, anchor);
       if (!mounted) {
-        dispose = listen2(span1, "click", prevent_default(function() {
+        dispose = listen2(span1, "click", prevent_default2(function() {
           if (is_function2(ctx[41](ctx[111])))
             ctx[41](ctx[111]).apply(this, arguments);
         }));
@@ -3750,7 +3715,7 @@ function create_if_block2(ctx) {
     return {};
   }
   if (switch_value) {
-    switch_instance = new switch_value(switch_props(ctx));
+    switch_instance = construct_svelte_component(switch_value, switch_props(ctx));
   }
   return {
     c() {
@@ -3762,9 +3727,8 @@ function create_if_block2(ctx) {
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      if (switch_instance) {
+      if (switch_instance)
         mount_component(switch_instance, div, null);
-      }
       append(div, t);
       current = true;
     },
@@ -3779,7 +3743,7 @@ function create_if_block2(ctx) {
           check_outros();
         }
         if (switch_value) {
-          switch_instance = new switch_value(switch_props(ctx2));
+          switch_instance = construct_svelte_component(switch_value, switch_props(ctx2));
           create_component(switch_instance.$$.fragment);
           transition_in(switch_instance.$$.fragment, 1);
           mount_component(switch_instance, div, t);
@@ -3994,7 +3958,50 @@ var Tabs = class extends SvelteComponent {
   }
 };
 var Tabs_default = Tabs;
-require_();
+
+// node_modules/svelte/store/index.mjs
+var subscriber_queue = [];
+function writable(value, start = noop) {
+  let stop;
+  const subscribers = new Set();
+  function set(new_value) {
+    if (safe_not_equal(value, new_value)) {
+      value = new_value;
+      if (stop) {
+        const run_queue = !subscriber_queue.length;
+        for (const subscriber of subscribers) {
+          subscriber[1]();
+          subscriber_queue.push(subscriber, value);
+        }
+        if (run_queue) {
+          for (let i = 0; i < subscriber_queue.length; i += 2) {
+            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          }
+          subscriber_queue.length = 0;
+        }
+      }
+    }
+  }
+  function update3(fn) {
+    set(fn(value));
+  }
+  function subscribe2(run3, invalidate = noop) {
+    const subscriber = [run3, invalidate];
+    subscribers.add(subscriber);
+    if (subscribers.size === 1) {
+      stop = start(set) || noop;
+    }
+    run3(value);
+    return () => {
+      subscribers.delete(subscriber);
+      if (subscribers.size === 0) {
+        stop();
+        stop = null;
+      }
+    };
+  }
+  return { set, update: update3, subscribe: subscribe2 };
+}
 
 // module/svelte/QuestActorSheetInventory.svelte
 function get_each_context3(ctx, list, i) {
@@ -4347,7 +4354,6 @@ var QuestActorSheetInventory = class extends SvelteComponent {
   }
 };
 var QuestActorSheetInventory_default = QuestActorSheetInventory;
-require_2();
 
 // module/svelte/QuestActorSheetAbilities.svelte
 function get_each_context4(ctx, list, i) {
@@ -4731,7 +4737,6 @@ var QuestActorSheetAbilities = class extends SvelteComponent {
   }
 };
 var QuestActorSheetAbilities_default = QuestActorSheetAbilities;
-require_3();
 
 // module/svelte/Translation.svelte
 function get_each_context5(ctx, list, i) {
@@ -5044,6 +5049,249 @@ var Translation = class extends SvelteComponent {
   }
 };
 var Translation_default = Translation;
+
+// module/svelte/QuestEditor.svelte
+function create_if_block6(ctx) {
+  let a;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      a = element("a");
+      a.innerHTML = `<i class="fas fa-edit"></i>`;
+      attr(a, "class", "editor-edit");
+    },
+    m(target, anchor) {
+      insert(target, a, anchor);
+      if (!mounted) {
+        dispose = listen(a, "click", prevent_default(ctx[6]));
+        mounted = true;
+      }
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching)
+        detach(a);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_fragment6(ctx) {
+  let div2;
+  let div1;
+  let span;
+  let t0;
+  let div0;
+  let div0_resize_listener;
+  let t1;
+  let if_block = ctx[1].editable && create_if_block6(ctx);
+  return {
+    c() {
+      div2 = element("div");
+      div1 = element("div");
+      span = element("span");
+      t0 = space();
+      div0 = element("div");
+      t1 = space();
+      if (if_block)
+        if_block.c();
+      attr(div0, "class", "editor-content svelte-1ccthvk");
+      attr(div0, "data-edit", ctx[0]);
+      add_render_callback(() => ctx[9].call(div0));
+      attr(div1, "class", "editor svelte-1ccthvk");
+    },
+    m(target, anchor) {
+      insert(target, div2, anchor);
+      append(div2, div1);
+      append(div1, span);
+      append(div1, t0);
+      append(div1, div0);
+      div0.innerHTML = ctx[4];
+      ctx[8](div0);
+      div0_resize_listener = add_resize_listener(div0, ctx[9].bind(div0));
+      append(div1, t1);
+      if (if_block)
+        if_block.m(div1, null);
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & 16)
+        div0.innerHTML = ctx2[4];
+      ;
+      if (dirty & 1) {
+        attr(div0, "data-edit", ctx2[0]);
+      }
+      if (ctx2[1].editable) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+        } else {
+          if_block = create_if_block6(ctx2);
+          if_block.c();
+          if_block.m(div1, null);
+        }
+      } else if (if_block) {
+        if_block.d(1);
+        if_block = null;
+      }
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(div2);
+      ctx[8](null);
+      div0_resize_listener();
+      if (if_block)
+        if_block.d();
+    }
+  };
+}
+function instance6($$self, $$props, $$invalidate) {
+  let $sheetData;
+  let { target } = $$props;
+  let sheetData = getContext("sheetStore");
+  component_subscribe($$self, sheetData, (value) => $$invalidate(1, $sheetData = value));
+  let data;
+  const TextEditor2 = globalThis.TextEditor;
+  let editorContent;
+  let height;
+  let mce;
+  let rawContent = getProperty($sheetData?.data, target) ?? "";
+  let content = TextEditor2.enrichHTML(rawContent, {
+    secrets: $sheetData.isOwner,
+    async: false
+  });
+  let editor = {};
+  onDestroy(async () => {
+    if (mce)
+      mce.destroy();
+  });
+  const createEditor = async () => {
+    TextEditor2.create({
+      target: editorContent,
+      invalid_elements: "iframe",
+      save_onsavecallback: async (m) => {
+        mce = m;
+        const isDirty = mce.getContent() !== editor.initial;
+        mce.remove();
+        if (isDirty) {
+          await $sheetData.sheet._onSubmit(new Event("submit"));
+        }
+        mce.destroy();
+      }
+    }).then((m) => {
+      editor.m = m;
+      mce = m;
+      editor.changed = false;
+      editor.active = true;
+      mce.focus();
+      mce.on("change", (ev) => editor.changed = true);
+    });
+  };
+  function div0_binding($$value) {
+    binding_callbacks[$$value ? "unshift" : "push"](() => {
+      editorContent = $$value;
+      $$invalidate(2, editorContent);
+    });
+  }
+  function div0_elementresize_handler() {
+    height = this.clientHeight;
+    $$invalidate(3, height);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("target" in $$props2)
+      $$invalidate(0, target = $$props2.target);
+  };
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 2) {
+      $:
+        data = $sheetData.data;
+    }
+    if ($$self.$$.dirty & 131) {
+      $: {
+        $$invalidate(7, rawContent = getProperty($sheetData?.data, target));
+        $$invalidate(4, content = TextEditor2.enrichHTML(rawContent, {
+          secrets: $sheetData.isOwner,
+          async: false
+        }));
+      }
+    }
+  };
+  return [
+    target,
+    $sheetData,
+    editorContent,
+    height,
+    content,
+    sheetData,
+    createEditor,
+    rawContent,
+    div0_binding,
+    div0_elementresize_handler
+  ];
+}
+var QuestEditor = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance6, create_fragment6, safe_not_equal, { target: 0 });
+  }
+};
+var QuestEditor_default = QuestEditor;
+
+// module/svelte/QuestActorSheetNotes.svelte
+function create_fragment7(ctx) {
+  let div;
+  let questeditor;
+  let current;
+  questeditor = new QuestEditor_default({ props: { target: "system.notes" } });
+  return {
+    c() {
+      div = element("div");
+      create_component(questeditor.$$.fragment);
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      mount_component(questeditor, div, null);
+      current = true;
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(questeditor.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(questeditor.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div);
+      destroy_component(questeditor);
+    }
+  };
+}
+function instance7($$self, $$props, $$invalidate) {
+  let $sheetData;
+  let sheetData = getContext("sheetStore");
+  component_subscribe($$self, sheetData, (value) => $$invalidate(1, $sheetData = value));
+  let data;
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & 2) {
+      $:
+        data = $sheetData.actor;
+    }
+  };
+  return [sheetData, $sheetData];
+}
+var QuestActorSheetNotes = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance7, create_fragment7, safe_not_equal, {});
+  }
+};
+var QuestActorSheetNotes_default = QuestActorSheetNotes;
 
 // module/svelte/QuestActorSheetBase.svelte
 function create__1_slot_7(ctx) {
@@ -5909,7 +6157,7 @@ function create__1_slot(ctx) {
     }
   };
 }
-function create_fragment6(ctx) {
+function create_fragment8(ctx) {
   let div3;
   let div0;
   let label0;
@@ -6533,7 +6781,7 @@ function create_fragment6(ctx) {
     }
   };
 }
-function instance6($$self, $$props, $$invalidate) {
+function instance8($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(28, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
@@ -6839,6 +7087,11 @@ function instance6($$self, $$props, $$invalidate) {
       label: game.i18n.localize("QUEST.Abilities"),
       value: 2,
       component: QuestActorSheetAbilities_default
+    },
+    {
+      label: game.i18n.localize("QUEST.Notes"),
+      value: 3,
+      component: QuestActorSheetNotes_default
     }
   ];
   const filePicker = (event) => {
@@ -7032,11 +7285,10 @@ function instance6($$self, $$props, $$invalidate) {
 var QuestActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance6, create_fragment6, safe_not_equal, { dataStore: 0 }, null, [-1, -1]);
+    init(this, options, instance8, create_fragment8, safe_not_equal, { dataStore: 0 }, null, [-1, -1]);
   }
 };
 var QuestActorSheetBase_default = QuestActorSheetBase;
-require_4();
 
 // module/actor-sheet.js
 var QuestActorSheet = class extends ActorSheet {
@@ -7178,6 +7430,14 @@ var QuestActorSheet = class extends ActorSheet {
     };
     return ChatMessage.create(chatData);
   }
+  __onSubmit(event) {
+    event = super._onSubmit(event);
+    return event;
+  }
+  _getSubmitData(updateData) {
+    let formData = super._getSubmitData(updateData);
+    return formData;
+  }
   render(force = false, options = {}) {
     let sheetData = this.getData();
     if (this.app !== null) {
@@ -7214,9 +7474,6 @@ var QuestActorSheet = class extends ActorSheet {
   }
 };
 
-// module/svelte/QuestEditor.svelte
-require_5();
-
 // module/svelte/QuestNPCActorSheetBase.svelte
 function get_each_context6(ctx, list, i) {
   const child_ctx = ctx.slice();
@@ -7241,7 +7498,7 @@ function create_each_block_14(ctx) {
   let a1;
   let t3;
   let p;
-  let raw_value = ctx[4].enrichHTML(ctx[14].data.system.description) + "";
+  let raw_value = ctx[4].enrichHTML(ctx[14].system.description, { async: false }) + "";
   let t4;
   let mounted;
   let dispose;
@@ -7296,7 +7553,7 @@ function create_each_block_14(ctx) {
       ctx = new_ctx;
       if (dirty & 2 && t0_value !== (t0_value = ctx[14].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[14].data.system.description) + ""))
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[14].system.description, { async: false }) + ""))
         p.innerHTML = raw_value;
       ;
     },
@@ -7321,7 +7578,7 @@ function create_each_block6(ctx) {
   let a1;
   let t3;
   let p;
-  let raw_value = ctx[4].enrichHTML(ctx[11].data.system.description) + "";
+  let raw_value = ctx[4].enrichHTML(ctx[11].system.description, { async: false }) + "";
   let t4;
   let mounted;
   let dispose;
@@ -7379,7 +7636,7 @@ function create_each_block6(ctx) {
       ctx = new_ctx;
       if (dirty & 2 && t0_value !== (t0_value = ctx[11].name + ""))
         set_data(t0, t0_value);
-      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[11].data.system.description) + ""))
+      if (dirty & 2 && raw_value !== (raw_value = ctx[4].enrichHTML(ctx[11].system.description, { async: false }) + ""))
         p.innerHTML = raw_value;
       ;
     },
@@ -7391,7 +7648,7 @@ function create_each_block6(ctx) {
     }
   };
 }
-function create_fragment7(ctx) {
+function create_fragment9(ctx) {
   let div3;
   let div0;
   let label0;
@@ -7619,7 +7876,7 @@ function create_fragment7(ctx) {
     }
   };
 }
-function instance7($$self, $$props, $$invalidate) {
+function instance9($$self, $$props, $$invalidate) {
   let $dataStore, $$unsubscribe_dataStore = noop, $$subscribe_dataStore = () => ($$unsubscribe_dataStore(), $$unsubscribe_dataStore = subscribe(dataStore, ($$value) => $$invalidate(5, $dataStore = $$value)), dataStore);
   $$self.$$.on_destroy.push(() => $$unsubscribe_dataStore());
   let { dataStore } = $$props;
@@ -7679,11 +7936,10 @@ function instance7($$self, $$props, $$invalidate) {
 var QuestNPCActorSheetBase = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance7, create_fragment7, safe_not_equal, { dataStore: 0 });
+    init(this, options, instance9, create_fragment9, safe_not_equal, { dataStore: 0 });
   }
 };
 var QuestNPCActorSheetBase_default = QuestNPCActorSheetBase;
-require_6();
 
 // module/npcactor-sheet.js
 var QuestNPCActorSheet = class extends ActorSheet {
@@ -8313,6 +8569,23 @@ var QuestAPI = class {
   }
 };
 
+// module/quest-texteditor.js
+var QuestTextEditor = class extends TextEditor {
+  static async enrichHTML(content, options = {}) {
+    super.enrichHTML(content, options);
+  }
+  static _createCost(match) {
+    const a = document.createElement("a");
+    a.innerHTML = '<i class="cost">' + match[2] + "</i>";
+    return a;
+  }
+  static _createDamage(match) {
+    const a = document.createElement("a");
+    a.innerHTML = '<i class="damage">' + match[2] + "</i>";
+    return a;
+  }
+};
+
 // module/quest.js
 Hooks.once("init", async function() {
   console.log(`Initializing Quest Quest System`);
@@ -8417,18 +8690,4 @@ Hooks.on("updateToken", (scene, token, data, options, id) => {
     ui.combat.render();
   }
 });
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
 //# sourceMappingURL=quest.js.map
