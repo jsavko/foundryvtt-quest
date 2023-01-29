@@ -3,8 +3,8 @@
 0.2.1
 
 -   Added notes to actor sheet at request of a user.
--   Updated Svelte Dependancy to fix some legacy code workarounds
--   Updated actorsheet to remove some decapriated code for v11
+-   Updated Svelte Dependency to fix some legacy code workarounds
+-   Updated actor sheet to remove some depreciated code for v11
 
 0.2.0
 
