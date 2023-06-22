@@ -1,5 +1,9 @@
 # Quest Foundry VTT System
 
+0.2.2
+
+-   Updated Text Enrichement to init
+
 0.2.1
 
 -   Added notes to actor sheet at request of a user.

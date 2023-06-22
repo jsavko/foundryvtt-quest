@@ -1,0 +1,8 @@
+2023/05/25-07:55:59.216 5afc Recovering log #4
+2023/05/25-07:55:59.227 5afc Delete type=0 #4
+2023/05/25-07:55:59.227 5afc Delete type=3 #2
+2023/05/25-07:58:08.285 4224 Level-0 table #9: started
+2023/05/25-07:58:08.285 4224 Level-0 table #9: 0 bytes OK
+2023/05/25-07:58:08.286 4224 Delete type=0 #7
+2023/05/25-07:58:08.286 4224 Manual compaction at level-0 from '!items!0HF7D5I8xbkbYr3G' @ 72057594037927935 : 1 .. '!items!zuscYKfYxMKUejXO' @ 0 : 0; will stop at (end)
+2023/05/25-07:58:08.286 4224 Manual compaction at level-1 from '!items!0HF7D5I8xbkbYr3G' @ 72057594037927935 : 1 .. '!items!zuscYKfYxMKUejXO' @ 0 : 0; will stop at (end)

@@ -97,6 +97,26 @@ Hooks.once("init", async function () {
 
     // Preload template partials
     await preloadHandlebarsTemplates();
+
+    //Load Text Enrichers on init so the chat window gets init
+    const costRgx = new RegExp(
+        `@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`,
+        "g"
+    );
+
+    const damageRgx = new RegExp(
+        `@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`,
+        "g"
+    );
+
+    CONFIG.TextEditor.enrichers.push({
+        pattern: costRgx,
+        enricher: game.quest.QuestTextEditor._createCost
+    });
+    CONFIG.TextEditor.enrichers.push({
+        pattern: damageRgx,
+        enricher: game.quest.QuestTextEditor._createDamage
+    });
 });
 
 /**
@@ -145,25 +165,6 @@ Hooks.once("ready", async () => {
     game.quest.api.init();
 
     game.quest.roleList = await game.quest.AbilityDialog.getRollList();
-
-    const costRgx = new RegExp(
-        `@(cost|Cost)\\[([^\\]]+)\\](?:{([^}]+)})?`,
-        "g"
-    );
-
-    const damageRgx = new RegExp(
-        `@(damage|Damage)\\[([^\\]]+)\\](?:{([^}]+)})?`,
-        "g"
-    );
-
-    CONFIG.TextEditor.enrichers.push({
-        pattern: costRgx,
-        enricher: game.quest.QuestTextEditor._createCost
-    });
-    CONFIG.TextEditor.enrichers.push({
-        pattern: damageRgx,
-        enricher: game.quest.QuestTextEditor._createDamage
-    });
 });
 
 Hooks.on("renderDialog", (dialog, html) => {
