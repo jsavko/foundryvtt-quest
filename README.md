@@ -1,3 +1,5 @@
+### This project is no longer to maintained or updated. 
+
 # Quest for FoundryVTT
 
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json?color=orange&label=Foundry%20Version&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2Fjsavko%2Ffoundryvtt-quest%2Fmain%2Fsystem.json)
